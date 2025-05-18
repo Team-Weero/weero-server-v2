@@ -1,6 +1,7 @@
 package team.weero.app.persistence.student.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.persistence.student.type.Role;
 import team.weero.app.persistence.user.entity.User;
@@ -8,6 +9,7 @@ import team.weero.app.persistence.user.entity.User;
 import java.util.UUID;
 
 @Entity
+@Getter
 @Table(name = "tbl_student")
 public class Student {
     @Id
