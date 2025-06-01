@@ -1,11 +1,16 @@
 package team.weero.app.persistence.user.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "tbl_user")
 public class User {
     @Id
@@ -16,7 +21,4 @@ public class User {
 
     @Column(nullable = false, length = 255)
     private String password;
-
-    @Column(nullable = false, unique = true, length = 255)
-    private String email;
 }

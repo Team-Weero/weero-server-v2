@@ -1,6 +1,10 @@
 package team.weero.app.persistence.student.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.persistence.student.type.Role;
 import team.weero.app.persistence.user.entity.User;
@@ -8,6 +12,10 @@ import team.weero.app.persistence.user.entity.User;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tbl_student")
 public class Student {
     @Id
@@ -22,11 +30,11 @@ public class Student {
     @Column(nullable = false, length = 20)
     private String nickname;
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String email;
+    @Column(nullable = false, unique = true, length = 30)
+    private String accountId;
 
     @Column(nullable = false)
-    private int grade;
+    private String gcn;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
