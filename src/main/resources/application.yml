@@ -28,6 +28,11 @@ spring:
     header: ${JWT_HEADER}
     prefix: ${JWT_PREFIX}
 
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
 logging:
   level:
     org.springframework.cloud: INFO
