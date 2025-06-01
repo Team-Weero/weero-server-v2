@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CommandAuthPort {
 
-    Optional<User> findByAccountId(String accountId);
+    Optional<Student> findByAccountId(String accountId);
 
     User save(User user);
 

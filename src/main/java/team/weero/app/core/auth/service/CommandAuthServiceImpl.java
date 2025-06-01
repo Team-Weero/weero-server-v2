@@ -36,7 +36,7 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
         User user = commandAuthPort.save(
                 User.builder()
-                        .accountId(request.accountId())
+
                         .password(passwordEncoder.encode(request.password()))
                         .build()
         );
@@ -56,8 +56,10 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
     @Override
     public TokenResponse login(LoginRequest request) {
-        User user = commandAuthPort.findByAccountId(request.accountId())
+        Student student = commandAuthPort.findByAccountId(request.accountId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        User user = student.getUser();
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw PasswordIncorrectException.EXCEPTION;
@@ -71,5 +73,4 @@ public class CommandAuthServiceImpl implements CommandAuthService {
                 .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
                 .build();
     }
-
 }
