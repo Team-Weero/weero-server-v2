@@ -3,6 +3,7 @@ package team.weero.app.infrastructure.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.user.entity.User;
 
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Collection;
 public class AuthDetails implements UserDetails {
 
     private final User user;
+    private final Student student;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -24,7 +26,7 @@ public class AuthDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getAccountId();
+        return student.getAccountId();
     }
 
     @Override
