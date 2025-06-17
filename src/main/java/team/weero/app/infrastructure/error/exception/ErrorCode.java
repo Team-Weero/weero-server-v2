@@ -17,6 +17,11 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid Refresh Token"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Refresh token Not Found"),
 
+    CONCERN_NOT_FOUND(HttpStatus.NOT_FOUND, "Concern Not Found"),
+    ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "Answer Not Found"),
+    UNAUTHORIZED_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Access"),
+    ALREADY_RESOLVED_CONCERN(HttpStatus.BAD_REQUEST, "Already Resolved Concern"),
+
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
 
     private final HttpStatus status;

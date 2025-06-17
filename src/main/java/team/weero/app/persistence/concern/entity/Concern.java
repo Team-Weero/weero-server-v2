@@ -1,13 +1,18 @@
 package team.weero.app.persistence.concern.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import team.weero.app.persistence.user.entity.User;
+import team.weero.app.persistence.student.entity.Student;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "tbl_concern")
 public class Concern {
     @Id
@@ -17,8 +22,8 @@ public class Concern {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     @Column(nullable = false, length = 255)
     private String title;
@@ -27,5 +32,12 @@ public class Concern {
     private String contents;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private boolean isResolved;
+
+    public void resolve() {
+        this.isResolved = true;
+    }
 }
