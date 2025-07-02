@@ -1,16 +1,19 @@
 package team.weero.app.persistence.counseling.entity;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.persistence.counseling.type.Period;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.teacher.entity.Teacher;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_counseling_application")
+@Setter
 public class CounselingApplication {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -29,9 +32,8 @@ public class CounselingApplication {
     @Column(nullable = false)
     private boolean isChecked;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Period period;
+    private LocalTime time;
 
     @Column(nullable = false)
     private LocalDate counselDate;
