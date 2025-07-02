@@ -28,6 +28,10 @@ public enum ErrorCode {
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
 
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"),
+
+    DUPLICATE_RESERVATION(HttpStatus.CONFLICT, "Duplicate Reservation");
+
     private final HttpStatus status;
     private final String message;
 }
