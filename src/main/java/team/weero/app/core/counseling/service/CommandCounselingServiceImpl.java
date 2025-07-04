@@ -33,6 +33,7 @@ public class CommandCounselingServiceImpl implements CommandCounselingService {
         counseling.setStudent(student);
         counseling.setTeacher(teacher);
         counseling.setCounselDate(request.date());
+        counseling.setLocation(request.location());
         counseling.setTime(request.time());
         counseling.setApplicationDate(LocalDate.now());
         counseling.setChecked(false);
