@@ -43,4 +43,32 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Role getStudentRole() {
+        return studentRole;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public String getGcn() {
+        return gcn;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }
