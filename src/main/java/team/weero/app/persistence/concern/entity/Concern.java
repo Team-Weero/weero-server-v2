@@ -40,4 +40,28 @@ public class Concern {
     public void resolve() {
         this.isResolved = true;
     }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

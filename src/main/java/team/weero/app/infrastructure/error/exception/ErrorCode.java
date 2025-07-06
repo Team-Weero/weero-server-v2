@@ -22,6 +22,10 @@ public enum ErrorCode {
     UNAUTHORIZED_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Access"),
     ALREADY_RESOLVED_CONCERN(HttpStatus.BAD_REQUEST, "Already Resolved Concern"),
 
+    TEACHER_NOT_FOUND(HttpStatus.NOT_FOUND, "Teacher Not Found"),
+    NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "Notice Not Found"),
+    UNAUTHORIZED_NOTICE_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Notice Access"),
+
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
 
     private final HttpStatus status;
