@@ -1,12 +1,17 @@
 package team.weero.app.persistence.notice.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.persistence.user.entity.User;
 
 import java.util.UUID;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "tbl_notice")
 public class Notice {
     @Id
@@ -24,4 +29,9 @@ public class Notice {
 
     @Column(nullable = false, length = 10000)
     private String contents;
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
