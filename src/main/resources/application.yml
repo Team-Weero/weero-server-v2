@@ -39,3 +39,18 @@ logging:
     org.springframework.jdbc: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+
+  api-docs:
+    path: /weero/api-docs
+
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json

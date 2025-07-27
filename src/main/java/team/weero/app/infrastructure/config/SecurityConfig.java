@@ -36,8 +36,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
                                 "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/weero/api-docs/**",
+                                "/weero/api-docs",
                                 "/v3/api-docs/**",
-                                "/v3/api-docs.yaml",
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()

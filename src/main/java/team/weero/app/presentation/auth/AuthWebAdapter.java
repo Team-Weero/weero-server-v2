@@ -1,5 +1,6 @@
 package team.weero.app.presentation.auth;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import team.weero.app.core.auth.usecase.SignupUseCase;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@SecurityRequirements()
 public class AuthWebAdapter {
 
     private final SignupUseCase signupUsecase;
