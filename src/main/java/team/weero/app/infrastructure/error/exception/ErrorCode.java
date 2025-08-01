@@ -26,9 +26,16 @@ public enum ErrorCode {
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "Notice Not Found"),
     UNAUTHORIZED_NOTICE_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Notice Access"),
 
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"),
 
-    DUPLICATE_RESERVATION(HttpStatus.CONFLICT, "Duplicate Reservation");
+    DUPLICATE_RESERVATION(HttpStatus.CONFLICT, "Duplicate Reservation"),
+
+    FCM_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FCM Message Send Failed"),
+    FCM_AUTHENTICATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FCM Authentication Failed"),
+    FCM_INVALID_TOKEN(HttpStatus.BAD_REQUEST, "FCM Invalid Token"),
+
+    GENERAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "General Error"),
+    JSON_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON Parsing Error");
 
     private final HttpStatus status;
     private final String message;
