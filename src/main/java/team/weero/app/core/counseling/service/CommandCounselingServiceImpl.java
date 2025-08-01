@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.core.counseling.dto.request.CounselingRequest;
 import team.weero.app.core.counseling.exception.DuplicateReservationException;
 import team.weero.app.core.counseling.spi.CommandCounselingPort;
+import team.weero.app.core.notify.service.NotifyService;
 import team.weero.app.persistence.counseling.entity.CounselingApplication;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.teacher.entity.Teacher;
@@ -17,6 +18,7 @@ public class CommandCounselingServiceImpl implements CommandCounselingService {
 
     private final GetCounselingService getCounselingService;
     private final CommandCounselingPort commandCounselingPort;
+    private final NotifyService notifyService;
 
     @Transactional
     public void applyForCounseling(CounselingRequest request) {
@@ -39,5 +41,7 @@ public class CommandCounselingServiceImpl implements CommandCounselingService {
         counseling.setChecked(false);
 
         commandCounselingPort.save(counseling);
+
+        notifyService.notifyCounselingApplied(student.getName(), teacher);
     }
 }
