@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.persistence.counseling.type.CounselingLocation;
-import team.weero.app.persistence.counseling.type.Period;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.teacher.entity.Teacher;
 
