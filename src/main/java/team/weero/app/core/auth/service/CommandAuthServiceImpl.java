@@ -56,6 +56,35 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
     @Override
     public TokenResponse login(LoginRequest request) {
+        // 먼저 선생님으로 조회
+        var teacherOpt = commandAuthPort.findTeacherByAccountId(request.accountId());
+
+        if (teacherOpt.isPresent()) {
+            var teacher = teacherOpt.get();
+            User user = teacher.getUser();
+
+            if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+                throw PasswordIncorrectException.EXCEPTION;
+            }
+
+            // 선생님인 경우 deviceToken 업데이트
+            String deviceToken = request.deviceToken();
+            if (deviceToken != null && !deviceToken.isBlank()) {
+                teacher.updateDeviceToken(deviceToken);
+                commandAuthPort.save(teacher);
+            }
+
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+            return TokenResponse.builder()
+                    .accessToken(jwtTokenProvider.generateAccessToken(request.accountId()))
+                    .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
+                    .refreshToken(jwtTokenProvider.generateRefreshToken(request.accountId()))
+                    .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
+                    .deviceToken(deviceToken)
+                    .build();
+        }
+
+        // 학생으로 조회
         Student student = commandAuthPort.findByAccountId(request.accountId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
@@ -71,6 +100,7 @@ public class CommandAuthServiceImpl implements CommandAuthService {
                 .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
                 .refreshToken(jwtTokenProvider.generateRefreshToken(request.accountId()))
                 .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
+                .deviceToken(null)
                 .build();
     }
 }
