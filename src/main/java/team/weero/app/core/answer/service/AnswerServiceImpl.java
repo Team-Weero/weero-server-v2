@@ -13,7 +13,7 @@ import team.weero.app.persistence.answer.entity.Answer;
 import team.weero.app.persistence.concern.entity.Concern;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.student.repository.StudentRepository;
-import team.weero.app.persistence.student.type.Role;
+import team.weero.app.persistence.student.type.StudentRole;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,7 +39,7 @@ public class AnswerServiceImpl implements AnswerService {
         Student student = studentRepository.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        if (student.getStudentRole() != Role.AGENT) {
+        if (student.getStudentRole() != StudentRole.AGENT) {
             throw UnauthorizedAccessException.EXCEPTION;
         }
 
