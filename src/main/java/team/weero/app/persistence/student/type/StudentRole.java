@@ -1,6 +1,6 @@
 package team.weero.app.persistence.student.type;
 
-public enum Role {
+public enum StudentRole {
     COMMON,
-    AGENT,
+    AGENT
 }

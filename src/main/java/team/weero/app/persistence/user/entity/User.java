@@ -3,6 +3,7 @@ package team.weero.app.persistence.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import team.weero.app.persistence.user.type.UserRole;
 
 import java.util.UUID;
 
@@ -21,4 +22,8 @@ public class User {
 
     @Column(nullable = false, length = 255)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole userRole;
 }
