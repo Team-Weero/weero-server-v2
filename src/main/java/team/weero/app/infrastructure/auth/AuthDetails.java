@@ -49,8 +49,8 @@ public class AuthDetails implements UserDetails {
 
         authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
 
-        if (userRole == UserRole.STUDENT && studentRole == StudentRole.AGENT) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + studentRole.name()));
+        if (studentRole != null) {
+            authorities.add(new SimpleGrantedAuthority(studentRole.name()));
         }
 
         return authorities;
