@@ -13,8 +13,9 @@ import team.weero.app.core.auth.spi.CommandAuthPort;
 import team.weero.app.infrastructure.jwt.JwtProperties;
 import team.weero.app.infrastructure.jwt.JwtTokenProvider;
 import team.weero.app.persistence.student.entity.Student;
-import team.weero.app.persistence.student.type.Role;
+import team.weero.app.persistence.student.type.StudentRole;
 import team.weero.app.persistence.user.entity.User;
+import team.weero.app.persistence.user.type.UserRole;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -30,13 +31,13 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
     @Override
     public void signup(SignupRequest request) {
-        if (commandAuthPort.findByAccountId(request.accountId()).isPresent()) {
+        if (commandAuthPort.findByStudentAccountId(request.accountId()).isPresent()) {
             throw UserAlreadyExistsException.EXCEPTION;
         }
 
         User user = commandAuthPort.save(
                 User.builder()
-
+                        .userRole(UserRole.STUDENT)
                         .password(passwordEncoder.encode(request.password()))
                         .build()
         );
@@ -46,20 +47,39 @@ public class CommandAuthServiceImpl implements CommandAuthService {
                         .accountId(request.accountId())
                         .name(request.username())
                         .gcn(request.gcn())
-                        .nickname("qwer") // 추후 구현 (닉네임 랜덤)
-                        .studentRole(Role.COMMON)
+                        .nickname("qwer") // 랜덤 닉네임 구현 가능
+                        .studentRole(StudentRole.COMMON)
                         .user(user)
                         .build()
         );
     }
 
-
     @Override
     public TokenResponse login(LoginRequest request) {
-        Student student = commandAuthPort.findByAccountId(request.accountId())
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        User user = student.getUser();
+        var teacherOpt = commandAuthPort.findByTeacherAccountId(request.accountId());
+
+        var studentOpt = commandAuthPort.findByStudentAccountId(request.accountId());
+
+        User user;
+        UserRole userRole;
+        StudentRole studentRole = null;
+        String accountId;
+
+        if (teacherOpt.isPresent()) {
+            var teacher = teacherOpt.get();
+            user = teacher.getUser();
+            userRole = UserRole.TEACHER;
+            accountId = teacher.getAccountId();
+        } else if (studentOpt.isPresent()) {
+            var student = studentOpt.get();
+            user = student.getUser();
+            userRole = UserRole.STUDENT;
+            studentRole = student.getStudentRole();
+            accountId = student.getAccountId();
+        } else {
+            throw UserNotFoundException.EXCEPTION;
+        }
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw PasswordIncorrectException.EXCEPTION;
@@ -67,9 +87,9 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(request.accountId()))
+                .accessToken(jwtTokenProvider.generateAccessToken(accountId, userRole, studentRole))
                 .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
-                .refreshToken(jwtTokenProvider.generateRefreshToken(request.accountId()))
+                .refreshToken(jwtTokenProvider.generateRefreshToken(accountId, userRole, studentRole))
                 .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
                 .build();
     }

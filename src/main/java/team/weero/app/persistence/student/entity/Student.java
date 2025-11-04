@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import team.weero.app.persistence.student.type.Role;
+import team.weero.app.persistence.student.type.StudentRole;
 import team.weero.app.persistence.user.entity.User;
 
 import java.util.UUID;
@@ -38,13 +38,13 @@ public class Student {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role studentRole;
+    private StudentRole studentRole;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Role getStudentRole() {
+    public StudentRole getStudentRole() {
         return studentRole;
     }
 
