@@ -71,6 +71,12 @@ public class CommandAuthServiceImpl implements CommandAuthService {
             user = teacher.getUser();
             userRole = UserRole.TEACHER;
             accountId = teacher.getAccountId();
+
+            if (request.deviceToken() != null && !request.deviceToken().isBlank()) {
+                teacher.updateDeviceToken(request.deviceToken());
+                commandAuthPort.save(teacher);
+            }
+
         } else if (studentOpt.isPresent()) {
             var student = studentOpt.get();
             user = student.getUser();
