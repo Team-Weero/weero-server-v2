@@ -33,7 +33,6 @@ spring:
       id: ${TEACHER_ID}
       password: ${TEACHER_PASSWORD}
       name: ${TEACHER_NAME}
-      device-token: ${TEACHER_DEVICE_TOKEN}
       notification-start-time: ${TEACHER_NOTIFICATION_START}
       notification-end-time: ${TEACHER_NOTIFICATION_END}
 
