@@ -25,7 +25,7 @@ public class ExceptionFilter extends OncePerRequestFilter {
         try {
             chain.doFilter(req, res);
         } catch (WeeRoException ex) {
-            log.error("Handled CustomException: ", ex);
+            log.error("Handled WeeRoException: ", ex);
             respondWithError(res, ex.getErrorCode());
         } catch (Exception ex) {
             log.error("Unhandled Exception: ", ex);
