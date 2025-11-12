@@ -1,11 +1,11 @@
 package team.weero.app.infrastructure.exception;
 
-import team.weero.app.infrastructure.error.exception.CustomException;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 
-public class ExpiredJwtException extends CustomException {
+public class ExpiredJwtException extends WeeRoException {
 
-    public static final CustomException EXCEPTION = new ExpiredJwtException();
+    public static final WeeRoException EXCEPTION = new ExpiredJwtException();
 
     private ExpiredJwtException() {
         super(ErrorCode.EXPIRED_JWT);
