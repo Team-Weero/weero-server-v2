@@ -22,6 +22,7 @@ public class FirebaseConfig {
     @PostConstruct
     public void initialize() {
         try {
+            log.info("Firebase Credentials JSON (raw): {}", firebaseCredentialsJson);
             ByteArrayInputStream serviceAccount = new ByteArrayInputStream(
                     firebaseCredentialsJson.getBytes(StandardCharsets.UTF_8)
             );
