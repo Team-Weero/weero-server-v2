@@ -1,11 +1,11 @@
 package team.weero.app.core.auth.exception;
 
-import team.weero.app.infrastructure.error.exception.CustomException;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 
-public class UserAlreadyExistsException extends CustomException {
+public class UserAlreadyExistsException extends WeeRoException {
 
-    public static final CustomException EXCEPTION = new UserAlreadyExistsException();
+    public static final WeeRoException EXCEPTION = new UserAlreadyExistsException();
 
     public UserAlreadyExistsException() {
         super(ErrorCode.USER_ALREADY_EXISTS);

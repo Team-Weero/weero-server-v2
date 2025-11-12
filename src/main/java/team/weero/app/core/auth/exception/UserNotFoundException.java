@@ -1,11 +1,11 @@
 package team.weero.app.core.auth.exception;
 
-import team.weero.app.infrastructure.error.exception.CustomException;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 
-public class UserNotFoundException extends CustomException {
+public class UserNotFoundException extends WeeRoException {
 
-    public static final CustomException EXCEPTION = new UserNotFoundException();
+    public static final WeeRoException EXCEPTION = new UserNotFoundException();
 
     public UserNotFoundException() {
         super(ErrorCode.USER_NOT_FOUND);

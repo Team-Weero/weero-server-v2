@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
-import team.weero.app.infrastructure.error.exception.CustomException;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 import team.weero.app.infrastructure.error.exception.ErrorResponse;
 
@@ -24,7 +24,7 @@ public class ExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException {
         try {
             chain.doFilter(req, res);
-        } catch (CustomException ex) {
+        } catch (WeeRoException ex) {
             log.error("Handled CustomException: ", ex);
             respondWithError(res, ex.getErrorCode());
         } catch (Exception ex) {
