@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @AllArgsConstructor
-@ConfigurationProperties(prefix = "spring.admin.account")
+@ConfigurationProperties(prefix = "spring.admin.teacher")
 public class AdminProperties {
 
     private final String id;
