@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.weero.app.core.auth.dto.request.LoginRequest;
+import team.weero.app.core.auth.dto.request.RefreshTokenRequest;
 import team.weero.app.core.auth.dto.request.SignupRequest;
 import team.weero.app.core.auth.dto.response.TokenResponse;
 import team.weero.app.core.auth.exception.PasswordIncorrectException;
@@ -99,6 +100,24 @@ public class CommandAuthServiceImpl implements CommandAuthService {
                 .accessToken(jwtTokenProvider.generateAccessToken(request.accountId()))
                 .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
                 .refreshToken(jwtTokenProvider.generateRefreshToken(request.accountId()))
+                .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
+                .deviceToken(null)
+                .build();
+    }
+
+    @Override
+    public TokenResponse refresh(RefreshTokenRequest request) {
+        // 1. 새로운 Access Token 발급
+        String newAccessToken = jwtTokenProvider.refreshAccessToken(request.refreshToken());
+
+        // 2. 새로운 Refresh Token 발급 (Refresh Token Rotation)
+        String newRefreshToken = jwtTokenProvider.reissueRefreshToken(request.refreshToken());
+
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        return TokenResponse.builder()
+                .accessToken(newAccessToken)
+                .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
+                .refreshToken(newRefreshToken)
                 .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
                 .deviceToken(null)
                 .build();
