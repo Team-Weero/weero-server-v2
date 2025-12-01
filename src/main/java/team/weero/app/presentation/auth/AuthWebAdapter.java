@@ -32,8 +32,8 @@ public class AuthWebAdapter {
         return loginUsecase.execute(request);
     }
 
-    @PostMapping("/refresh")
-    public TokenResponse refresh(@RequestBody @Valid RefreshTokenRequest request) {
+    @PostMapping("/reissue")
+    public TokenResponse reissue(@RequestBody @Valid RefreshTokenRequest request) {
         return refreshUseCase.execute(request);
     }
 }
