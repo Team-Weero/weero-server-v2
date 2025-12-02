@@ -32,7 +32,7 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
     @Override
     public void signup(SignupRequest request) {
-        if (commandAuthPort.findByStudentAccountId(request.accountId()).isPresent()) {
+        if (commandAuthPort.findByAccountId(request.accountId()).isPresent()) {
             throw UserAlreadyExistsException.EXCEPTION;
         }
 
@@ -60,7 +60,7 @@ public class CommandAuthServiceImpl implements CommandAuthService {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         
         // 선생님으로 조회
-        var teacherOpt = commandAuthPort.findByTeacherAccountId(request.accountId());
+        var teacherOpt = commandAuthPort.findTeacherByAccountId(request.accountId());
         
         if (teacherOpt.isPresent()) {
             var teacher = teacherOpt.get();
@@ -89,7 +89,7 @@ public class CommandAuthServiceImpl implements CommandAuthService {
         }
         
         // 학생으로 조회
-        var studentOpt = commandAuthPort.findByStudentAccountId(request.accountId());
+        var studentOpt = commandAuthPort.findByAccountId(request.accountId());
         
         if (studentOpt.isPresent()) {
             var student = studentOpt.get();

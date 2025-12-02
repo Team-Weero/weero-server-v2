@@ -138,8 +138,12 @@ public class JwtTokenProvider {
             throw new team.weero.app.core.auth.exception.InvalidRefreshTokenException();
         }
 
-        // 4. 새로운 Access Token 발급
-        return generateAccessToken(accountId);
+        // 4. 토큰에서 Role 정보 추출
+        UserRole userRole = getUserRoleFromToken(refreshToken);
+        StudentRole studentRole = getStudentRoleFromToken(refreshToken);
+
+        // 5. 새로운 Access Token 발급
+        return generateAccessToken(accountId, userRole, studentRole);
     }
 
     public String reissueRefreshToken(String oldRefreshToken) {
@@ -158,7 +162,11 @@ public class JwtTokenProvider {
         // 4. 기존 Refresh Token 삭제
         refreshTokenRepository.delete(storedToken);
 
-        // 5. 새로운 Refresh Token 발급
-        return generateRefreshToken(accountId);
+        // 5. 토큰에서 Role 정보 추출
+        UserRole userRole = getUserRoleFromToken(oldRefreshToken);
+        StudentRole studentRole = getStudentRoleFromToken(oldRefreshToken);
+
+        // 6. 새로운 Refresh Token 발급
+        return generateRefreshToken(accountId, userRole, studentRole);
     }
 }

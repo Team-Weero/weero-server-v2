@@ -1,11 +1,11 @@
 package team.weero.app.core.auth.exception;
 
-import team.weero.app.infrastructure.error.exception.CustomException;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 
-public class InvalidRefreshTokenException extends CustomException {
+public class InvalidRefreshTokenException extends WeeRoException {
 
-    public static final CustomException EXCEPTION = new InvalidRefreshTokenException();
+    public static final WeeRoException EXCEPTION = new InvalidRefreshTokenException();
 
     public InvalidRefreshTokenException() {
         super(ErrorCode.INVALID_REFRESH_TOKEN);

@@ -25,19 +25,19 @@ public class AuthDetailsService implements UserDetailsService {
 
         if (userRole != null) {
             if (userRole == UserRole.TEACHER) {
-                return commandAuthPort.findByTeacherAccountId(accountId)
+                return commandAuthPort.findTeacherByAccountId(accountId)
                         .map(teacher -> (UserDetails) new AuthDetails(teacher.getUser(), teacher))
                         .orElseThrow(UserNotFoundException::new);
             } else if (userRole == UserRole.STUDENT) {
-                return commandAuthPort.findByStudentAccountId(accountId)
+                return commandAuthPort.findByAccountId(accountId)
                         .map(student -> (UserDetails) new AuthDetails(student.getUser(), student))
                         .orElseThrow(UserNotFoundException::new);
             }
         }
 
-        return commandAuthPort.findByTeacherAccountId(accountId)
+        return commandAuthPort.findTeacherByAccountId(accountId)
                 .map(teacher -> (UserDetails) new AuthDetails(teacher.getUser(), teacher))
-                .or(() -> commandAuthPort.findByStudentAccountId(accountId)
+                .or(() -> commandAuthPort.findByAccountId(accountId)
                         .map(student -> (UserDetails) new AuthDetails(student.getUser(), student)))
                 .orElseThrow(UserNotFoundException::new);
     }

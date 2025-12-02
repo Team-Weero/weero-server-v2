@@ -8,9 +8,7 @@ import java.util.Optional;
 
 public interface CommandAuthPort {
 
-    Optional<Student> findByStudentAccountId(String accountId);
-
-    Optional<Teacher> findByTeacherAccountId(String accountId);
+    Optional<Student> findByAccountId(String accountId);
 
     Optional<Teacher> findTeacherByAccountId(String accountId);
 
