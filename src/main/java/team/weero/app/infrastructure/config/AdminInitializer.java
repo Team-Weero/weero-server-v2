@@ -43,7 +43,7 @@ public class AdminInitializer implements CommandLineRunner {
         Teacher teacher = Teacher.builder()
                 .name(adminProperties.getName())
                 .accountId(adminProperties.getId())
-                .deviceToken(null)
+                .deviceToken("")
                 .noNotificationStartTime(adminProperties.getNotificationStartTime())
                 .noNotificationEndTime(adminProperties.getNotificationEndTime())
                 .user(savedUser)
