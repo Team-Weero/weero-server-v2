@@ -28,6 +28,14 @@ spring:
     header: ${JWT_HEADER}
     prefix: ${JWT_PREFIX}
 
+  admin:
+    teacher:
+      id: ${TEACHER_ID}
+      password: ${TEACHER_PASSWORD}
+      name: ${TEACHER_NAME}
+      notification-start-time: ${TEACHER_NOTIFICATION_START}
+      notification-end-time: ${TEACHER_NOTIFICATION_END}
+
   data:
     redis:
       host: ${REDIS_HOST}

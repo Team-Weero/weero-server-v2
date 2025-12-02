@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface TeacherRepository extends JpaRepository<Teacher, UUID> {
     Optional<Teacher> findByAccountId(String accountId);
     Optional<Teacher> findByUser(User user);
-
+    boolean existsByAccountId(String accountId);
 }

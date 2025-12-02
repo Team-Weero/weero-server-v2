@@ -13,9 +13,13 @@ import team.weero.app.infrastructure.exception.ExpiredJwtException;
 import team.weero.app.infrastructure.exception.InvalidJwtException;
 import team.weero.app.persistence.auth.entity.RefreshToken;
 import team.weero.app.persistence.auth.repository.RefreshTokenRepository;
+import team.weero.app.persistence.student.type.StudentRole;
+import team.weero.app.persistence.user.type.UserRole;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -37,22 +41,29 @@ public class JwtTokenProvider {
         );
     }
 
-    public String generateToken(String accountId, String type, Long exp) {
+    public String generateToken(String accountId, String type, Long exp, UserRole userRole, StudentRole studentRole) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userRole", userRole.name());
+        if (studentRole != null) {
+            claims.put("studentRole", studentRole.name());
+        }
+
         return Jwts.builder()
                 .signWith(secretKeySpec)
                 .setSubject(accountId)
                 .setHeaderParam("type", type)
+                .addClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + exp * 1000))
                 .compact();
     }
 
-    public String generateAccessToken(String accountId) {
-        return generateToken(accountId, "access", jwtProperties.getAccessExp());
+    public String generateAccessToken(String accountId, UserRole userRole, StudentRole studentRole) {
+        return generateToken(accountId, "access", jwtProperties.getAccessExp(), userRole, studentRole);
     }
 
-    public String generateRefreshToken(String accountId) {
-        String refreshToken = generateToken(accountId, "refresh", jwtProperties.getRefreshExp());
+    public String generateRefreshToken(String accountId, UserRole userRole, StudentRole studentRole) {
+        String refreshToken = generateToken(accountId, "refresh", jwtProperties.getRefreshExp(), userRole, studentRole);
 
         refreshTokenRepository.save(RefreshToken.builder()
                 .accountId(accountId)
@@ -93,8 +104,24 @@ public class JwtTokenProvider {
         return getTokenBody(token).getSubject();
     }
 
+    public UserRole getUserRoleFromToken(String token) {
+        Claims claims = getTokenBody(token);
+        String userRole = claims.get("userRole", String.class);
+        return UserRole.valueOf(userRole);
+    }
+
+    public StudentRole getStudentRoleFromToken(String token) {
+        Claims claims = getTokenBody(token);
+        String studentRole = claims.get("studentRole", String.class);
+        return studentRole != null ? StudentRole.valueOf(studentRole) : null;
+    }
+
     public Authentication authentication(String token) {
-        UserDetails userDetails = authDetailsService.loadUserByUsername(getTokenSubject(token));
+        String accountId = getTokenSubject(token);
+        UserRole userRole = getUserRoleFromToken(token);
+        StudentRole studentRole = getStudentRoleFromToken(token);
+
+        UserDetails userDetails = authDetailsService.loadUserByUsername(accountId, userRole, studentRole);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

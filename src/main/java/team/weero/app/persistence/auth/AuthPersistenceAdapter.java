@@ -21,12 +21,12 @@ public class AuthPersistenceAdapter implements CommandAuthPort {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public Optional<Student> findByAccountId (String accountId) {
+    public Optional<Student> findByStudentAccountId(String accountId) {
         return studentRepository.findByAccountId(accountId);
     }
 
     @Override
-    public Optional<Teacher> findTeacherByAccountId(String accountId) {
+    public Optional<Teacher> findByTeacherAccountId(String accountId) {
         return teacherRepository.findByAccountId(accountId);
     }
 

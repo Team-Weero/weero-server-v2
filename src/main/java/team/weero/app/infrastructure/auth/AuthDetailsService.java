@@ -5,22 +5,40 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import team.weero.app.core.auth.exception.UserNotFoundException;
 import team.weero.app.core.auth.spi.CommandAuthPort;
-import team.weero.app.persistence.student.entity.Student;
-import team.weero.app.persistence.user.entity.User;
+import team.weero.app.persistence.student.type.StudentRole;
+import team.weero.app.persistence.user.type.UserRole;
 
 @Service
 @RequiredArgsConstructor
 public class AuthDetailsService implements UserDetailsService {
 
     private final CommandAuthPort commandAuthPort;
+
     @Override
     public UserDetails loadUserByUsername(String accountId) throws UsernameNotFoundException {
-        Student student = commandAuthPort.findByAccountId(accountId)
-                .orElseThrow(() -> new UsernameNotFoundException(accountId));
+        return loadUserByUsername(accountId, null, null);
+    }
 
-        User user = student.getUser();
+    public UserDetails loadUserByUsername(String accountId, UserRole userRole, StudentRole studentRole) throws UsernameNotFoundException {
 
-        return new AuthDetails(user, student);
+        if (userRole != null) {
+            if (userRole == UserRole.TEACHER) {
+                return commandAuthPort.findByTeacherAccountId(accountId)
+                        .map(teacher -> (UserDetails) new AuthDetails(teacher.getUser(), teacher))
+                        .orElseThrow(UserNotFoundException::new);
+            } else if (userRole == UserRole.STUDENT) {
+                return commandAuthPort.findByStudentAccountId(accountId)
+                        .map(student -> (UserDetails) new AuthDetails(student.getUser(), student))
+                        .orElseThrow(UserNotFoundException::new);
+            }
+        }
+
+        return commandAuthPort.findByTeacherAccountId(accountId)
+                .map(teacher -> (UserDetails) new AuthDetails(teacher.getUser(), teacher))
+                .or(() -> commandAuthPort.findByStudentAccountId(accountId)
+                        .map(student -> (UserDetails) new AuthDetails(student.getUser(), student)))
+                .orElseThrow(UserNotFoundException::new);
     }
 }

@@ -26,7 +26,7 @@ public class Teacher {
     @Column(nullable = false, unique = true, length = 30)
     private String accountId;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String deviceToken;
 
     @Column(nullable = false, length = 255)
