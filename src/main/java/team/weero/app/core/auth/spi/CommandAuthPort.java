@@ -12,6 +12,8 @@ public interface CommandAuthPort {
 
     Optional<Teacher> findByTeacherAccountId(String accountId);
 
+    Optional<Teacher> findTeacherByAccountId(String accountId);
+
     User save(User user);
 
     Student save(Student student);
