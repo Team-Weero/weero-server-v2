@@ -27,7 +27,9 @@ public enum ErrorCode {
     UNAUTHORIZED_NOTICE_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Notice Access"),
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"),
-    DUPLICATE_RESERVATION(HttpStatus.CONFLICT, "Duplicate Reservation");
+    DUPLICATE_RESERVATION(HttpStatus.CONFLICT, "Duplicate Reservation"),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad Request")
+    ;
 
     private final HttpStatus status;
     private final String message;
