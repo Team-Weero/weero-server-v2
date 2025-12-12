@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import team.weero.app.core.auth.dto.response.TokenResponse;
+import team.weero.app.core.auth.spi.TokenPort;
 import team.weero.app.infrastructure.auth.AuthDetailsService;
 import team.weero.app.infrastructure.exception.ExpiredJwtException;
 import team.weero.app.infrastructure.exception.InvalidJwtException;
@@ -17,12 +19,14 @@ import team.weero.app.persistence.student.type.StudentRole;
 import team.weero.app.persistence.user.type.UserRole;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements TokenPort {
 
     private final JwtProperties jwtProperties;
     private final AuthDetailsService authDetailsService;
@@ -41,7 +45,36 @@ public class JwtTokenProvider {
         );
     }
 
-    public String generateToken(String accountId, String type, Long exp, UserRole userRole, StudentRole studentRole) {
+    @Override
+    public TokenResponse generateTokenResponse(String subject, UserRole userRole, StudentRole studentRole) {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        String accessToken = generateAccessToken(subject, userRole, studentRole);
+        String refreshToken = generateRefreshToken(subject, userRole, studentRole);
+
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
+                .refreshToken(refreshToken)
+                .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
+                .build();
+    }
+
+    @Override
+    public TokenResponse refreshToken(String refreshToken) {
+        String newAccessToken = refreshAccessToken(refreshToken);
+        String newRefreshToken = reissueRefreshToken(refreshToken);
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        return TokenResponse.builder()
+                .accessToken(newAccessToken)
+                .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
+                .refreshToken(newRefreshToken)
+                .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
+                .deviceToken(null)
+                .build();
+    }
+
+    private String generateToken(String accountId, String type, Long exp, UserRole userRole, StudentRole studentRole) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userRole", userRole.name());
         if (studentRole != null) {
@@ -58,11 +91,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateAccessToken(String accountId, UserRole userRole, StudentRole studentRole) {
+    private String generateAccessToken(String accountId, UserRole userRole, StudentRole studentRole) {
         return generateToken(accountId, "access", jwtProperties.getAccessExp(), userRole, studentRole);
     }
 
-    public String generateRefreshToken(String accountId, UserRole userRole, StudentRole studentRole) {
+    private String generateRefreshToken(String accountId, UserRole userRole, StudentRole studentRole) {
         String refreshToken = generateToken(accountId, "refresh", jwtProperties.getRefreshExp(), userRole, studentRole);
 
         refreshTokenRepository.save(RefreshToken.builder()
@@ -125,7 +158,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String refreshAccessToken(String refreshToken) {
+    private String refreshAccessToken(String refreshToken) {
         // 1. Refresh Token 검증 (만료, 유효성)
         String accountId = getTokenSubject(refreshToken);
 
@@ -146,7 +179,7 @@ public class JwtTokenProvider {
         return generateAccessToken(accountId, userRole, studentRole);
     }
 
-    public String reissueRefreshToken(String oldRefreshToken) {
+    private String reissueRefreshToken(String oldRefreshToken) {
         // 1. 기존 Refresh Token 검증
         String accountId = getTokenSubject(oldRefreshToken);
 

@@ -11,15 +11,11 @@ import team.weero.app.core.auth.exception.PasswordIncorrectException;
 import team.weero.app.core.auth.exception.UserAlreadyExistsException;
 import team.weero.app.core.auth.exception.UserNotFoundException;
 import team.weero.app.core.auth.spi.CommandAuthPort;
-import team.weero.app.infrastructure.jwt.JwtProperties;
-import team.weero.app.infrastructure.jwt.JwtTokenProvider;
+import team.weero.app.core.auth.spi.TokenPort;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.student.type.StudentRole;
 import team.weero.app.persistence.user.entity.User;
 import team.weero.app.persistence.user.type.UserRole;
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +23,7 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
     private final CommandAuthPort commandAuthPort;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final JwtProperties jwtProperties;
+    private final TokenPort tokenPort;
 
     @Override
     public void signup(SignupRequest request) {
@@ -57,80 +52,47 @@ public class CommandAuthServiceImpl implements CommandAuthService {
 
     @Override
     public TokenResponse login(LoginRequest request) {
-        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        
         // 선생님으로 조회
         var teacherOpt = commandAuthPort.findTeacherByAccountId(request.accountId());
-        
         if (teacherOpt.isPresent()) {
             var teacher = teacherOpt.get();
             User user = teacher.getUser();
-            
+
             if (!passwordEncoder.matches(request.password(), user.getPassword())) {
                 throw PasswordIncorrectException.EXCEPTION;
             }
-            
+
             // deviceToken 업데이트
             String deviceToken = request.deviceToken();
             if (deviceToken != null && !deviceToken.isBlank()) {
                 teacher.updateDeviceToken(deviceToken);
                 commandAuthPort.save(teacher);
             }
-            
-            return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(
-                    teacher.getAccountId(), UserRole.TEACHER, null))
-                .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
-                .refreshToken(jwtTokenProvider.generateRefreshToken(
-                    teacher.getAccountId(), UserRole.TEACHER, null))
-                .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
-                .deviceToken(deviceToken)
-                .build();
+
+            TokenResponse tokenResponse = tokenPort.generateTokenResponse(teacher.getAccountId(), UserRole.TEACHER, null);
+            return tokenResponse.toBuilder().deviceToken(deviceToken).build();
         }
-        
+
         // 학생으로 조회
         var studentOpt = commandAuthPort.findByAccountId(request.accountId());
-        
         if (studentOpt.isPresent()) {
             var student = studentOpt.get();
             User user = student.getUser();
-            
+
             if (!passwordEncoder.matches(request.password(), user.getPassword())) {
                 throw PasswordIncorrectException.EXCEPTION;
             }
-            
-            return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(
-                    student.getAccountId(), UserRole.STUDENT, student.getStudentRole()))
-                .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
-                .refreshToken(jwtTokenProvider.generateRefreshToken(
-                    student.getAccountId(), UserRole.STUDENT, student.getStudentRole()))
-                .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
-                .deviceToken(null)
-                .build();
+
+            return tokenPort.generateTokenResponse(student.getAccountId(), UserRole.STUDENT, student.getStudentRole());
         }
-        
+
         // 둘 다 없으면 예외
         throw UserNotFoundException.EXCEPTION;
     }
 
     @Override
     public TokenResponse refresh(RefreshTokenRequest request) {
-        // 1. 새로운 Access Token 발급
-        String newAccessToken = jwtTokenProvider.refreshAccessToken(request.refreshToken());
-        
-        // 2. 새로운 Refresh Token 발급 (Refresh Token Rotation)
-        String newRefreshToken = jwtTokenProvider.reissueRefreshToken(request.refreshToken());
-        
-        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        
-        return TokenResponse.builder()
-            .accessToken(newAccessToken)
-            .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
-            .refreshToken(newRefreshToken)
-            .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
-            .deviceToken(null)
-            .build();
+        return tokenPort.refreshToken(request.refreshToken());
     }
 
     /**
