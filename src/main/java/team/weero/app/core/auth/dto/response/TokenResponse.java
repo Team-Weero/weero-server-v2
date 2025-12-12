@@ -4,7 +4,7 @@ import lombok.Builder;
 
 import java.time.ZonedDateTime;
 
-@Builder
+@Builder(toBuilder = true)
 public record TokenResponse(String accessToken, ZonedDateTime accessTokenExpiresAt,
                             String refreshToken, ZonedDateTime refreshTokenExpiresAt,
                             String deviceToken) {

@@ -9,6 +9,8 @@ import team.weero.app.core.counseling.spi.QueryCounselingPort;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.teacher.entity.Teacher;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class GetCounselingServiceImpl implements GetCounselingService {
@@ -17,8 +19,8 @@ public class GetCounselingServiceImpl implements GetCounselingService {
 
     @Transactional(readOnly = true)
     @Override
-    public Student findByStudent(CounselingRequest request) {
-        return queryCounselingPort.findByStudenetId(request.studentId())
+    public Student findByStudent(UUID studentId) {
+        return queryCounselingPort.findByStudenetId(studentId)
                 .orElseThrow(() -> new NotFoundException());
     }
 

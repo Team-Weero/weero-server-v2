@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public record CounselingRequest(
-        UUID studentId,
         UUID teacherId,
         LocalDate date,
         LocalTime time,

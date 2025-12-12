@@ -10,6 +10,7 @@ import team.weero.app.persistence.counseling.entity.CounselingApplication;
 import team.weero.app.persistence.student.entity.Student;
 import team.weero.app.persistence.teacher.entity.Teacher;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,9 @@ public class CommandCounselingServiceImpl implements CommandCounselingService {
     private final CommandCounselingPort commandCounselingPort;
 
     @Transactional
-    public void applyForCounseling(CounselingRequest request) {
+    public void applyForCounseling(CounselingRequest request, UUID studentId) {
 
-        Student student = getCounselingService.findByStudent(request);
+        Student student = getCounselingService.findByStudent(studentId);
         Teacher teacher = getCounselingService.findByTeacher(request);
 
         boolean exists = getCounselingService.existsByTeacherAndDateAndTime(request);
