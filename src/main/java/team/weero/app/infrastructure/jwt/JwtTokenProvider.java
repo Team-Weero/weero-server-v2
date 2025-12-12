@@ -183,7 +183,7 @@ public class JwtTokenProvider implements TokenPort {
                 .orElseThrow(RefreshTokenNotFoundException::new);
 
         if (!storedToken.getAccountId().equals(accountId)) {
-            throw new team.weero.app.core.auth.exception.InvalidRefreshTokenException();
+            throw new InvalidRefreshTokenException();
         }
 
         refreshTokenRepository.delete(storedToken);
