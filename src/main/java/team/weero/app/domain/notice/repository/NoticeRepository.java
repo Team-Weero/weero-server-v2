@@ -1,0 +1,17 @@
+package team.weero.app.domain.notice.repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import team.weero.app.domain.notice.model.Notice;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface NoticeRepository {
+    Notice save(Notice notice);
+    Optional<Notice> findById(UUID id);
+    Page<Notice> findAll(Pageable pageable);
+    List<Notice> findByUserId(UUID userId);
+    void deleteById(UUID id);
+}
