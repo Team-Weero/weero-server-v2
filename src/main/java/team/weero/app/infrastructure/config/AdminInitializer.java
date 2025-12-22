@@ -6,19 +6,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.persistence.teacher.entity.Teacher;
-import team.weero.app.persistence.teacher.repository.TeacherRepository;
-import team.weero.app.persistence.user.entity.User;
-import team.weero.app.persistence.user.repository.UserRepository;
-import team.weero.app.persistence.user.type.UserRole;
+import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.infrastructure.persistence.teacher.repository.TeacherJpaRepository;
+import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
+import team.weero.app.infrastructure.persistence.user.repository.UserJpaRepository;
+import team.weero.app.domain.user.model.UserRole;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AdminInitializer implements CommandLineRunner {
 
-    private final UserRepository userRepository;
-    private final TeacherRepository teacherRepository;
+    private final UserJpaRepository userRepository;
+    private final TeacherJpaRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
     private final AdminProperties adminProperties;
 
@@ -33,14 +33,14 @@ public class AdminInitializer implements CommandLineRunner {
             return;
         }
 
-        User user = User.builder()
+        UserJpaEntity user = UserJpaEntity.builder()
                 .password(passwordEncoder.encode(adminProperties.getPassword()))
                 .userRole(UserRole.TEACHER)
                 .build();
 
-        User savedUser = userRepository.save(user);
+        UserJpaEntity savedUser = userRepository.save(user);
 
-        Teacher teacher = Teacher.builder()
+        TeacherJpaEntity teacher = TeacherJpaEntity.builder()
                 .name(adminProperties.getName())
                 .accountId(adminProperties.getId())
                 .deviceToken("")

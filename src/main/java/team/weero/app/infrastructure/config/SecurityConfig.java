@@ -15,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import team.weero.app.infrastructure.error.ExceptionFilter;
-import team.weero.app.infrastructure.jwt.JwtTokenFilter;
-import team.weero.app.infrastructure.jwt.JwtTokenProvider;
+import team.weero.app.infrastructure.security.jwt.JwtTokenFilter;
+import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 
 @Configuration
 @EnableWebSecurity
