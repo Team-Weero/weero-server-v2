@@ -1,0 +1,33 @@
+package team.weero.app.domain.chat.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Builder
+@AllArgsConstructor
+public class Message {
+    private UUID id;
+    private UUID chatRoomId;
+    private UUID senderId;
+    private String text;
+    private LocalDateTime sendDate;
+    private boolean readStatus;
+
+    // Domain logic methods
+    public boolean isSentBy(UUID userId) {
+        return this.senderId.equals(userId);
+    }
+
+    public void markAsRead() {
+        this.readStatus = true;
+    }
+
+    public boolean isUnread() {
+        return !this.readStatus;
+    }
+}
