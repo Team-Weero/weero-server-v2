@@ -8,15 +8,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.core.notice.dto.request.CreateNoticeRequest;
-import team.weero.app.core.notice.dto.request.UpdateNoticeRequest;
-import team.weero.app.core.notice.dto.response.NoticeResponse;
-import team.weero.app.core.notice.service.NoticeService;
-import team.weero.app.core.notice.usecase.CreateNoticeUseCase;
-import team.weero.app.core.notice.usecase.DeleteNoticeUseCase;
-import team.weero.app.core.notice.usecase.GetAllNoticesUseCase;
-import team.weero.app.core.notice.usecase.GetNoticeByIdUseCase;
-import team.weero.app.core.notice.usecase.UpdateNoticeUseCase;
+import team.weero.app.application.notice.dto.request.CreateNoticeRequest;
+import team.weero.app.application.notice.dto.request.UpdateNoticeRequest;
+import team.weero.app.application.notice.dto.response.NoticeResponse;
+import team.weero.app.application.notice.usecase.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,14 +19,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/notices")
 @RequiredArgsConstructor
-public class NoticeWebAdapter {
+public class NoticeController {
 
     private final CreateNoticeUseCase createNoticeUseCase;
     private final GetAllNoticesUseCase getAllNoticesUseCase;
     private final GetNoticeByIdUseCase getNoticeByIdUseCase;
+    private final GetMyNoticesUseCase getMyNoticesUseCase;
     private final UpdateNoticeUseCase updateNoticeUseCase;
     private final DeleteNoticeUseCase deleteNoticeUseCase;
-    private final NoticeService noticeService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,7 +47,7 @@ public class NoticeWebAdapter {
 
     @GetMapping("/my")
     public List<NoticeResponse> getMyNotices(Authentication authentication) {
-        return noticeService.getMyNotices(authentication.getName());
+        return getMyNoticesUseCase.execute(authentication.getName());
     }
 
     @PutMapping("/{id}")
