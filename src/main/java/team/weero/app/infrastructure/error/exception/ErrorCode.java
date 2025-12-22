@@ -26,6 +26,10 @@ public enum ErrorCode {
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "Notice Not Found"),
     UNAUTHORIZED_NOTICE_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Notice Access"),
 
+    CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "Chat Room Not Found"),
+    MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Message Not Found"),
+    UNAUTHORIZED_CHAT_ACCESS(HttpStatus.FORBIDDEN, "Unauthorized Chat Access"),
+
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"),
     DUPLICATE_RESERVATION(HttpStatus.CONFLICT, "Duplicate Reservation");
 
