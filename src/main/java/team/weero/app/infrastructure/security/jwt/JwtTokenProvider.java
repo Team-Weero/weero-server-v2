@@ -12,7 +12,7 @@ import team.weero.app.infrastructure.security.auth.AuthDetailsService;
 import team.weero.app.infrastructure.error.exception.ExpiredJwtException;
 import team.weero.app.infrastructure.error.exception.InvalidJwtException;
 import team.weero.app.domain.auth.model.RefreshToken;
-import team.weero.app.domain.auth.repository.RefreshTokenRepository;
+import team.weero.app.application.port.out.auth.RefreshTokenRepository;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.UserRole;
 

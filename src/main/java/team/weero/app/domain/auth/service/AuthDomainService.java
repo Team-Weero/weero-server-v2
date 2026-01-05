@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.weero.app.domain.auth.exception.UserAlreadyExistsException;
-import team.weero.app.domain.auth.repository.AuthRepository;
+import team.weero.app.application.port.out.auth.AuthRepository;
 import team.weero.app.domain.student.model.Student;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.User;

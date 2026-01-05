@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
-import team.weero.app.domain.auth.repository.AuthRepository;
+import team.weero.app.application.port.out.auth.AuthRepository;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.UserRole;
 

@@ -4,10 +4,10 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 import team.weero.app.domain.student.model.StudentRole;
-import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 import team.weero.app.domain.user.model.UserRole;
 
 import java.util.ArrayList;
