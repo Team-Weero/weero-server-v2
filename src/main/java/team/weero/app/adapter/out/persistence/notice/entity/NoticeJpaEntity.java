@@ -1,9 +1,9 @@
-package team.weero.app.infrastructure.persistence.notice.entity;
+package team.weero.app.adapter.out.persistence.notice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 
 import java.util.UUID;
 

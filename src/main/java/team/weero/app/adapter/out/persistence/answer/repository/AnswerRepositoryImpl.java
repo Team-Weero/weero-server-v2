@@ -1,14 +1,14 @@
-package team.weero.app.infrastructure.persistence.answer.repository;
+package team.weero.app.adapter.out.persistence.answer.repository;
 
 import org.springframework.stereotype.Repository;
+import team.weero.app.adapter.out.persistence.answer.entity.AnswerJpaEntity;
+import team.weero.app.adapter.out.persistence.answer.mapper.AnswerMapper;
+import team.weero.app.application.port.out.answer.AnswerRepository;
 import team.weero.app.domain.answer.model.Answer;
-import team.weero.app.domain.answer.repository.AnswerRepository;
-import team.weero.app.infrastructure.persistence.answer.entity.AnswerJpaEntity;
-import team.weero.app.infrastructure.persistence.answer.mapper.AnswerMapper;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
-import team.weero.app.infrastructure.persistence.concern.entity.ConcernJpaEntity;
-import team.weero.app.infrastructure.persistence.concern.repository.ConcernJpaRepository;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.adapter.out.persistence.concern.entity.ConcernJpaEntity;
+import team.weero.app.adapter.out.persistence.concern.repository.ConcernJpaRepository;
 
 import java.util.List;
 import java.util.Optional;

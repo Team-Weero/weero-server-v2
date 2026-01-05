@@ -1,24 +1,25 @@
-package team.weero.app.application.concern.usecase;
+package team.weero.app.application.service.concern;
+import team.weero.app.application.port.in.concern.DeleteConcernUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.concern.exception.ConcernNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.domain.concern.repository.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernRepository;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.domain.student.repository.StudentRepository;
+import team.weero.app.application.port.out.student.StudentRepository;
 
 import java.util.UUID;
 
 @Service
 @Transactional
-public class DeleteConcernUseCase {
+public class DeleteConcernService implements DeleteConcernUseCase {
 
     private final ConcernRepository concernRepository;
     private final StudentRepository studentRepository;
 
-    public DeleteConcernUseCase(ConcernRepository concernRepository, StudentRepository studentRepository) {
+    public DeleteConcernService(ConcernRepository concernRepository, StudentRepository studentRepository) {
         this.concernRepository = concernRepository;
         this.studentRepository = studentRepository;
     }

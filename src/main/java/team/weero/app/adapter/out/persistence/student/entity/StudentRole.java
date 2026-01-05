@@ -1,4 +1,4 @@
-package team.weero.app.infrastructure.persistence.student.entity;
+package team.weero.app.adapter.out.persistence.student.entity;
 
 public enum StudentRole {
     COMMON,

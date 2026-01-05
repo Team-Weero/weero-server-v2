@@ -1,4 +1,4 @@
-package team.weero.app.application.student.dto.response;
+package team.weero.app.application.service.student.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package team.weero.app.application.counseling.dto.request;
+package team.weero.app.application.service.counseling.dto.request;
 
 import team.weero.app.domain.counseling.model.CounselingLocation;
 

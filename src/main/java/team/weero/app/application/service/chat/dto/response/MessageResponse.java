@@ -1,4 +1,4 @@
-package team.weero.app.application.chat.dto.response;
+package team.weero.app.application.service.chat.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

@@ -1,28 +1,29 @@
-package team.weero.app.application.chat.usecase;
+package team.weero.app.application.service.chat;
+import team.weero.app.application.port.in.chat.GetChatRoomMessagesUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.chat.dto.response.MessageResponse;
+import team.weero.app.application.service.chat.dto.response.MessageResponse;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.chat.exception.ChatRoomNotFoundException;
 import team.weero.app.domain.chat.exception.UnauthorizedChatAccessException;
 import team.weero.app.domain.chat.model.ChatRoom;
-import team.weero.app.domain.chat.repository.ChatRoomRepository;
-import team.weero.app.domain.chat.repository.MessageRepository;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.application.port.out.chat.ChatRoomRepository;
+import team.weero.app.application.port.out.chat.MessageRepository;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
-public class GetChatRoomMessagesUseCase {
+public class GetChatRoomMessagesService implements GetChatRoomMessagesUseCase {
 
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final StudentJpaRepository studentJpaRepository;
 
-    public GetChatRoomMessagesUseCase(MessageRepository messageRepository,
+    public GetChatRoomMessagesService(MessageRepository messageRepository,
                                      ChatRoomRepository chatRoomRepository,
                                      StudentJpaRepository studentJpaRepository) {
         this.messageRepository = messageRepository;

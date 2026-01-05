@@ -1,4 +1,4 @@
-package team.weero.app.infrastructure.persistence.concern.entity;
+package team.weero.app.adapter.out.persistence.concern.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

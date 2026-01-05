@@ -1,19 +1,20 @@
-package team.weero.app.application.counseling.usecase;
+package team.weero.app.application.service.counseling;
+import team.weero.app.application.port.in.counseling.ApplyForCounselingUseCase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.counseling.dto.request.CounselingRequest;
+import team.weero.app.application.service.counseling.dto.request.CounselingRequest;
 import team.weero.app.domain.counseling.exception.DuplicateReservationException;
 import team.weero.app.domain.counseling.exception.NotFoundException;
 import team.weero.app.domain.counseling.model.CounselingApplication;
-import team.weero.app.domain.counseling.repository.CounselingRepository;
-import team.weero.app.domain.student.repository.StudentRepository;
-import team.weero.app.domain.teacher.repository.TeacherRepository;
+import team.weero.app.application.port.out.counseling.CounselingRepository;
+import team.weero.app.application.port.out.student.StudentRepository;
+import team.weero.app.application.port.out.teacher.TeacherRepository;
 
 @Service
 @RequiredArgsConstructor
-public class ApplyForCounselingUseCase {
+public class ApplyForCounselingService implements ApplyForCounselingUseCase {
 
     private final CounselingRepository counselingRepository;
     private final StudentRepository studentRepository;

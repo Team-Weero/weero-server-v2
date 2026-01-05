@@ -1,10 +1,10 @@
-package team.weero.app.infrastructure.persistence.chat.repository;
+package team.weero.app.adapter.out.persistence.chat.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import team.weero.app.infrastructure.persistence.chat.entity.ChatRoomJpaEntity;
-import team.weero.app.infrastructure.persistence.chat.entity.MessageJpaEntity;
+import team.weero.app.adapter.out.persistence.chat.entity.ChatRoomJpaEntity;
+import team.weero.app.adapter.out.persistence.chat.entity.MessageJpaEntity;
 
 import java.util.List;
 import java.util.UUID;

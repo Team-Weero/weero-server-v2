@@ -1,12 +1,12 @@
-package team.weero.app.presentation.concern;
+package team.weero.app.adapter.in.web.concern;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.application.concern.dto.request.CreateConcernRequest;
-import team.weero.app.application.concern.dto.response.ConcernResponse;
-import team.weero.app.application.concern.usecase.*;
+import team.weero.app.application.service.concern.dto.request.CreateConcernRequest;
+import team.weero.app.application.service.concern.dto.response.ConcernResponse;
+import team.weero.app.application.port.in.concern.*;
 
 import java.util.List;
 import java.util.UUID;

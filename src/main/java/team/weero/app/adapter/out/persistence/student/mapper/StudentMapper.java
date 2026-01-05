@@ -1,8 +1,8 @@
-package team.weero.app.infrastructure.persistence.student.mapper;
+package team.weero.app.adapter.out.persistence.student.mapper;
 
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 
 @Component
 public class StudentMapper {
@@ -34,7 +34,7 @@ public class StudentMapper {
                 .nickname(domain.getNickname())
                 .accountId(domain.getAccountId())
                 .gcn(domain.getGcn())
-                .studentRole(team.weero.app.infrastructure.persistence.student.entity.StudentRole.valueOf(domain.getRole().name()))
+                .studentRole(team.weero.app.adapter.out.persistence.student.entity.StudentRole.valueOf(domain.getRole().name()))
                 .build();
     }
 }

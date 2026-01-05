@@ -1,4 +1,4 @@
-package team.weero.app.application.teacher.dto.response;
+package team.weero.app.application.service.teacher.dto.response;
 
 import team.weero.app.domain.teacher.model.Teacher;
 

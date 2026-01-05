@@ -1,12 +1,12 @@
-package team.weero.app.infrastructure.persistence.answer.mapper;
+package team.weero.app.adapter.out.persistence.answer.mapper;
 
 import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.answer.entity.AnswerJpaEntity;
 import team.weero.app.domain.answer.model.Answer;
-import team.weero.app.infrastructure.persistence.answer.entity.AnswerJpaEntity;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
-import team.weero.app.infrastructure.persistence.concern.entity.ConcernJpaEntity;
-import team.weero.app.infrastructure.persistence.concern.repository.ConcernJpaRepository;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.adapter.out.persistence.concern.entity.ConcernJpaEntity;
+import team.weero.app.adapter.out.persistence.concern.repository.ConcernJpaRepository;
 
 @Component
 public class AnswerMapper {

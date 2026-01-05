@@ -1,8 +1,8 @@
-package team.weero.app.infrastructure.persistence.user.mapper;
+package team.weero.app.adapter.out.persistence.user.mapper;
 
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.user.model.User;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 
 /**
  * User Mapper (Infrastructure Layer)

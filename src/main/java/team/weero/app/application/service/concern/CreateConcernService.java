@@ -1,22 +1,23 @@
-package team.weero.app.application.concern.usecase;
+package team.weero.app.application.service.concern;
+import team.weero.app.application.port.in.concern.CreateConcernUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.concern.dto.request.CreateConcernRequest;
+import team.weero.app.application.service.concern.dto.request.CreateConcernRequest;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.domain.concern.repository.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernRepository;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.domain.student.repository.StudentRepository;
+import team.weero.app.application.port.out.student.StudentRepository;
 
 @Service
 @Transactional
-public class CreateConcernUseCase {
+public class CreateConcernService implements CreateConcernUseCase {
 
     private final ConcernRepository concernRepository;
     private final StudentRepository studentRepository;
 
-    public CreateConcernUseCase(ConcernRepository concernRepository, StudentRepository studentRepository) {
+    public CreateConcernService(ConcernRepository concernRepository, StudentRepository studentRepository) {
         this.concernRepository = concernRepository;
         this.studentRepository = studentRepository;
     }

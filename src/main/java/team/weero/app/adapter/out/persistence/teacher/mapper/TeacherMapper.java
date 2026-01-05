@@ -1,8 +1,8 @@
-package team.weero.app.infrastructure.persistence.teacher.mapper;
+package team.weero.app.adapter.out.persistence.teacher.mapper;
 
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
 
 /**
  * Teacher 도메인 모델과 JPA Entity 간 매퍼

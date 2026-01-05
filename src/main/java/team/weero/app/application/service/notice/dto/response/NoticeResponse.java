@@ -1,4 +1,4 @@
-package team.weero.app.application.notice.dto.response;
+package team.weero.app.application.service.notice.dto.response;
 
 import java.util.UUID;
 

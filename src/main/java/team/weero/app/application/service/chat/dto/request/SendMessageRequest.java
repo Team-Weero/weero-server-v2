@@ -1,4 +1,4 @@
-package team.weero.app.application.chat.dto.request;
+package team.weero.app.application.service.chat.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

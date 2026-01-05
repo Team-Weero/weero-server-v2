@@ -1,9 +1,10 @@
-package team.weero.app.application.auth.usecase;
+package team.weero.app.application.service.auth;
+import team.weero.app.application.port.in.auth.RefreshUseCase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.weero.app.application.auth.dto.request.RefreshTokenRequest;
-import team.weero.app.application.auth.dto.response.TokenResponse;
+import team.weero.app.application.service.auth.dto.request.RefreshTokenRequest;
+import team.weero.app.application.service.auth.dto.response.TokenResponse;
 import team.weero.app.infrastructure.security.jwt.JwtProperties;
 import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 
@@ -16,7 +17,7 @@ import java.time.ZonedDateTime;
  */
 @Service
 @RequiredArgsConstructor
-public class RefreshUseCase {
+public class RefreshService implements RefreshUseCase {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtProperties jwtProperties;

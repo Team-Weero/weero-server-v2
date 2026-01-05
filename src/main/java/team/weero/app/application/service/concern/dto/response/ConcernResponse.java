@@ -1,4 +1,4 @@
-package team.weero.app.application.concern.dto.response;
+package team.weero.app.application.service.concern.dto.response;
 
 import team.weero.app.domain.concern.model.Concern;
 import team.weero.app.domain.student.model.Student;

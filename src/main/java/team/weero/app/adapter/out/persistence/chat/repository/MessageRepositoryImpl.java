@@ -1,11 +1,11 @@
-package team.weero.app.infrastructure.persistence.chat.repository;
+package team.weero.app.adapter.out.persistence.chat.repository;
 
 import org.springframework.stereotype.Repository;
 import team.weero.app.domain.chat.model.Message;
-import team.weero.app.domain.chat.repository.MessageRepository;
-import team.weero.app.infrastructure.persistence.chat.entity.ChatRoomJpaEntity;
-import team.weero.app.infrastructure.persistence.chat.entity.MessageJpaEntity;
-import team.weero.app.infrastructure.persistence.chat.mapper.MessageMapper;
+import team.weero.app.application.port.out.chat.MessageRepository;
+import team.weero.app.adapter.out.persistence.chat.entity.ChatRoomJpaEntity;
+import team.weero.app.adapter.out.persistence.chat.entity.MessageJpaEntity;
+import team.weero.app.adapter.out.persistence.chat.mapper.MessageMapper;
 
 import java.util.List;
 import java.util.Optional;

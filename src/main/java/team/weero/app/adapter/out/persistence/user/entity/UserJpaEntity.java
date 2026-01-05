@@ -1,4 +1,4 @@
-package team.weero.app.infrastructure.persistence.user.entity;
+package team.weero.app.adapter.out.persistence.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -6,10 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
-import team.weero.app.infrastructure.persistence.teacher.repository.TeacherJpaRepository;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
-import team.weero.app.infrastructure.persistence.user.repository.UserJpaRepository;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.repository.TeacherJpaRepository;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.repository.UserJpaRepository;
 import team.weero.app.domain.user.model.UserRole;
 
 @Slf4j

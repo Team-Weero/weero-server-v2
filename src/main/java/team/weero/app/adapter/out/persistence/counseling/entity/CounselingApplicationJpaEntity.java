@@ -1,4 +1,4 @@
-package team.weero.app.infrastructure.persistence.counseling.entity;
+package team.weero.app.adapter.out.persistence.counseling.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

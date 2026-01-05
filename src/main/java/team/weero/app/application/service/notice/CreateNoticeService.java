@@ -1,27 +1,28 @@
-package team.weero.app.application.notice.usecase;
+package team.weero.app.application.service.notice;
+import team.weero.app.application.port.in.notice.CreateNoticeUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.notice.dto.request.CreateNoticeRequest;
+import team.weero.app.application.service.notice.dto.request.CreateNoticeRequest;
 import team.weero.app.domain.notice.exception.UnauthorizedNoticeAccessException;
 import team.weero.app.domain.notice.model.Notice;
-import team.weero.app.domain.notice.repository.NoticeRepository;
+import team.weero.app.application.port.out.notice.NoticeRepository;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.domain.teacher.repository.TeacherRepository;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.util.UUID;
 
 @Service
 @Transactional
-public class CreateNoticeUseCase {
+public class CreateNoticeService implements CreateNoticeUseCase {
 
     private final NoticeRepository noticeRepository;
     private final TeacherRepository teacherRepository;
     private final StudentJpaRepository studentRepository;
 
-    public CreateNoticeUseCase(NoticeRepository noticeRepository, TeacherRepository teacherRepository, StudentJpaRepository studentRepository) {
+    public CreateNoticeService(NoticeRepository noticeRepository, TeacherRepository teacherRepository, StudentJpaRepository studentRepository) {
         this.noticeRepository = noticeRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;

@@ -1,12 +1,12 @@
-package team.weero.app.infrastructure.persistence.user.repository;
+package team.weero.app.adapter.out.persistence.user.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.weero.app.domain.user.model.User;
 import team.weero.app.domain.user.model.UserRole;
-import team.weero.app.domain.user.repository.UserRepository;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
-import team.weero.app.infrastructure.persistence.user.mapper.UserMapper;
+import team.weero.app.application.port.out.user.UserRepository;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.mapper.UserMapper;
 
 import java.util.List;
 import java.util.Optional;

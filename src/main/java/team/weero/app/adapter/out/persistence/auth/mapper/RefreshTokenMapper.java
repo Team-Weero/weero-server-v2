@@ -1,7 +1,7 @@
-package team.weero.app.infrastructure.persistence.auth.mapper;
+package team.weero.app.adapter.out.persistence.auth.mapper;
 
 import team.weero.app.domain.auth.model.RefreshToken;
-import team.weero.app.infrastructure.persistence.auth.entity.RefreshTokenRedisEntity;
+import team.weero.app.adapter.out.persistence.auth.entity.RefreshTokenRedisEntity;
 
 /**
  * RefreshToken Mapper

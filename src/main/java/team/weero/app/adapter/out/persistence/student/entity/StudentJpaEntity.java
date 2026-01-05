@@ -1,4 +1,4 @@
-package team.weero.app.infrastructure.persistence.student.entity;
+package team.weero.app.adapter.out.persistence.student.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 
 import java.util.UUID;
 

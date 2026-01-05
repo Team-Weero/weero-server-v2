@@ -1,8 +1,8 @@
-package team.weero.app.infrastructure.persistence.counseling.repository;
+package team.weero.app.adapter.out.persistence.counseling.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import team.weero.app.infrastructure.persistence.counseling.entity.CounselingApplicationJpaEntity;
+import team.weero.app.adapter.out.persistence.counseling.entity.CounselingApplicationJpaEntity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

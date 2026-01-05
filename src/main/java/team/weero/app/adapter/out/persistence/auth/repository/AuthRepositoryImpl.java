@@ -1,16 +1,16 @@
-package team.weero.app.infrastructure.persistence.auth.repository;
+package team.weero.app.adapter.out.persistence.auth.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import team.weero.app.domain.auth.repository.AuthRepository;
+import team.weero.app.application.port.out.auth.AuthRepository;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.domain.student.repository.StudentRepository;
+import team.weero.app.application.port.out.student.StudentRepository;
 import team.weero.app.domain.user.model.User;
-import team.weero.app.domain.user.repository.UserRepository;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
-import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
-import team.weero.app.infrastructure.persistence.teacher.repository.TeacherJpaRepository;
+import team.weero.app.application.port.out.user.UserRepository;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.repository.TeacherJpaRepository;
 
 import java.util.Optional;
 

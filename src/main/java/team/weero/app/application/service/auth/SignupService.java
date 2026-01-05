@@ -1,8 +1,9 @@
-package team.weero.app.application.auth.usecase;
+package team.weero.app.application.service.auth;
+import team.weero.app.application.port.in.auth.SignupUseCase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.weero.app.application.auth.dto.request.SignupRequest;
+import team.weero.app.application.service.auth.dto.request.SignupRequest;
 import team.weero.app.domain.auth.service.AuthDomainService;
 
 /**
@@ -11,7 +12,7 @@ import team.weero.app.domain.auth.service.AuthDomainService;
  */
 @Service
 @RequiredArgsConstructor
-public class SignupUseCase {
+public class SignupService implements SignupUseCase {
 
     private final AuthDomainService authDomainService;
 

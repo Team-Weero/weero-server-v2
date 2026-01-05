@@ -1,10 +1,10 @@
-package team.weero.app.infrastructure.persistence.student.repository;
+package team.weero.app.adapter.out.persistence.student.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.domain.student.repository.StudentRepository;
-import team.weero.app.infrastructure.persistence.student.mapper.StudentMapper;
+import team.weero.app.application.port.out.student.StudentRepository;
+import team.weero.app.adapter.out.persistence.student.mapper.StudentMapper;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package team.weero.app.application.auth.dto.response;
+package team.weero.app.application.service.auth.dto.response;
 
 import lombok.Builder;
 

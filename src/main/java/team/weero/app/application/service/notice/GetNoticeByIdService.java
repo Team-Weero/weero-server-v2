@@ -1,25 +1,26 @@
-package team.weero.app.application.notice.usecase;
+package team.weero.app.application.service.notice;
+import team.weero.app.application.port.in.notice.GetNoticeByIdUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.notice.dto.response.NoticeResponse;
+import team.weero.app.application.service.notice.dto.response.NoticeResponse;
 import team.weero.app.domain.notice.exception.NoticeNotFoundException;
 import team.weero.app.domain.notice.model.Notice;
-import team.weero.app.domain.notice.repository.NoticeRepository;
+import team.weero.app.application.port.out.notice.NoticeRepository;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.domain.teacher.repository.TeacherRepository;
+import team.weero.app.application.port.out.teacher.TeacherRepository;
 
 import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
-public class GetNoticeByIdUseCase {
+public class GetNoticeByIdService implements GetNoticeByIdUseCase {
 
     private final NoticeRepository noticeRepository;
     private final TeacherRepository teacherRepository;
 
-    public GetNoticeByIdUseCase(NoticeRepository noticeRepository, TeacherRepository teacherRepository) {
+    public GetNoticeByIdService(NoticeRepository noticeRepository, TeacherRepository teacherRepository) {
         this.noticeRepository = noticeRepository;
         this.teacherRepository = teacherRepository;
     }

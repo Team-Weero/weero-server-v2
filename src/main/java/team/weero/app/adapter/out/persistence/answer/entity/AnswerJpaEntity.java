@@ -1,10 +1,10 @@
-package team.weero.app.infrastructure.persistence.answer.entity;
+package team.weero.app.adapter.out.persistence.answer.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import team.weero.app.infrastructure.persistence.concern.entity.ConcernJpaEntity;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.concern.entity.ConcernJpaEntity;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

@@ -1,16 +1,16 @@
-package team.weero.app.presentation.auth;
+package team.weero.app.adapter.in.web.auth;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.application.auth.dto.request.LoginRequest;
-import team.weero.app.application.auth.dto.request.RefreshTokenRequest;
-import team.weero.app.application.auth.dto.request.SignupRequest;
-import team.weero.app.application.auth.dto.response.TokenResponse;
-import team.weero.app.application.auth.usecase.LoginUseCase;
-import team.weero.app.application.auth.usecase.RefreshUseCase;
-import team.weero.app.application.auth.usecase.SignupUseCase;
+import team.weero.app.application.service.auth.dto.request.LoginRequest;
+import team.weero.app.application.service.auth.dto.request.RefreshTokenRequest;
+import team.weero.app.application.service.auth.dto.request.SignupRequest;
+import team.weero.app.application.service.auth.dto.response.TokenResponse;
+import team.weero.app.application.port.in.auth.LoginUseCase;
+import team.weero.app.application.port.in.auth.RefreshUseCase;
+import team.weero.app.application.port.in.auth.SignupUseCase;
 
 /**
  * Auth Controller

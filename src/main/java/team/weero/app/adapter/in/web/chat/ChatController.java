@@ -1,16 +1,16 @@
-package team.weero.app.presentation.chat;
+package team.weero.app.adapter.in.web.chat;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.application.chat.dto.request.CreateChatRoomRequest;
-import team.weero.app.application.chat.dto.request.SendMessageRequest;
-import team.weero.app.application.chat.dto.response.ChatRoomResponse;
-import team.weero.app.application.chat.dto.response.MessageResponse;
-import team.weero.app.application.chat.usecase.CreateChatRoomUseCase;
-import team.weero.app.application.chat.usecase.GetChatRoomMessagesUseCase;
-import team.weero.app.application.chat.usecase.SendMessageUseCase;
+import team.weero.app.application.service.chat.dto.request.CreateChatRoomRequest;
+import team.weero.app.application.service.chat.dto.request.SendMessageRequest;
+import team.weero.app.application.service.chat.dto.response.ChatRoomResponse;
+import team.weero.app.application.service.chat.dto.response.MessageResponse;
+import team.weero.app.application.port.in.chat.CreateChatRoomUseCase;
+import team.weero.app.application.port.in.chat.GetChatRoomMessagesUseCase;
+import team.weero.app.application.port.in.chat.SendMessageUseCase;
 
 import java.util.List;
 import java.util.UUID;

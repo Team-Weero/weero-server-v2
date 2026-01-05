@@ -1,20 +1,21 @@
-package team.weero.app.application.concern.usecase;
+package team.weero.app.application.service.concern;
+import team.weero.app.application.port.in.concern.ResolveConcernUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.domain.concern.exception.ConcernNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.domain.concern.repository.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernRepository;
 
 import java.util.UUID;
 
 @Service
 @Transactional
-public class ResolveConcernUseCase {
+public class ResolveConcernService implements ResolveConcernUseCase {
 
     private final ConcernRepository concernRepository;
 
-    public ResolveConcernUseCase(ConcernRepository concernRepository) {
+    public ResolveConcernService(ConcernRepository concernRepository) {
         this.concernRepository = concernRepository;
     }
 

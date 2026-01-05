@@ -1,14 +1,14 @@
-package team.weero.app.infrastructure.persistence.notice.repository;
+package team.weero.app.adapter.out.persistence.notice.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import team.weero.app.domain.notice.model.Notice;
-import team.weero.app.domain.notice.repository.NoticeRepository;
-import team.weero.app.infrastructure.persistence.notice.entity.NoticeJpaEntity;
-import team.weero.app.infrastructure.persistence.notice.mapper.NoticeMapper;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
-import team.weero.app.infrastructure.persistence.user.repository.UserJpaRepository;
+import team.weero.app.application.port.out.notice.NoticeRepository;
+import team.weero.app.adapter.out.persistence.notice.entity.NoticeJpaEntity;
+import team.weero.app.adapter.out.persistence.notice.mapper.NoticeMapper;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.repository.UserJpaRepository;
 
 import java.util.List;
 import java.util.Optional;

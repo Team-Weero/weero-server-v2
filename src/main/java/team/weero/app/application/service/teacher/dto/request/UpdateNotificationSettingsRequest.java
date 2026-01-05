@@ -1,4 +1,4 @@
-package team.weero.app.application.teacher.dto.request;
+package team.weero.app.application.service.teacher.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

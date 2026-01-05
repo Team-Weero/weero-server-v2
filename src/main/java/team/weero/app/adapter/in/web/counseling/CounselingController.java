@@ -1,4 +1,4 @@
-package team.weero.app.presentation.counseling;
+package team.weero.app.adapter.in.web.counseling;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.weero.app.application.counseling.dto.request.CounselingRequest;
-import team.weero.app.application.counseling.dto.response.CounselingResponse;
-import team.weero.app.application.counseling.usecase.ApplyForCounselingUseCase;
-import team.weero.app.application.counseling.usecase.GetCounselingApplicationsByTeacherUseCase;
-import team.weero.app.application.counseling.usecase.GetMyCounselingApplicationsUseCase;
+import team.weero.app.application.service.counseling.dto.request.CounselingRequest;
+import team.weero.app.application.service.counseling.dto.response.CounselingResponse;
+import team.weero.app.application.port.in.counseling.ApplyForCounselingUseCase;
+import team.weero.app.application.port.in.counseling.GetCounselingApplicationsByTeacherUseCase;
+import team.weero.app.application.port.in.counseling.GetMyCounselingApplicationsUseCase;
 
 import java.util.List;
 import java.util.UUID;

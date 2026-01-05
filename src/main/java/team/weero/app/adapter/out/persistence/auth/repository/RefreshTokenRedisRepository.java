@@ -1,7 +1,7 @@
-package team.weero.app.infrastructure.persistence.auth.repository;
+package team.weero.app.adapter.out.persistence.auth.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import team.weero.app.infrastructure.persistence.auth.entity.RefreshTokenRedisEntity;
+import team.weero.app.adapter.out.persistence.auth.entity.RefreshTokenRedisEntity;
 
 import java.util.Optional;
 

@@ -1,9 +1,9 @@
-package team.weero.app.infrastructure.persistence.answer.repository;
+package team.weero.app.adapter.out.persistence.answer.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import team.weero.app.infrastructure.persistence.answer.entity.AnswerJpaEntity;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
-import team.weero.app.infrastructure.persistence.concern.entity.ConcernJpaEntity;
+import team.weero.app.adapter.out.persistence.answer.entity.AnswerJpaEntity;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.concern.entity.ConcernJpaEntity;
 
 import java.util.List;
 import java.util.UUID;

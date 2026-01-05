@@ -1,12 +1,13 @@
-package team.weero.app.application.teacher.usecase;
+package team.weero.app.application.service.teacher;
+import team.weero.app.application.port.in.teacher.UpdateNotificationSettingsUseCase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.teacher.dto.request.UpdateNotificationSettingsRequest;
+import team.weero.app.application.service.teacher.dto.request.UpdateNotificationSettingsRequest;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.domain.teacher.repository.TeacherRepository;
+import team.weero.app.application.port.out.teacher.TeacherRepository;
 
 /**
  * 알림 설정 업데이트 Use Case
@@ -14,7 +15,7 @@ import team.weero.app.domain.teacher.repository.TeacherRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UpdateNotificationSettingsUseCase {
+public class UpdateNotificationSettingsService implements UpdateNotificationSettingsUseCase {
 
     private final TeacherRepository teacherRepository;
 

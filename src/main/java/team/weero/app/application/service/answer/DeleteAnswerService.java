@@ -1,24 +1,25 @@
-package team.weero.app.application.answer.usecase;
+package team.weero.app.application.service.answer;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.weero.app.application.port.in.answer.DeleteAnswerUseCase;
+import team.weero.app.application.port.out.answer.AnswerRepository;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.answer.exception.UnauthorizedAccessException;
 import team.weero.app.domain.answer.model.Answer;
-import team.weero.app.domain.answer.repository.AnswerRepository;
-import team.weero.app.infrastructure.persistence.student.entity.StudentJpaEntity;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.util.UUID;
 
 @Service
 @Transactional
-public class DeleteAnswerUseCase {
+public class DeleteAnswerService implements DeleteAnswerUseCase {
 
     private final AnswerRepository answerRepository;
     private final StudentJpaRepository studentJpaRepository;
 
-    public DeleteAnswerUseCase(AnswerRepository answerRepository, StudentJpaRepository studentJpaRepository) {
+    public DeleteAnswerService(AnswerRepository answerRepository, StudentJpaRepository studentJpaRepository) {
         this.answerRepository = answerRepository;
         this.studentJpaRepository = studentJpaRepository;
     }

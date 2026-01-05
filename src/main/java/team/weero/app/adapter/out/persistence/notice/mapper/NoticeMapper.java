@@ -1,10 +1,10 @@
-package team.weero.app.infrastructure.persistence.notice.mapper;
+package team.weero.app.adapter.out.persistence.notice.mapper;
 
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.notice.model.Notice;
-import team.weero.app.infrastructure.persistence.notice.entity.NoticeJpaEntity;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
-import team.weero.app.infrastructure.persistence.user.repository.UserJpaRepository;
+import team.weero.app.adapter.out.persistence.notice.entity.NoticeJpaEntity;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.user.repository.UserJpaRepository;
 
 @Component
 public class NoticeMapper {

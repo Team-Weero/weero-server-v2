@@ -1,9 +1,9 @@
-package team.weero.app.infrastructure.persistence.concern.repository;
+package team.weero.app.adapter.out.persistence.concern.repository;
 
 import org.springframework.stereotype.Repository;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.domain.concern.repository.ConcernRepository;
-import team.weero.app.infrastructure.persistence.concern.mapper.ConcernMapper;
+import team.weero.app.application.port.out.concern.ConcernRepository;
+import team.weero.app.adapter.out.persistence.concern.mapper.ConcernMapper;
 
 import java.util.List;
 import java.util.Optional;

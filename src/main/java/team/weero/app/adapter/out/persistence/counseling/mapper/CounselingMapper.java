@@ -1,8 +1,8 @@
-package team.weero.app.infrastructure.persistence.counseling.mapper;
+package team.weero.app.adapter.out.persistence.counseling.mapper;
 
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.counseling.model.CounselingApplication;
-import team.weero.app.infrastructure.persistence.counseling.entity.CounselingApplicationJpaEntity;
+import team.weero.app.adapter.out.persistence.counseling.entity.CounselingApplicationJpaEntity;
 
 @Component
 public class CounselingMapper {
@@ -33,13 +33,13 @@ public class CounselingMapper {
                 .build();
     }
 
-    private team.weero.app.infrastructure.persistence.counseling.entity.CounselingLocation toPersistenceLocation(
+    private team.weero.app.adapter.out.persistence.counseling.entity.CounselingLocation toPersistenceLocation(
             team.weero.app.domain.counseling.model.CounselingLocation domainLocation) {
-        return team.weero.app.infrastructure.persistence.counseling.entity.CounselingLocation.valueOf(domainLocation.name());
+        return team.weero.app.adapter.out.persistence.counseling.entity.CounselingLocation.valueOf(domainLocation.name());
     }
 
     private team.weero.app.domain.counseling.model.CounselingLocation toDomainLocation(
-            team.weero.app.infrastructure.persistence.counseling.entity.CounselingLocation persistenceLocation) {
+            team.weero.app.adapter.out.persistence.counseling.entity.CounselingLocation persistenceLocation) {
         return team.weero.app.domain.counseling.model.CounselingLocation.valueOf(persistenceLocation.name());
     }
 }

@@ -1,15 +1,15 @@
-package team.weero.app.presentation.answer;
+package team.weero.app.adapter.in.web.answer;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.application.answer.dto.request.CreateAnswerRequest;
-import team.weero.app.application.answer.dto.response.AnswerResponse;
-import team.weero.app.application.answer.usecase.CreateAnswerUseCase;
-import team.weero.app.application.answer.usecase.DeleteAnswerUseCase;
-import team.weero.app.application.answer.usecase.GetAnswersByConcernUseCase;
-import team.weero.app.application.answer.usecase.GetMyAnswersUseCase;
+import team.weero.app.application.port.in.answer.CreateAnswerUseCase;
+import team.weero.app.application.port.in.answer.DeleteAnswerUseCase;
+import team.weero.app.application.port.in.answer.GetAnswersByConcernUseCase;
+import team.weero.app.application.port.in.answer.GetMyAnswersUseCase;
+import team.weero.app.application.service.answer.dto.request.CreateAnswerRequest;
+import team.weero.app.application.service.answer.dto.response.AnswerResponse;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,11 +1,11 @@
-package team.weero.app.infrastructure.persistence.teacher.repository;
+package team.weero.app.adapter.out.persistence.teacher.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.domain.teacher.repository.TeacherRepository;
-import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
-import team.weero.app.infrastructure.persistence.teacher.mapper.TeacherMapper;
+import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.mapper.TeacherMapper;
 
 import java.util.Optional;
 import java.util.UUID;

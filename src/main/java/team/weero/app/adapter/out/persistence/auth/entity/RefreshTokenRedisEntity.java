@@ -1,4 +1,4 @@
-package team.weero.app.infrastructure.persistence.auth.entity;
+package team.weero.app.adapter.out.persistence.auth.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

@@ -1,8 +1,8 @@
-package team.weero.app.infrastructure.persistence.concern.mapper;
+package team.weero.app.adapter.out.persistence.concern.mapper;
 
 import org.springframework.stereotype.Component;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.infrastructure.persistence.concern.entity.ConcernJpaEntity;
+import team.weero.app.adapter.out.persistence.concern.entity.ConcernJpaEntity;
 
 @Component
 public class ConcernMapper {

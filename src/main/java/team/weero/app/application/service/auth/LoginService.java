@@ -1,17 +1,18 @@
-package team.weero.app.application.auth.usecase;
+package team.weero.app.application.service.auth;
+import team.weero.app.application.port.in.auth.LoginUseCase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import team.weero.app.application.auth.dto.request.LoginRequest;
-import team.weero.app.application.auth.dto.response.TokenResponse;
+import team.weero.app.application.service.auth.dto.request.LoginRequest;
+import team.weero.app.application.service.auth.dto.response.TokenResponse;
 import team.weero.app.domain.auth.exception.PasswordIncorrectException;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
-import team.weero.app.domain.auth.repository.AuthRepository;
+import team.weero.app.application.port.out.auth.AuthRepository;
 import team.weero.app.domain.student.model.Student;
 import team.weero.app.domain.user.model.UserRole;
-import team.weero.app.infrastructure.persistence.teacher.entity.TeacherJpaEntity;
-import team.weero.app.infrastructure.persistence.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 import team.weero.app.infrastructure.security.jwt.JwtProperties;
 import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 
@@ -24,7 +25,7 @@ import java.time.ZonedDateTime;
  */
 @Service
 @RequiredArgsConstructor
-public class LoginUseCase {
+public class LoginService implements LoginUseCase {
 
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;

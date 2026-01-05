@@ -1,4 +1,4 @@
-package team.weero.app.application.auth.dto.request;
+package team.weero.app.application.service.auth.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

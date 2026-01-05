@@ -1,14 +1,14 @@
-package team.weero.app.presentation.teacher;
+package team.weero.app.adapter.in.web.teacher;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.application.teacher.dto.request.UpdateNotificationSettingsRequest;
-import team.weero.app.application.teacher.dto.response.TeacherResponse;
-import team.weero.app.application.teacher.usecase.GetMyTeacherInfoUseCase;
-import team.weero.app.application.teacher.usecase.UpdateNotificationSettingsUseCase;
+import team.weero.app.application.service.teacher.dto.request.UpdateNotificationSettingsRequest;
+import team.weero.app.application.service.teacher.dto.response.TeacherResponse;
+import team.weero.app.application.port.in.teacher.GetMyTeacherInfoUseCase;
+import team.weero.app.application.port.in.teacher.UpdateNotificationSettingsUseCase;
 
 /**
  * Teacher 컨트롤러

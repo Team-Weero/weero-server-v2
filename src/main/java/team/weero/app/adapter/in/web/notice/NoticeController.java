@@ -1,4 +1,4 @@
-package team.weero.app.presentation.notice;
+package team.weero.app.adapter.in.web.notice;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +8,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.application.notice.dto.request.CreateNoticeRequest;
-import team.weero.app.application.notice.dto.request.UpdateNoticeRequest;
-import team.weero.app.application.notice.dto.response.NoticeResponse;
-import team.weero.app.application.notice.usecase.*;
+import team.weero.app.application.service.notice.dto.request.CreateNoticeRequest;
+import team.weero.app.application.service.notice.dto.request.UpdateNoticeRequest;
+import team.weero.app.application.service.notice.dto.response.NoticeResponse;
+import team.weero.app.application.port.in.notice.*;
 
 import java.util.List;
 import java.util.UUID;

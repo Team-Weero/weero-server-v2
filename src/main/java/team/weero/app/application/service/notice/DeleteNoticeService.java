@@ -1,27 +1,28 @@
-package team.weero.app.application.notice.usecase;
+package team.weero.app.application.service.notice;
+import team.weero.app.application.port.in.notice.DeleteNoticeUseCase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.domain.notice.exception.NoticeNotFoundException;
 import team.weero.app.domain.notice.exception.UnauthorizedNoticeAccessException;
 import team.weero.app.domain.notice.model.Notice;
-import team.weero.app.domain.notice.repository.NoticeRepository;
+import team.weero.app.application.port.out.notice.NoticeRepository;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.domain.teacher.repository.TeacherRepository;
-import team.weero.app.infrastructure.persistence.student.repository.StudentJpaRepository;
+import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.util.UUID;
 
 @Service
 @Transactional
-public class DeleteNoticeUseCase {
+public class DeleteNoticeService implements DeleteNoticeUseCase {
 
     private final NoticeRepository noticeRepository;
     private final TeacherRepository teacherRepository;
     private final StudentJpaRepository studentRepository;
 
-    public DeleteNoticeUseCase(NoticeRepository noticeRepository, TeacherRepository teacherRepository, StudentJpaRepository studentRepository) {
+    public DeleteNoticeService(NoticeRepository noticeRepository, TeacherRepository teacherRepository, StudentJpaRepository studentRepository) {
         this.noticeRepository = noticeRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
