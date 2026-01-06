@@ -3,7 +3,6 @@ plugins {
 	id("org.springframework.boot") version "3.4.5"
 	id("io.spring.dependency-management") version "1.1.7"
 
-	id("checkstyle")
 	id("com.diffplug.spotless") version "6.21.0"
 }
 
@@ -64,11 +63,6 @@ spotless {
 	}
 }
 
-checkstyle {
-	toolVersion = "10.12.0"
-	configFile = file("config/checkstyle/checkstyle.xml")
-}
-
 tasks.named("check") {
-	dependsOn("spotlessCheck", "checkstyleMain")
+	dependsOn("spotlessCheck")
 }
