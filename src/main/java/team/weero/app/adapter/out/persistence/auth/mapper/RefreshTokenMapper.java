@@ -1,41 +1,31 @@
 package team.weero.app.adapter.out.persistence.auth.mapper;
 
-import team.weero.app.domain.auth.model.RefreshToken;
 import team.weero.app.adapter.out.persistence.auth.entity.RefreshTokenRedisEntity;
+import team.weero.app.domain.auth.model.RefreshToken;
 
-/**
- * RefreshToken Mapper
- * Maps between domain model and Redis entity
- */
 public class RefreshTokenMapper {
 
-    /**
-     * Convert domain model to Redis entity
-     */
-    public static RefreshTokenRedisEntity toEntity(RefreshToken domain) {
-        if (domain == null) {
-            return null;
-        }
-
-        return RefreshTokenRedisEntity.builder()
-                .accountId(domain.getAccountId())
-                .refreshToken(domain.getRefreshToken())
-                .ttl(domain.getTtl())
-                .build();
+  public static RefreshTokenRedisEntity toEntity(RefreshToken domain) {
+    if (domain == null) {
+      return null;
     }
 
-    /**
-     * Convert Redis entity to domain model
-     */
-    public static RefreshToken toDomain(RefreshTokenRedisEntity entity) {
-        if (entity == null) {
-            return null;
-        }
+    return RefreshTokenRedisEntity.builder()
+        .accountId(domain.getAccountId())
+        .refreshToken(domain.getRefreshToken())
+        .ttl(domain.getTtl())
+        .build();
+  }
 
-        return RefreshToken.builder()
-                .accountId(entity.getAccountId())
-                .refreshToken(entity.getRefreshToken())
-                .ttl(entity.getTtl())
-                .build();
+  public static RefreshToken toDomain(RefreshTokenRedisEntity entity) {
+    if (entity == null) {
+      return null;
     }
+
+    return RefreshToken.builder()
+        .accountId(entity.getAccountId())
+        .refreshToken(entity.getRefreshToken())
+        .ttl(entity.getTtl())
+        .build();
+  }
 }

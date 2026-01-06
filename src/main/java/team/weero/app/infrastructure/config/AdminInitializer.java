@@ -26,10 +26,8 @@ public class AdminInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) {
         if (teacherRepository.existsByAccountId(adminProperties.getId())) {
-            /**
-             * 예외를 던질 시 서버가 시작되지 않을 수 있어서 로그를 찍고 종료함
-             */
-            log.info("관리자 계정이 이미 존재합니다.");
+            // 예외 처리 시 서비스가 중단될 수 있어서 로그만 찍음
+            log.info("관리자 계정이 이미 존재합니다. accountId={}", adminProperties.getId());
             return;
         }
 

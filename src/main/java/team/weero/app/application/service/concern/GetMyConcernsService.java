@@ -1,40 +1,41 @@
 package team.weero.app.application.service.concern;
-import team.weero.app.application.port.in.concern.GetMyConcernsUseCase;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.service.concern.dto.response.ConcernResponse;
-import team.weero.app.domain.auth.exception.UserNotFoundException;
-import team.weero.app.application.port.out.answer.AnswerRepository;
-import team.weero.app.application.port.out.concern.ConcernRepository;
-import team.weero.app.domain.student.model.Student;
-import team.weero.app.application.port.out.student.StudentRepository;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.weero.app.application.port.in.concern.GetMyConcernsUseCase;
+import team.weero.app.application.port.out.answer.AnswerPort;
+import team.weero.app.application.port.out.concern.ConcernPort;
+import team.weero.app.application.port.out.student.StudentPort;
+import team.weero.app.application.service.concern.dto.response.ConcernResponse;
+import team.weero.app.domain.auth.exception.UserNotFoundException;
+import team.weero.app.domain.student.model.Student;
 
 @Service
 @Transactional(readOnly = true)
 public class GetMyConcernsService implements GetMyConcernsUseCase {
 
-    private final ConcernRepository concernRepository;
-    private final StudentRepository studentRepository;
-    private final AnswerRepository answerRepository;
+  private final ConcernPort concernPort;
+  private final StudentPort studentPort;
+  private final AnswerPort answerPort;
 
-    public GetMyConcernsService(ConcernRepository concernRepository, StudentRepository studentRepository, AnswerRepository answerRepository) {
-        this.concernRepository = concernRepository;
-        this.studentRepository = studentRepository;
-        this.answerRepository = answerRepository;
-    }
+  public GetMyConcernsService(
+      ConcernPort concernPort, StudentPort studentPort, AnswerPort answerPort) {
+    this.concernPort = concernPort;
+    this.studentPort = studentPort;
+    this.answerPort = answerPort;
+  }
 
-    public List<ConcernResponse> execute(String accountId) {
-        Student student = studentRepository.findByAccountId(accountId)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+  public List<ConcernResponse> execute(String accountId) {
+    Student student =
+        studentPort.findByAccountId(accountId).orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        return concernRepository.findByStudentId(student.getId()).stream()
-                .map(concern -> {
-                    int answerCount = answerRepository.countByConcernId(concern.getId());
-                    return ConcernResponse.from(concern, student, answerCount);
-                })
-                .toList();
-    }
+    return concernPort.findByStudentId(student.getId()).stream()
+        .map(
+            concern -> {
+              int answerCount = answerPort.countByConcernId(concern.getId());
+              return ConcernResponse.from(concern, student, answerCount);
+            })
+        .toList();
+  }
 }

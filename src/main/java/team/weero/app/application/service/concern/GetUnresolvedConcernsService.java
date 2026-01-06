@@ -1,36 +1,37 @@
 package team.weero.app.application.service.concern;
-import team.weero.app.application.port.in.concern.GetUnresolvedConcernsUseCase;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.service.concern.dto.response.ConcernResponse;
-import team.weero.app.application.port.out.answer.AnswerRepository;
-import team.weero.app.application.port.out.concern.ConcernRepository;
-import team.weero.app.application.port.out.student.StudentRepository;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.weero.app.application.port.in.concern.GetUnresolvedConcernsUseCase;
+import team.weero.app.application.port.out.answer.AnswerPort;
+import team.weero.app.application.port.out.concern.ConcernPort;
+import team.weero.app.application.port.out.student.StudentPort;
+import team.weero.app.application.service.concern.dto.response.ConcernResponse;
 
 @Service
 @Transactional(readOnly = true)
 public class GetUnresolvedConcernsService implements GetUnresolvedConcernsUseCase {
 
-    private final ConcernRepository concernRepository;
-    private final StudentRepository studentRepository;
-    private final AnswerRepository answerRepository;
+  private final ConcernPort concernPort;
+  private final StudentPort studentPort;
+  private final AnswerPort answerPort;
 
-    public GetUnresolvedConcernsService(ConcernRepository concernRepository, StudentRepository studentRepository, AnswerRepository answerRepository) {
-        this.concernRepository = concernRepository;
-        this.studentRepository = studentRepository;
-        this.answerRepository = answerRepository;
-    }
+  public GetUnresolvedConcernsService(
+      ConcernPort concernPort, StudentPort studentPort, AnswerPort answerPort) {
+    this.concernPort = concernPort;
+    this.studentPort = studentPort;
+    this.answerPort = answerPort;
+  }
 
-    public List<ConcernResponse> execute() {
-        return concernRepository.findByIsResolved(false).stream()
-                .map(concern -> {
-                    var student = studentRepository.findById(concern.getStudentId()).orElse(null);
-                    int answerCount = answerRepository.countByConcernId(concern.getId());
-                    return ConcernResponse.from(concern, student, answerCount);
-                })
-                .toList();
-    }
+  public List<ConcernResponse> execute() {
+    return concernPort.findByIsResolved(false).stream()
+        .map(
+            concern -> {
+              var student = studentPort.findById(concern.getStudentId()).orElse(null);
+              int answerCount = answerPort.countByConcernId(concern.getId());
+              return ConcernResponse.from(concern, student, answerCount);
+            })
+        .toList();
+  }
 }

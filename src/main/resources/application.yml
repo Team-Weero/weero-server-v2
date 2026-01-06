@@ -3,24 +3,29 @@ server:
 
 spring:
   application:
-    name: Weero-Application
+    name: WeeRo-Application
+
   web:
     resources:
       add-mappings: false
+
   profiles:
     active: jdbc
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
+
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
+
   jwt:
     secretKey: ${JWT_SECRET_KEY}
     accessExp: ${JWT_ACCESS_EXP}
@@ -47,7 +52,7 @@ firebase:
 
 logging:
   level:
-    org.springframework.cloud: INFO
-    org.springframework.jdbc: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    root: INFO
+    org.springframework.jdbc: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: OFF

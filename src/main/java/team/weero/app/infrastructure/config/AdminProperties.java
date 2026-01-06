@@ -9,9 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "spring.admin.teacher")
 public class AdminProperties {
 
-    private final String id;
-    private final String password;
-    private final String name;
-    private final String notificationStartTime;
-    private final String notificationEndTime;
+  private final String id;
+  private final String password;
+  private final String name;
+  private final String notificationStartTime;
+  private final String notificationEndTime;
 }

@@ -1,27 +1,19 @@
 package team.weero.app.application.service.auth;
-import team.weero.app.application.port.in.auth.SignupUseCase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team.weero.app.application.port.in.auth.SignupUseCase;
 import team.weero.app.application.service.auth.dto.request.SignupRequest;
 import team.weero.app.domain.auth.service.AuthDomainService;
 
-/**
- * Signup Use Case
- * Application layer use case for user registration
- */
 @Service
 @RequiredArgsConstructor
 public class SignupService implements SignupUseCase {
 
-    private final AuthDomainService authDomainService;
+  private final AuthDomainService authDomainService;
 
-    public void execute(SignupRequest request) {
-        authDomainService.registerStudent(
-                request.accountId(),
-                request.username(),
-                request.gcn(),
-                request.password()
-        );
-    }
+  public void execute(SignupRequest request) {
+    authDomainService.registerStudent(
+        request.accountId(), request.username(), request.gcn(), request.password());
+  }
 }

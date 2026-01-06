@@ -4,5 +4,5 @@ import java.util.List;
 import team.weero.app.application.service.concern.dto.response.ConcernResponse;
 
 public interface GetMyConcernsUseCase {
-    List<ConcernResponse> execute(String accountId);
+  List<ConcernResponse> execute(String accountId);
 }

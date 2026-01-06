@@ -1,12 +1,12 @@
 package team.weero.app.domain.chat.exception;
 
 import team.weero.app.infrastructure.error.exception.ErrorCode;
-import team.weero.app.infrastructure.error.exception.WeeRoException;
+import team.weero.app.infrastructure.security.jwt.exception.WeeRoException;
 
 public class UnauthorizedChatAccessException extends WeeRoException {
-    public static final WeeRoException EXCEPTION = new UnauthorizedChatAccessException();
+  public static final WeeRoException EXCEPTION = new UnauthorizedChatAccessException();
 
-    private UnauthorizedChatAccessException() {
-        super(ErrorCode.UNAUTHORIZED_CHAT_ACCESS);
-    }
+  private UnauthorizedChatAccessException() {
+    super(ErrorCode.UNAUTHORIZED_CHAT_ACCESS);
+  }
 }

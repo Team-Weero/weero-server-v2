@@ -1,11 +1,10 @@
 package team.weero.app.adapter.out.persistence.notice.entity;
 
 import jakarta.persistence.*;
+import java.util.UUID;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -14,19 +13,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "tbl_notice")
 public class NoticeJpaEntity {
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Column(columnDefinition = "BINARY(16)")
+  private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserJpaEntity user;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private UserJpaEntity user;
 
-    @Column(nullable = false, length = 255)
-    private String title;
+  @Column(nullable = false, length = 255)
+  private String title;
 
-    @Column(nullable = false, length = 10000)
-    private String contents;
+  @Column(nullable = false, length = 10000)
+  private String contents;
 }

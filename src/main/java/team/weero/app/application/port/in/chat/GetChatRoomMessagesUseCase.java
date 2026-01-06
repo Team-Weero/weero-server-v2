@@ -5,5 +5,5 @@ import java.util.UUID;
 import team.weero.app.application.service.chat.dto.response.MessageResponse;
 
 public interface GetChatRoomMessagesUseCase {
-    List<MessageResponse> execute(UUID chatRoomId, String accountId);
+  List<MessageResponse> execute(UUID chatRoomId, String accountId);
 }

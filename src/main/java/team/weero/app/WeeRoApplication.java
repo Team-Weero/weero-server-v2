@@ -6,10 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class AppApplication {
+public class WeeRoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AppApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(WeeRoApplication.class, args);
+  }
 }
