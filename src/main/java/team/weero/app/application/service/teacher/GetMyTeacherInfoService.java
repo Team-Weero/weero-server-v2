@@ -7,17 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.service.teacher.dto.response.TeacherResponse;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.application.port.out.teacher.TeacherPort;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GetMyTeacherInfoService implements GetMyTeacherInfoUseCase {
 
-    private final TeacherRepository teacherRepository;
+    private final TeacherPort teacherPort;
 
     public TeacherResponse execute(String accountId) {
-        Teacher teacher = teacherRepository.findByAccountId(accountId)
+        Teacher teacher = teacherPort.findByAccountId(accountId)
                 .orElseThrow(() -> TeacherNotFoundException.EXCEPTION);
 
         return TeacherResponse.from(teacher);

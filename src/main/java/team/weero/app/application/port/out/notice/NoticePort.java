@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface NoticeRepository {
+public interface NoticePort {
     Notice save(Notice notice);
     Optional<Notice> findById(UUID id);
     Page<Notice> findAll(Pageable pageable);

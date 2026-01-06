@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
-import team.weero.app.application.port.out.auth.AuthRepository;
+import team.weero.app.application.port.out.auth.AuthPort;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.UserRole;
 
@@ -14,7 +14,7 @@ import team.weero.app.domain.user.model.UserRole;
 @RequiredArgsConstructor
 public class AuthDetailsService implements UserDetailsService {
 
-    private final AuthRepository authRepository;
+    private final AuthPort authPort;
 
     @Override
     public UserDetails loadUserByUsername(String accountId) throws UsernameNotFoundException {
@@ -25,19 +25,19 @@ public class AuthDetailsService implements UserDetailsService {
 
         if (userRole != null) {
             if (userRole == UserRole.TEACHER) {
-                return authRepository.findTeacherByAccountId(accountId)
+                return authPort.findTeacherByAccountId(accountId)
                         .map(teacher -> (UserDetails) new AuthDetails(teacher.getUser(), teacher))
                         .orElseThrow(UserNotFoundException::new);
             } else if (userRole == UserRole.STUDENT) {
-                return authRepository.findStudentWithUserByAccountId(accountId)
+                return authPort.findStudentWithUserByAccountId(accountId)
                         .map(student -> (UserDetails) new AuthDetails(student.getUser(), student))
                         .orElseThrow(UserNotFoundException::new);
             }
         }
 
-        return authRepository.findTeacherByAccountId(accountId)
+        return authPort.findTeacherByAccountId(accountId)
                 .map(teacher -> (UserDetails) new AuthDetails(teacher.getUser(), teacher))
-                .or(() -> authRepository.findStudentWithUserByAccountId(accountId)
+                .or(() -> authPort.findStudentWithUserByAccountId(accountId)
                         .map(student -> (UserDetails) new AuthDetails(student.getUser(), student)))
                 .orElseThrow(UserNotFoundException::new);
     }

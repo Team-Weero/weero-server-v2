@@ -10,8 +10,8 @@ import team.weero.app.domain.chat.exception.ChatRoomNotFoundException;
 import team.weero.app.domain.chat.exception.UnauthorizedChatAccessException;
 import team.weero.app.domain.chat.model.ChatRoom;
 import team.weero.app.domain.chat.model.Message;
-import team.weero.app.application.port.out.chat.ChatRoomRepository;
-import team.weero.app.application.port.out.chat.MessageRepository;
+import team.weero.app.application.port.out.chat.ChatRoomPort;
+import team.weero.app.application.port.out.chat.MessagePort;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.time.LocalDateTime;
@@ -20,15 +20,15 @@ import java.time.LocalDateTime;
 @Transactional
 public class SendMessageService implements SendMessageUseCase {
 
-    private final MessageRepository messageRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final MessagePort messagePort;
+    private final ChatRoomPort chatRoomPort;
     private final StudentJpaRepository studentJpaRepository;
 
-    public SendMessageService(MessageRepository messageRepository,
-                             ChatRoomRepository chatRoomRepository,
-                             StudentJpaRepository studentJpaRepository) {
-        this.messageRepository = messageRepository;
-        this.chatRoomRepository = chatRoomRepository;
+    public SendMessageService(MessagePort messagePort,
+                              ChatRoomPort chatRoomPort,
+                              StudentJpaRepository studentJpaRepository) {
+        this.messagePort = messagePort;
+        this.chatRoomPort = chatRoomPort;
         this.studentJpaRepository = studentJpaRepository;
     }
 
@@ -36,7 +36,7 @@ public class SendMessageService implements SendMessageUseCase {
         var sender = studentJpaRepository.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        ChatRoom chatRoom = chatRoomRepository.findById(request.chatRoomId())
+        ChatRoom chatRoom = chatRoomPort.findById(request.chatRoomId())
                 .orElseThrow(() -> ChatRoomNotFoundException.EXCEPTION);
 
         if (!chatRoom.hasParticipant(sender.getId())) {
@@ -51,7 +51,7 @@ public class SendMessageService implements SendMessageUseCase {
                 .readStatus(false)
                 .build();
 
-        Message savedMessage = messageRepository.save(message);
+        Message savedMessage = messagePort.save(message);
 
         return new MessageResponse(
             savedMessage.getId(),

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.service.notice.dto.response.NoticeResponse;
 import team.weero.app.domain.notice.exception.UnauthorizedNoticeAccessException;
-import team.weero.app.application.port.out.notice.NoticeRepository;
+import team.weero.app.application.port.out.notice.NoticePort;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.application.port.out.teacher.TeacherPort;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.util.List;
@@ -17,13 +17,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class GetMyNoticesService implements GetMyNoticesUseCase {
 
-    private final NoticeRepository noticeRepository;
-    private final TeacherRepository teacherRepository;
+    private final NoticePort noticePort;
+    private final TeacherPort teacherPort;
     private final StudentJpaRepository studentRepository;
 
-    public GetMyNoticesService(NoticeRepository noticeRepository, TeacherRepository teacherRepository, StudentJpaRepository studentRepository) {
-        this.noticeRepository = noticeRepository;
-        this.teacherRepository = teacherRepository;
+    public GetMyNoticesService(NoticePort noticePort, TeacherPort teacherPort, StudentJpaRepository studentRepository) {
+        this.noticePort = noticePort;
+        this.teacherPort = teacherPort;
         this.studentRepository = studentRepository;
     }
 
@@ -32,10 +32,10 @@ public class GetMyNoticesService implements GetMyNoticesUseCase {
             throw UnauthorizedNoticeAccessException.EXCEPTION;
         }
 
-        Teacher teacher = teacherRepository.findByAccountId(accountId)
+        Teacher teacher = teacherPort.findByAccountId(accountId)
                 .orElseThrow(() -> TeacherNotFoundException.EXCEPTION);
 
-        return noticeRepository.findByUserId(teacher.getUserId()).stream()
+        return noticePort.findByUserId(teacher.getUserId()).stream()
                 .map(notice -> new NoticeResponse(
                         notice.getId(),
                         notice.getTitle(),

@@ -5,7 +5,7 @@ import team.weero.app.domain.teacher.model.Teacher;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TeacherRepository {
+public interface TeacherPort {
 
     Optional<Teacher> findByAccountId(String accountId);
 

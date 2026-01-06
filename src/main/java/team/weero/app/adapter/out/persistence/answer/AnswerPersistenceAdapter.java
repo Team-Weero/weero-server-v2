@@ -1,9 +1,10 @@
-package team.weero.app.adapter.out.persistence.answer.repository;
+package team.weero.app.adapter.out.persistence.answer;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.persistence.answer.entity.AnswerJpaEntity;
 import team.weero.app.adapter.out.persistence.answer.mapper.AnswerMapper;
-import team.weero.app.application.port.out.answer.AnswerRepository;
+import team.weero.app.adapter.out.persistence.answer.repository.AnswerJpaRepository;
+import team.weero.app.application.port.out.answer.AnswerPort;
 import team.weero.app.domain.answer.model.Answer;
 import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
@@ -14,16 +15,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-public class AnswerRepositoryImpl implements AnswerRepository {
+@Component
+public class AnswerPersistenceAdapter implements AnswerPort {
 
     private final AnswerJpaRepository answerJpaRepository;
     private final AnswerMapper answerMapper;
     private final ConcernJpaRepository concernRepository;
     private final StudentJpaRepository studentJpaRepository;
 
-    public AnswerRepositoryImpl(AnswerJpaRepository answerJpaRepository, AnswerMapper answerMapper,
-                                ConcernJpaRepository concernRepository, StudentJpaRepository studentJpaRepository) {
+    public AnswerPersistenceAdapter(AnswerJpaRepository answerJpaRepository, AnswerMapper answerMapper,
+                                    ConcernJpaRepository concernRepository, StudentJpaRepository studentJpaRepository) {
         this.answerJpaRepository = answerJpaRepository;
         this.answerMapper = answerMapper;
         this.concernRepository = concernRepository;

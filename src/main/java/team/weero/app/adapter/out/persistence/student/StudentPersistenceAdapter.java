@@ -1,9 +1,10 @@
-package team.weero.app.adapter.out.persistence.student.repository;
+package team.weero.app.adapter.out.persistence.student;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.application.port.out.student.StudentRepository;
+import team.weero.app.application.port.out.student.StudentPort;
 import team.weero.app.adapter.out.persistence.student.mapper.StudentMapper;
 
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class StudentRepositoryImpl implements StudentRepository {
+public class StudentPersistenceAdapter implements StudentPort {
 
     private final StudentJpaRepository jpaRepository;
     private final StudentMapper mapper;

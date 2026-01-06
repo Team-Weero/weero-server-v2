@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AnswerRepository {
+public interface AnswerPort {
     Answer save(Answer answer);
     Optional<Answer> findById(UUID id);
     List<Answer> findByConcernId(UUID concernId);

@@ -1,6 +1,7 @@
 package team.weero.app.adapter.out.persistence.answer.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import team.weero.app.adapter.out.persistence.answer.entity.AnswerJpaEntity;
 import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.persistence.concern.entity.ConcernJpaEntity;

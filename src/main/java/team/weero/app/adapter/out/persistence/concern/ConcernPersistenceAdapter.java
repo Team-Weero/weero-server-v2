@@ -1,21 +1,22 @@
-package team.weero.app.adapter.out.persistence.concern.repository;
+package team.weero.app.adapter.out.persistence.concern;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.concern.repository.ConcernJpaRepository;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.application.port.out.concern.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernPort;
 import team.weero.app.adapter.out.persistence.concern.mapper.ConcernMapper;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-public class ConcernRepositoryImpl implements ConcernRepository {
+@Component
+public class ConcernPersistenceAdapter implements ConcernPort {
 
     private final ConcernJpaRepository concernJpaRepository;
     private final ConcernMapper concernMapper;
 
-    public ConcernRepositoryImpl(ConcernJpaRepository concernJpaRepository, ConcernMapper concernMapper) {
+    public ConcernPersistenceAdapter(ConcernJpaRepository concernJpaRepository, ConcernMapper concernMapper) {
         this.concernJpaRepository = concernJpaRepository;
         this.concernMapper = concernMapper;
     }

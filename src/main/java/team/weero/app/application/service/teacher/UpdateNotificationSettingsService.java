@@ -7,17 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.service.teacher.dto.request.UpdateNotificationSettingsRequest;
 import team.weero.app.domain.teacher.exception.TeacherNotFoundException;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.application.port.out.teacher.TeacherPort;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UpdateNotificationSettingsService implements UpdateNotificationSettingsUseCase {
 
-    private final TeacherRepository teacherRepository;
+    private final TeacherPort teacherPort;
 
     public void execute(String accountId, UpdateNotificationSettingsRequest request) {
-        Teacher teacher = teacherRepository.findByAccountId(accountId)
+        Teacher teacher = teacherPort.findByAccountId(accountId)
                 .orElseThrow(() -> TeacherNotFoundException.EXCEPTION);
 
         teacher.updateNotificationSettings(
@@ -25,6 +25,6 @@ public class UpdateNotificationSettingsService implements UpdateNotificationSett
                 request.noNotificationEndTime()
         );
 
-        teacherRepository.save(teacher);
+        teacherPort.save(teacher);
     }
 }

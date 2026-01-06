@@ -1,18 +1,19 @@
-package team.weero.app.adapter.out.persistence.teacher.repository;
+package team.weero.app.adapter.out.persistence.teacher;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.teacher.repository.TeacherJpaRepository;
 import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.application.port.out.teacher.TeacherPort;
 import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
 import team.weero.app.adapter.out.persistence.teacher.mapper.TeacherMapper;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
+@Component
 @RequiredArgsConstructor
-public class TeacherRepositoryImpl implements TeacherRepository {
+public class TeacherPersistenceAdapter implements TeacherPort {
 
     private final TeacherJpaRepository teacherJpaRepository;
     private final TeacherMapper teacherMapper;

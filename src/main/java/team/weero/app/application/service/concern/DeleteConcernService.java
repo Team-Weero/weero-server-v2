@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.concern.exception.ConcernNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.application.port.out.concern.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernPort;
 import team.weero.app.domain.student.model.Student;
-import team.weero.app.application.port.out.student.StudentRepository;
+import team.weero.app.application.port.out.student.StudentPort;
 
 import java.util.UUID;
 
@@ -16,25 +16,25 @@ import java.util.UUID;
 @Transactional
 public class DeleteConcernService implements DeleteConcernUseCase {
 
-    private final ConcernRepository concernRepository;
-    private final StudentRepository studentRepository;
+    private final ConcernPort concernPort;
+    private final StudentPort studentPort;
 
-    public DeleteConcernService(ConcernRepository concernRepository, StudentRepository studentRepository) {
-        this.concernRepository = concernRepository;
-        this.studentRepository = studentRepository;
+    public DeleteConcernService(ConcernPort concernPort, StudentPort studentPort) {
+        this.concernPort = concernPort;
+        this.studentPort = studentPort;
     }
 
     public void execute(UUID id, String accountId) {
-        Student student = studentRepository.findByAccountId(accountId)
+        Student student = studentPort.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        Concern concern = concernRepository.findById(id)
+        Concern concern = concernPort.findById(id)
                 .orElseThrow(() -> ConcernNotFoundException.EXCEPTION);
 
         if (!concern.isOwnedBy(student.getId())) {
             throw new RuntimeException("본인의 고민만 삭제할 수 있습니다");
         }
 
-        concernRepository.deleteById(id);
+        concernPort.deleteById(id);
     }
 }

@@ -7,7 +7,7 @@ import team.weero.app.domain.user.model.User;
 
 import java.util.Optional;
 
-public interface AuthRepository {
+public interface AuthPort {
 
     Optional<Student> findStudentByAccountId(String accountId);
 

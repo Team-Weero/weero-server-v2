@@ -1,16 +1,17 @@
-package team.weero.app.adapter.out.persistence.auth.repository;
+package team.weero.app.adapter.out.persistence.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.auth.repository.RefreshTokenRedisRepository;
 import team.weero.app.domain.auth.model.RefreshToken;
-import team.weero.app.application.port.out.auth.RefreshTokenRepository;
+import team.weero.app.application.port.out.auth.RefreshTokenPort;
 import team.weero.app.adapter.out.persistence.auth.mapper.RefreshTokenMapper;
 
 import java.util.Optional;
 
-@Repository
+@Component
 @RequiredArgsConstructor
-public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
+public class RefreshTokenPersistenceAdapter implements RefreshTokenPort {
 
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 

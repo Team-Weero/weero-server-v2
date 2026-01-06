@@ -8,27 +8,27 @@ import team.weero.app.application.service.counseling.dto.request.CounselingReque
 import team.weero.app.domain.counseling.exception.DuplicateReservationException;
 import team.weero.app.domain.counseling.exception.NotFoundException;
 import team.weero.app.domain.counseling.model.CounselingApplication;
-import team.weero.app.application.port.out.counseling.CounselingRepository;
-import team.weero.app.application.port.out.student.StudentRepository;
-import team.weero.app.application.port.out.teacher.TeacherRepository;
+import team.weero.app.application.port.out.counseling.CounselingPort;
+import team.weero.app.application.port.out.student.StudentPort;
+import team.weero.app.application.port.out.teacher.TeacherPort;
 
 @Service
 @RequiredArgsConstructor
 public class ApplyForCounselingService implements ApplyForCounselingUseCase {
 
-    private final CounselingRepository counselingRepository;
-    private final StudentRepository studentRepository;
-    private final TeacherRepository teacherRepository;
+    private final CounselingPort counselingPort;
+    private final StudentPort studentPort;
+    private final TeacherPort teacherPort;
 
     @Transactional
     public void execute(CounselingRequest request) {
-        studentRepository.findById(request.studentId())
+        studentPort.findById(request.studentId())
                 .orElseThrow(NotFoundException::new);
 
-        teacherRepository.findById(request.teacherId())
+        teacherPort.findById(request.teacherId())
                 .orElseThrow(NotFoundException::new);
 
-        boolean exists = counselingRepository.existsByTeacherIdAndCounselDateAndTime(
+        boolean exists = counselingPort.existsByTeacherIdAndCounselDateAndTime(
                 request.teacherId(),
                 request.date(),
                 request.time()
@@ -45,6 +45,6 @@ public class ApplyForCounselingService implements ApplyForCounselingUseCase {
                 request.location()
         );
 
-        counselingRepository.save(counseling);
+        counselingPort.save(counseling);
     }
 }

@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.service.answer.dto.response.AnswerResponse;
 import team.weero.app.application.port.in.answer.GetAnswersByConcernUseCase;
-import team.weero.app.application.port.out.answer.AnswerRepository;
+import team.weero.app.application.port.out.answer.AnswerPort;
 import team.weero.app.domain.concern.exception.ConcernNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.application.port.out.concern.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernPort;
 import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
@@ -18,21 +18,21 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class GetAnswersByConcernService implements GetAnswersByConcernUseCase {
 
-    private final AnswerRepository answerRepository;
-    private final ConcernRepository concernRepository;
+    private final AnswerPort answerPort;
+    private final ConcernPort concernPort;
     private final StudentJpaRepository studentJpaRepository;
 
-    public GetAnswersByConcernService(AnswerRepository answerRepository, ConcernRepository concernRepository, StudentJpaRepository studentJpaRepository) {
-        this.answerRepository = answerRepository;
-        this.concernRepository = concernRepository;
+    public GetAnswersByConcernService(AnswerPort answerPort, ConcernPort concernPort, StudentJpaRepository studentJpaRepository) {
+        this.answerPort = answerPort;
+        this.concernPort = concernPort;
         this.studentJpaRepository = studentJpaRepository;
     }
 
     public List<AnswerResponse> execute(UUID concernId) {
-        Concern concern = concernRepository.findById(concernId)
+        Concern concern = concernPort.findById(concernId)
                 .orElseThrow(() -> ConcernNotFoundException.EXCEPTION);
 
-        return answerRepository.findByConcernId(concernId).stream()
+        return answerPort.findByConcernId(concernId).stream()
                 .map(answer -> {
                     StudentJpaEntity student = studentJpaRepository.findById(answer.getStudentId())
                             .orElseThrow(() -> new RuntimeException("학생을 찾을 수 없습니다"));

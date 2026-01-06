@@ -4,7 +4,7 @@ import team.weero.app.domain.auth.model.RefreshToken;
 
 import java.util.Optional;
 
-public interface RefreshTokenRepository {
+public interface RefreshTokenPort {
 
     RefreshToken save(RefreshToken refreshToken);
 

@@ -1,9 +1,10 @@
-package team.weero.app.adapter.out.persistence.counseling.repository;
+package team.weero.app.adapter.out.persistence.counseling;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.counseling.repository.CounselingJpaRepository;
 import team.weero.app.domain.counseling.model.CounselingApplication;
-import team.weero.app.application.port.out.counseling.CounselingRepository;
+import team.weero.app.application.port.out.counseling.CounselingPort;
 import team.weero.app.adapter.out.persistence.counseling.mapper.CounselingMapper;
 
 import java.time.LocalDate;
@@ -13,9 +14,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Repository
+@Component
 @RequiredArgsConstructor
-public class CounselingRepositoryImpl implements CounselingRepository {
+public class CounselingPersistenceAdapter implements CounselingPort {
 
     private final CounselingJpaRepository counselingJpaRepository;
     private final CounselingMapper counselingMapper;

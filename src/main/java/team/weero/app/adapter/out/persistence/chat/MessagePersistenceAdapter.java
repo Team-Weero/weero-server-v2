@@ -1,8 +1,10 @@
-package team.weero.app.adapter.out.persistence.chat.repository;
+package team.weero.app.adapter.out.persistence.chat;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.chat.repository.ChatRoomJpaRepository;
+import team.weero.app.adapter.out.persistence.chat.repository.MessageJpaRepository;
 import team.weero.app.domain.chat.model.Message;
-import team.weero.app.application.port.out.chat.MessageRepository;
+import team.weero.app.application.port.out.chat.MessagePort;
 import team.weero.app.adapter.out.persistence.chat.entity.ChatRoomJpaEntity;
 import team.weero.app.adapter.out.persistence.chat.entity.MessageJpaEntity;
 import team.weero.app.adapter.out.persistence.chat.mapper.MessageMapper;
@@ -11,16 +13,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-public class MessageRepositoryImpl implements MessageRepository {
+@Component
+public class MessagePersistenceAdapter implements MessagePort {
 
     private final MessageJpaRepository messageJpaRepository;
     private final MessageMapper messageMapper;
     private final ChatRoomJpaRepository chatRoomJpaRepository;
 
-    public MessageRepositoryImpl(MessageJpaRepository messageJpaRepository,
-                                MessageMapper messageMapper,
-                                ChatRoomJpaRepository chatRoomJpaRepository) {
+    public MessagePersistenceAdapter(MessageJpaRepository messageJpaRepository,
+                                     MessageMapper messageMapper,
+                                     ChatRoomJpaRepository chatRoomJpaRepository) {
         this.messageJpaRepository = messageJpaRepository;
         this.messageMapper = messageMapper;
         this.chatRoomJpaRepository = chatRoomJpaRepository;

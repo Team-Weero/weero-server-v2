@@ -7,24 +7,22 @@ import team.weero.app.application.service.chat.dto.request.CreateChatRoomRequest
 import team.weero.app.application.service.chat.dto.response.ChatRoomResponse;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.chat.model.ChatRoom;
-import team.weero.app.application.port.out.chat.ChatRoomRepository;
+import team.weero.app.application.port.out.chat.ChatRoomPort;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 import team.weero.app.adapter.out.persistence.user.repository.UserJpaRepository;
-
-import java.util.UUID;
 
 @Service
 @Transactional
 public class CreateChatRoomService implements CreateChatRoomUseCase {
 
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomPort chatRoomPort;
     private final StudentJpaRepository studentJpaRepository;
     private final UserJpaRepository userJpaRepository;
 
-    public CreateChatRoomService(ChatRoomRepository chatRoomRepository,
-                                StudentJpaRepository studentJpaRepository,
-                                UserJpaRepository userJpaRepository) {
-        this.chatRoomRepository = chatRoomRepository;
+    public CreateChatRoomService(ChatRoomPort chatRoomPort,
+                                 StudentJpaRepository studentJpaRepository,
+                                 UserJpaRepository userJpaRepository) {
+        this.chatRoomPort = chatRoomPort;
         this.studentJpaRepository = studentJpaRepository;
         this.userJpaRepository = userJpaRepository;
     }
@@ -36,7 +34,7 @@ public class CreateChatRoomService implements CreateChatRoomUseCase {
         var receiverUser = userJpaRepository.findById(request.receiverUserId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        var existingChatRoom = chatRoomRepository.findByParticipants(startUserStudent.getId(), receiverUser.getId());
+        var existingChatRoom = chatRoomPort.findByParticipants(startUserStudent.getId(), receiverUser.getId());
         if (existingChatRoom.isPresent()) {
             ChatRoom chatRoom = existingChatRoom.get();
             return new ChatRoomResponse(
@@ -53,7 +51,7 @@ public class CreateChatRoomService implements CreateChatRoomUseCase {
                 .receiverUserId(receiverUser.getId())
                 .build();
 
-        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+        ChatRoom savedChatRoom = chatRoomPort.save(chatRoom);
 
         return new ChatRoomResponse(
             savedChatRoom.getId(),

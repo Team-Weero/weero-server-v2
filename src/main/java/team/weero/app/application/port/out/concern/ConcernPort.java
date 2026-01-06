@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ConcernRepository {
+public interface ConcernPort {
     Concern save(Concern concern);
     Optional<Concern> findById(UUID id);
     List<Concern> findByStudentId(UUID studentId);

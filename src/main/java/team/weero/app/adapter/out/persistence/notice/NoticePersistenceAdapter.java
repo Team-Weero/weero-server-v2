@@ -1,10 +1,11 @@
-package team.weero.app.adapter.out.persistence.notice.repository;
+package team.weero.app.adapter.out.persistence.notice;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.notice.repository.NoticeJpaRepository;
 import team.weero.app.domain.notice.model.Notice;
-import team.weero.app.application.port.out.notice.NoticeRepository;
+import team.weero.app.application.port.out.notice.NoticePort;
 import team.weero.app.adapter.out.persistence.notice.entity.NoticeJpaEntity;
 import team.weero.app.adapter.out.persistence.notice.mapper.NoticeMapper;
 import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
@@ -14,14 +15,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-public class NoticeRepositoryImpl implements NoticeRepository {
+@Component
+public class NoticePersistenceAdapter implements NoticePort {
 
     private final NoticeJpaRepository noticeJpaRepository;
     private final NoticeMapper noticeMapper;
     private final UserJpaRepository userRepository;
 
-    public NoticeRepositoryImpl(NoticeJpaRepository noticeJpaRepository, NoticeMapper noticeMapper, UserJpaRepository userRepository) {
+    public NoticePersistenceAdapter(NoticeJpaRepository noticeJpaRepository, NoticeMapper noticeMapper, UserJpaRepository userRepository) {
         this.noticeJpaRepository = noticeJpaRepository;
         this.noticeMapper = noticeMapper;
         this.userRepository = userRepository;

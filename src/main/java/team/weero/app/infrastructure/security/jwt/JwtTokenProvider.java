@@ -13,7 +13,7 @@ import team.weero.app.infrastructure.security.auth.AuthDetailsService;
 import team.weero.app.infrastructure.error.exception.ExpiredJwtException;
 import team.weero.app.infrastructure.error.exception.InvalidJwtException;
 import team.weero.app.domain.auth.model.RefreshToken;
-import team.weero.app.application.port.out.auth.RefreshTokenRepository;
+import team.weero.app.application.port.out.auth.RefreshTokenPort;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.UserRole;
 
@@ -27,15 +27,15 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
     private final AuthDetailsService authDetailsService;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenPort refreshTokenPort;
     private final SecretKeySpec secretKeySpec;
 
     public JwtTokenProvider(JwtProperties jwtProperties,
                             AuthDetailsService authDetailsService,
-                            RefreshTokenRepository refreshTokenRepository) {
+                            RefreshTokenPort refreshTokenPort) {
         this.jwtProperties = jwtProperties;
         this.authDetailsService = authDetailsService;
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.refreshTokenPort = refreshTokenPort;
         this.secretKeySpec = new SecretKeySpec(
                 jwtProperties.getSecretKey().getBytes(),
                 SignatureAlgorithm.HS256.getJcaName()
@@ -66,7 +66,7 @@ public class JwtTokenProvider {
     public String generateRefreshToken(String accountId, UserRole userRole, StudentRole studentRole) {
         String refreshToken = generateToken(accountId, "refresh", jwtProperties.getRefreshExp(), userRole, studentRole);
 
-        refreshTokenRepository.save(RefreshToken.builder()
+        refreshTokenPort.save(RefreshToken.builder()
                 .accountId(accountId)
                 .refreshToken(refreshToken)
                 .ttl(jwtProperties.getRefreshExp())
@@ -129,7 +129,7 @@ public class JwtTokenProvider {
     public String refreshAccessToken(String refreshToken) {
         String accountId = getTokenSubject(refreshToken);
 
-        RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
+        RefreshToken storedToken = refreshTokenPort.findByRefreshToken(refreshToken)
                 .orElseThrow(RefreshTokenNotFoundException::new);
 
         if (!storedToken.getAccountId().equals(accountId)) {
@@ -145,14 +145,14 @@ public class JwtTokenProvider {
     public String reissueRefreshToken(String oldRefreshToken) {
         String accountId = getTokenSubject(oldRefreshToken);
 
-        RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(oldRefreshToken)
+        RefreshToken storedToken = refreshTokenPort.findByRefreshToken(oldRefreshToken)
                 .orElseThrow(RefreshTokenNotFoundException::new);
 
         if (!storedToken.getAccountId().equals(accountId)) {
             throw new team.weero.app.domain.auth.exception.InvalidRefreshTokenException();
         }
 
-        refreshTokenRepository.deleteByAccountId(storedToken.getAccountId());
+        refreshTokenPort.deleteByAccountId(storedToken.getAccountId());
 
         UserRole userRole = getUserRoleFromToken(oldRefreshToken);
         StudentRole studentRole = getStudentRoleFromToken(oldRefreshToken);

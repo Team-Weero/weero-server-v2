@@ -4,13 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.service.answer.dto.request.CreateAnswerRequest;
 import team.weero.app.application.port.in.answer.CreateAnswerUseCase;
-import team.weero.app.application.port.out.answer.AnswerRepository;
+import team.weero.app.application.port.out.answer.AnswerPort;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.answer.exception.UnauthorizedAccessException;
 import team.weero.app.domain.answer.model.Answer;
 import team.weero.app.domain.concern.exception.ConcernNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.application.port.out.concern.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernPort;
 import team.weero.app.adapter.out.persistence.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.persistence.student.entity.StudentRole;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
@@ -21,13 +21,13 @@ import java.time.LocalDateTime;
 @Transactional
 public class CreateAnswerService implements CreateAnswerUseCase {
 
-    private final AnswerRepository answerRepository;
-    private final ConcernRepository concernRepository;
+    private final AnswerPort answerPort;
+    private final ConcernPort concernPort;
     private final StudentJpaRepository studentJpaRepository;
 
-    public CreateAnswerService(AnswerRepository answerRepository, ConcernRepository concernRepository, StudentJpaRepository studentJpaRepository) {
-        this.answerRepository = answerRepository;
-        this.concernRepository = concernRepository;
+    public CreateAnswerService(AnswerPort answerPort, ConcernPort concernPort, StudentJpaRepository studentJpaRepository) {
+        this.answerPort = answerPort;
+        this.concernPort = concernPort;
         this.studentJpaRepository = studentJpaRepository;
     }
 
@@ -39,7 +39,7 @@ public class CreateAnswerService implements CreateAnswerUseCase {
             throw UnauthorizedAccessException.EXCEPTION;
         }
 
-        Concern concern = concernRepository.findById(request.concernId())
+        Concern concern = concernPort.findById(request.concernId())
                 .orElseThrow(() -> ConcernNotFoundException.EXCEPTION);
 
         if (concern.isResolved()) {
@@ -53,6 +53,6 @@ public class CreateAnswerService implements CreateAnswerUseCase {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        answerRepository.save(answer);
+        answerPort.save(answer);
     }
 }

@@ -8,7 +8,7 @@ import team.weero.app.application.service.auth.dto.request.LoginRequest;
 import team.weero.app.application.service.auth.dto.response.TokenResponse;
 import team.weero.app.domain.auth.exception.PasswordIncorrectException;
 import team.weero.app.domain.auth.exception.UserNotFoundException;
-import team.weero.app.application.port.out.auth.AuthRepository;
+import team.weero.app.application.port.out.auth.AuthPort;
 import team.weero.app.domain.student.model.Student;
 import team.weero.app.domain.user.model.UserRole;
 import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
@@ -23,7 +23,7 @@ import java.time.ZonedDateTime;
 @RequiredArgsConstructor
 public class LoginService implements LoginUseCase {
 
-    private final AuthRepository authRepository;
+    private final AuthPort authPort;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtProperties jwtProperties;
@@ -32,7 +32,7 @@ public class LoginService implements LoginUseCase {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
         
-        var teacherOpt = authRepository.findTeacherByAccountId(request.accountId());
+        var teacherOpt = authPort.findTeacherByAccountId(request.accountId());
 
         if (teacherOpt.isPresent()) {
             TeacherJpaEntity teacher = teacherOpt.get();
@@ -46,7 +46,7 @@ public class LoginService implements LoginUseCase {
             String deviceToken = request.deviceToken();
             if (deviceToken != null && !deviceToken.isBlank()) {
                 teacher.updateDeviceToken(deviceToken);
-                authRepository.saveTeacher(teacher);
+                authPort.saveTeacher(teacher);
             }
 
             return TokenResponse.builder()
@@ -61,13 +61,13 @@ public class LoginService implements LoginUseCase {
         }
 
         
-        var studentOpt = authRepository.findStudentByAccountId(request.accountId());
+        var studentOpt = authPort.findStudentByAccountId(request.accountId());
 
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();
 
             
-            var studentWithUserOpt = authRepository.findStudentWithUserByAccountId(request.accountId());
+            var studentWithUserOpt = authPort.findStudentWithUserByAccountId(request.accountId());
             if (studentWithUserOpt.isEmpty()) {
                 throw UserNotFoundException.EXCEPTION;
             }

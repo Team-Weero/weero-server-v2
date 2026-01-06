@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.domain.concern.exception.ConcernNotFoundException;
 import team.weero.app.domain.concern.model.Concern;
-import team.weero.app.application.port.out.concern.ConcernRepository;
+import team.weero.app.application.port.out.concern.ConcernPort;
 
 import java.util.UUID;
 
@@ -13,17 +13,17 @@ import java.util.UUID;
 @Transactional
 public class ResolveConcernService implements ResolveConcernUseCase {
 
-    private final ConcernRepository concernRepository;
+    private final ConcernPort concernPort;
 
-    public ResolveConcernService(ConcernRepository concernRepository) {
-        this.concernRepository = concernRepository;
+    public ResolveConcernService(ConcernPort concernPort) {
+        this.concernPort = concernPort;
     }
 
     public void execute(UUID id) {
-        Concern concern = concernRepository.findById(id)
+        Concern concern = concernPort.findById(id)
                 .orElseThrow(() -> ConcernNotFoundException.EXCEPTION);
 
         concern.resolve();
-        concernRepository.save(concern);
+        concernPort.save(concern);
     }
 }

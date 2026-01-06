@@ -8,8 +8,8 @@ import team.weero.app.domain.auth.exception.UserNotFoundException;
 import team.weero.app.domain.chat.exception.ChatRoomNotFoundException;
 import team.weero.app.domain.chat.exception.UnauthorizedChatAccessException;
 import team.weero.app.domain.chat.model.ChatRoom;
-import team.weero.app.application.port.out.chat.ChatRoomRepository;
-import team.weero.app.application.port.out.chat.MessageRepository;
+import team.weero.app.application.port.out.chat.ChatRoomPort;
+import team.weero.app.application.port.out.chat.MessagePort;
 import team.weero.app.adapter.out.persistence.student.repository.StudentJpaRepository;
 
 import java.util.List;
@@ -19,15 +19,15 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class GetChatRoomMessagesService implements GetChatRoomMessagesUseCase {
 
-    private final MessageRepository messageRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final MessagePort messagePort;
+    private final ChatRoomPort chatRoomPort;
     private final StudentJpaRepository studentJpaRepository;
 
-    public GetChatRoomMessagesService(MessageRepository messageRepository,
-                                     ChatRoomRepository chatRoomRepository,
-                                     StudentJpaRepository studentJpaRepository) {
-        this.messageRepository = messageRepository;
-        this.chatRoomRepository = chatRoomRepository;
+    public GetChatRoomMessagesService(MessagePort messagePort,
+                                      ChatRoomPort chatRoomPort,
+                                      StudentJpaRepository studentJpaRepository) {
+        this.messagePort = messagePort;
+        this.chatRoomPort = chatRoomPort;
         this.studentJpaRepository = studentJpaRepository;
     }
 
@@ -35,14 +35,14 @@ public class GetChatRoomMessagesService implements GetChatRoomMessagesUseCase {
         var user = studentJpaRepository.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+        ChatRoom chatRoom = chatRoomPort.findById(chatRoomId)
                 .orElseThrow(() -> ChatRoomNotFoundException.EXCEPTION);
 
         if (!chatRoom.hasParticipant(user.getId())) {
             throw UnauthorizedChatAccessException.EXCEPTION;
         }
 
-        return messageRepository.findByChatRoomIdOrderBySendDateAsc(chatRoomId).stream()
+        return messagePort.findByChatRoomIdOrderBySendDateAsc(chatRoomId).stream()
                 .map(message -> new MessageResponse(
                     message.getId(),
                     message.getChatRoomId(),
