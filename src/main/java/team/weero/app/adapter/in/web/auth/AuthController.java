@@ -12,10 +12,6 @@ import team.weero.app.application.port.in.auth.LoginUseCase;
 import team.weero.app.application.port.in.auth.RefreshUseCase;
 import team.weero.app.application.port.in.auth.SignupUseCase;
 
-
- * Auth Controller
- * Presentation layer controller for authentication endpoints
- */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

@@ -8,10 +8,6 @@ import team.weero.app.adapter.out.persistence.auth.mapper.RefreshTokenMapper;
 
 import java.util.Optional;
 
-
- * RefreshToken Repository Implementation
- * Infrastructure layer implementation of RefreshTokenRepository
- */
 @Repository
 @RequiredArgsConstructor
 public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {

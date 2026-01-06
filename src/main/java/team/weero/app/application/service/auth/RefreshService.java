@@ -11,10 +11,6 @@ import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-
- * Refresh Token Use Case
- * Application layer use case for refreshing access tokens
- */
 @Service
 @RequiredArgsConstructor
 public class RefreshService implements RefreshUseCase {

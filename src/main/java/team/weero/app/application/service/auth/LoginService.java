@@ -19,10 +19,6 @@ import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-
- * Login Use Case
- * Application layer use case for user authentication
- */
 @Service
 @RequiredArgsConstructor
 public class LoginService implements LoginUseCase {

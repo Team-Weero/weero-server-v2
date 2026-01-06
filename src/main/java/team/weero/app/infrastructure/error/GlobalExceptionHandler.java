@@ -18,9 +18,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    
-     * WeeRoException 처리
-     */
     @ExceptionHandler(WeeRoException.class)
     public ResponseEntity<ErrorResponse> handleWeeRoException(WeeRoException e) {
         log.error("WeeRoException: {}", e.getErrorCode());
@@ -36,9 +33,6 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
-    
-     * @Valid 검증 실패 처리
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(
             MethodArgumentNotValidException e
@@ -57,9 +51,6 @@ public class GlobalExceptionHandler {
                 .body(errors);
     }
 
-    
-     * 예상치 못한 에러 처리
-     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("Unexpected Exception: ", e);

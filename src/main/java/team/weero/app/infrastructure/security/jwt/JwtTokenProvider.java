@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import team.weero.app.domain.auth.exception.RefreshTokenNotFoundException;
 import team.weero.app.infrastructure.security.auth.AuthDetailsService;
 import team.weero.app.infrastructure.error.exception.ExpiredJwtException;
 import team.weero.app.infrastructure.error.exception.InvalidJwtException;
@@ -129,7 +130,7 @@ public class JwtTokenProvider {
         String accountId = getTokenSubject(refreshToken);
 
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new team.weero.app.domain.auth.exception.RefreshTokenNotFoundException());
+                .orElseThrow(RefreshTokenNotFoundException::new);
 
         if (!storedToken.getAccountId().equals(accountId)) {
             throw new team.weero.app.domain.auth.exception.InvalidRefreshTokenException();
@@ -145,7 +146,7 @@ public class JwtTokenProvider {
         String accountId = getTokenSubject(oldRefreshToken);
 
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(oldRefreshToken)
-                .orElseThrow(() -> new team.weero.app.domain.auth.exception.RefreshTokenNotFoundException());
+                .orElseThrow(RefreshTokenNotFoundException::new);
 
         if (!storedToken.getAccountId().equals(accountId)) {
             throw new team.weero.app.domain.auth.exception.InvalidRefreshTokenException();

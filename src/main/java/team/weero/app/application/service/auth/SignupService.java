@@ -6,10 +6,6 @@ import org.springframework.stereotype.Service;
 import team.weero.app.application.service.auth.dto.request.SignupRequest;
 import team.weero.app.domain.auth.service.AuthDomainService;
 
-
- * Signup Use Case
- * Application layer use case for user registration
- */
 @Service
 @RequiredArgsConstructor
 public class SignupService implements SignupUseCase {

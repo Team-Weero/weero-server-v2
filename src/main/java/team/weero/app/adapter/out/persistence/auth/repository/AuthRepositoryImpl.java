@@ -14,11 +14,6 @@ import team.weero.app.adapter.out.persistence.teacher.repository.TeacherJpaRepos
 
 import java.util.Optional;
 
-
- * Auth Repository Implementation
- * Infrastructure layer implementation of AuthRepository
- * Aggregates User, Student, and Teacher repositories
- */
 @Repository
 @RequiredArgsConstructor
 public class AuthRepositoryImpl implements AuthRepository {
