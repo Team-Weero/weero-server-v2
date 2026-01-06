@@ -9,6 +9,4 @@ public record MessageResponse(
     UUID senderId,
     String text,
     LocalDateTime sendDate,
-    boolean readStatus
-) {
-}
+    boolean readStatus) {}

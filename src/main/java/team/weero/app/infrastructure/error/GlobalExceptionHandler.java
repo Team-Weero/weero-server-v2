@@ -1,5 +1,7 @@
 package team.weero.app.infrastructure.error;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,58 +13,53 @@ import team.weero.app.infrastructure.error.exception.ErrorCode;
 import team.weero.app.infrastructure.error.exception.ErrorResponse;
 import team.weero.app.infrastructure.error.exception.WeeRoException;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(WeeRoException.class)
-    public ResponseEntity<ErrorResponse> handleWeeRoException(WeeRoException e) {
-        log.error("WeeRoException: {}", e.getErrorCode());
+  @ExceptionHandler(WeeRoException.class)
+  public ResponseEntity<ErrorResponse> handleWeeRoException(WeeRoException e) {
+    log.error("WeeRoException: {}", e.getErrorCode());
 
-        ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse response = ErrorResponse.builder()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
-                .build();
+    ErrorCode errorCode = e.getErrorCode();
+    ErrorResponse response =
+        ErrorResponse.builder()
+            .status(errorCode.getStatus())
+            .message(errorCode.getMessage())
+            .build();
 
-        return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(response);
-    }
+    return ResponseEntity.status(errorCode.getStatus()).body(response);
+  }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationException(
-            MethodArgumentNotValidException e
-    ) {
-        log.error("MethodArgumentNotValidException: {}", e.getMessage());
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<Map<String, String>> handleValidationException(
+      MethodArgumentNotValidException e) {
+    log.error("MethodArgumentNotValidException: {}", e.getMessage());
 
-        Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+    Map<String, String> errors = new HashMap<>();
+    e.getBindingResult()
+        .getAllErrors()
+        .forEach(
+            error -> {
+              String fieldName = ((FieldError) error).getField();
+              String errorMessage = error.getDefaultMessage();
+              errors.put(fieldName, errorMessage);
+            });
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errors);
-    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("Unexpected Exception: ", e);
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ErrorResponse> handleException(Exception e) {
+    log.error("Unexpected Exception: ", e);
 
-        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-        ErrorResponse response = ErrorResponse.builder()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
-                .build();
+    ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+    ErrorResponse response =
+        ErrorResponse.builder()
+            .status(errorCode.getStatus())
+            .message(errorCode.getMessage())
+            .build();
 
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(response);
-    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+  }
 }

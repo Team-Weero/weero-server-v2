@@ -1,12 +1,12 @@
 package team.weero.app.domain.notice.exception;
 
-import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 
 public class NoticeNotFoundException extends WeeRoException {
-    public static final WeeRoException EXCEPTION = new NoticeNotFoundException();
+  public static final WeeRoException EXCEPTION = new NoticeNotFoundException();
 
-    private NoticeNotFoundException() {
-        super(ErrorCode.NOTICE_NOT_FOUND);
-    }
+  private NoticeNotFoundException() {
+    super(ErrorCode.NOTICE_NOT_FOUND);
+  }
 }

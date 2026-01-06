@@ -5,5 +5,5 @@ import java.util.UUID;
 import team.weero.app.application.service.counseling.dto.response.CounselingResponse;
 
 public interface GetMyCounselingApplicationsUseCase {
-    List<CounselingResponse> execute(UUID studentId);
+  List<CounselingResponse> execute(UUID studentId);
 }

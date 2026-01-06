@@ -12,12 +12,9 @@ import org.springframework.data.redis.core.index.Indexed;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RefreshTokenRedisEntity {
-    @Id
-    private String accountId;
+  @Id private String accountId;
 
-    @Indexed
-    private String refreshToken;
+  @Indexed private String refreshToken;
 
-    @TimeToLive
-    private Long ttl;
+  @TimeToLive private Long ttl;
 }

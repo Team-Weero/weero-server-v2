@@ -1,38 +1,36 @@
 package team.weero.app.application.service.auth;
-import team.weero.app.application.port.in.auth.RefreshUseCase;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team.weero.app.application.port.in.auth.RefreshUseCase;
 import team.weero.app.application.service.auth.dto.request.RefreshTokenRequest;
 import team.weero.app.application.service.auth.dto.response.TokenResponse;
 import team.weero.app.infrastructure.security.jwt.JwtProperties;
 import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class RefreshService implements RefreshUseCase {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final JwtProperties jwtProperties;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final JwtProperties jwtProperties;
 
-    public TokenResponse execute(RefreshTokenRequest request) {
-        
-        String newAccessToken = jwtTokenProvider.refreshAccessToken(request.refreshToken());
+  public TokenResponse execute(RefreshTokenRequest request) {
 
-        
-        String newRefreshToken = jwtTokenProvider.reissueRefreshToken(request.refreshToken());
+    String newAccessToken = jwtTokenProvider.refreshAccessToken(request.refreshToken());
 
-        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+    String newRefreshToken = jwtTokenProvider.reissueRefreshToken(request.refreshToken());
 
-        return TokenResponse.builder()
-                .accessToken(newAccessToken)
-                .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
-                .refreshToken(newRefreshToken)
-                .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
-                .deviceToken(null)
-                .build();
-    }
+    ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+
+    return TokenResponse.builder()
+        .accessToken(newAccessToken)
+        .accessTokenExpiresAt(now.plusSeconds(jwtProperties.getAccessExp()))
+        .refreshToken(newRefreshToken)
+        .refreshTokenExpiresAt(now.plusSeconds(jwtProperties.getRefreshExp()))
+        .deviceToken(null)
+        .build();
+  }
 }

@@ -23,28 +23,33 @@ import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final ObjectMapper objectMapper;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final ObjectMapper objectMapper;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(CsrfConfigurer::disable)
-                .cors(CorsConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/counseling/**").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new ExceptionFilter(objectMapper), JwtTokenFilter.class)
-                .build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http.csrf(CsrfConfigurer::disable)
+        .cors(CorsConfigurer::disable)
+        .formLogin(AbstractHttpConfigurer::disable)
+        .sessionManagement(
+            configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers("/auth/**")
+                    .permitAll()
+                    .requestMatchers("/counseling/**")
+                    .authenticated()
+                    .anyRequest()
+                    .authenticated())
+        .addFilterBefore(
+            new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new ExceptionFilter(objectMapper), JwtTokenFilter.class)
+        .build();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

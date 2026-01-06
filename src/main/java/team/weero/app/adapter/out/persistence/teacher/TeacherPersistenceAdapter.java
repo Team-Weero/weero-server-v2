@@ -1,55 +1,54 @@
 package team.weero.app.adapter.out.persistence.teacher;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import team.weero.app.adapter.out.persistence.teacher.repository.TeacherJpaRepository;
-import team.weero.app.domain.teacher.model.Teacher;
-import team.weero.app.application.port.out.teacher.TeacherPort;
-import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
-import team.weero.app.adapter.out.persistence.teacher.mapper.TeacherMapper;
-
 import java.util.Optional;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
+import team.weero.app.adapter.out.persistence.teacher.mapper.TeacherMapper;
+import team.weero.app.adapter.out.persistence.teacher.repository.TeacherJpaRepository;
+import team.weero.app.application.port.out.teacher.TeacherPort;
+import team.weero.app.domain.teacher.model.Teacher;
 
 @Component
 @RequiredArgsConstructor
 public class TeacherPersistenceAdapter implements TeacherPort {
 
-    private final TeacherJpaRepository teacherJpaRepository;
-    private final TeacherMapper teacherMapper;
+  private final TeacherJpaRepository teacherJpaRepository;
+  private final TeacherMapper teacherMapper;
 
-    @Override
-    public Optional<Teacher> findByAccountId(String accountId) {
-        return teacherJpaRepository.findByAccountId(accountId)
-                .map(teacherMapper::toDomain);
-    }
+  @Override
+  public Optional<Teacher> findByAccountId(String accountId) {
+    return teacherJpaRepository.findByAccountId(accountId).map(teacherMapper::toDomain);
+  }
 
-    @Override
-    public Optional<Teacher> findById(UUID id) {
-        return teacherJpaRepository.findById(id)
-                .map(teacherMapper::toDomain);
-    }
+  @Override
+  public Optional<Teacher> findById(UUID id) {
+    return teacherJpaRepository.findById(id).map(teacherMapper::toDomain);
+  }
 
-    @Override
-    public Optional<Teacher> findByUserId(UUID userId) {
-        return teacherJpaRepository.findAll().stream()
-                .filter(entity -> entity.getUser() != null && entity.getUser().getId().equals(userId))
-                .findFirst()
-                .map(teacherMapper::toDomain);
-    }
+  @Override
+  public Optional<Teacher> findByUserId(UUID userId) {
+    return teacherJpaRepository.findAll().stream()
+        .filter(entity -> entity.getUser() != null && entity.getUser().getId().equals(userId))
+        .findFirst()
+        .map(teacherMapper::toDomain);
+  }
 
-    @Override
-    public Teacher save(Teacher teacher) {
-        TeacherJpaEntity entity = teacherJpaRepository.findById(teacher.getId())
-                .orElseThrow(() -> new IllegalStateException("Teacher entity not found for update"));
+  @Override
+  public Teacher save(Teacher teacher) {
+    TeacherJpaEntity entity =
+        teacherJpaRepository
+            .findById(teacher.getId())
+            .orElseThrow(() -> new IllegalStateException("Teacher entity not found for update"));
 
-        teacherMapper.updateEntity(teacher, entity);
-        TeacherJpaEntity savedEntity = teacherJpaRepository.save(entity);
-        return teacherMapper.toDomain(savedEntity);
-    }
+    teacherMapper.updateEntity(teacher, entity);
+    TeacherJpaEntity savedEntity = teacherJpaRepository.save(entity);
+    return teacherMapper.toDomain(savedEntity);
+  }
 
-    @Override
-    public boolean existsByAccountId(String accountId) {
-        return teacherJpaRepository.existsByAccountId(accountId);
-    }
+  @Override
+  public boolean existsByAccountId(String accountId) {
+    return teacherJpaRepository.existsByAccountId(accountId);
+  }
 }

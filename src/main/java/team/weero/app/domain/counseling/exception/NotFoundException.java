@@ -8,7 +8,7 @@ import team.weero.app.infrastructure.error.exception.WeeRoException;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class NotFoundException extends WeeRoException {
 
-    public NotFoundException() {
-        super(ErrorCode.USER_NOT_FOUND);
-    }
+  public NotFoundException() {
+    super(ErrorCode.USER_NOT_FOUND);
+  }
 }

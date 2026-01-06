@@ -1,12 +1,12 @@
 package team.weero.app.domain.answer.exception;
 
-import team.weero.app.infrastructure.error.exception.WeeRoException;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
+import team.weero.app.infrastructure.error.exception.WeeRoException;
 
 public class UnauthorizedAccessException extends WeeRoException {
-    public static final WeeRoException EXCEPTION = new UnauthorizedAccessException();
+  public static final WeeRoException EXCEPTION = new UnauthorizedAccessException();
 
-    private UnauthorizedAccessException() {
-        super(ErrorCode.UNAUTHORIZED_ACCESS);
-    }
+  private UnauthorizedAccessException() {
+    super(ErrorCode.UNAUTHORIZED_ACCESS);
+  }
 }

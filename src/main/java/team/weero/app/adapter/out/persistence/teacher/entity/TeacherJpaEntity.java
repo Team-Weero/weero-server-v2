@@ -1,11 +1,10 @@
 package team.weero.app.adapter.out.persistence.teacher.entity;
 
 import jakarta.persistence.*;
+import java.util.UUID;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,37 +14,37 @@ import java.util.UUID;
 @Table(name = "tbl_teacher")
 public class TeacherJpaEntity {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Column(columnDefinition = "BINARY(16)")
+  private UUID id;
 
-    @Column(nullable = false, length = 20)
-    private String name;
+  @Column(nullable = false, length = 20)
+  private String name;
 
-    @Column(nullable = false, unique = true, length = 30)
-    private String accountId;
+  @Column(nullable = false, unique = true, length = 30)
+  private String accountId;
 
-    @Column(nullable = true, length = 255)
-    private String deviceToken;
+  @Column(nullable = true, length = 255)
+  private String deviceToken;
 
-    @Column(nullable = false, length = 255)
-    private String noNotificationStartTime;
+  @Column(nullable = false, length = 255)
+  private String noNotificationStartTime;
 
-    @Column(nullable = false, length = 255)
-    private String noNotificationEndTime;
+  @Column(nullable = false, length = 255)
+  private String noNotificationEndTime;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private UserJpaEntity user;
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  private UserJpaEntity user;
 
-    public void updateNotificationSettings(String startTime, String endTime) {
-        this.noNotificationStartTime = startTime;
-        this.noNotificationEndTime = endTime;
-    }
+  public void updateNotificationSettings(String startTime, String endTime) {
+    this.noNotificationStartTime = startTime;
+    this.noNotificationEndTime = endTime;
+  }
 
-    public void updateDeviceToken(String deviceToken) {
-        this.deviceToken = deviceToken;
-    }
+  public void updateDeviceToken(String deviceToken) {
+    this.deviceToken = deviceToken;
+  }
 }

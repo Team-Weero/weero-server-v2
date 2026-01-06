@@ -8,7 +8,7 @@ import team.weero.app.infrastructure.error.exception.WeeRoException;
 @ResponseStatus(HttpStatus.CONFLICT)
 public class DuplicateReservationException extends WeeRoException {
 
-    public DuplicateReservationException() {
-        super(ErrorCode.DUPLICATE_RESERVATION);
-    }
+  public DuplicateReservationException() {
+    super(ErrorCode.DUPLICATE_RESERVATION);
+  }
 }

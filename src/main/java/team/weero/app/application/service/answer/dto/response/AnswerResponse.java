@@ -9,6 +9,4 @@ public record AnswerResponse(
     String content,
     String studentName,
     String studentNickname,
-    LocalDateTime createdAt
-) {
-}
+    LocalDateTime createdAt) {}
