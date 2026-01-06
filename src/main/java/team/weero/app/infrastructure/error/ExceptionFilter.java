@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 import team.weero.app.infrastructure.error.exception.ErrorResponse;
-import team.weero.app.infrastructure.error.exception.WeeRoException;
+import team.weero.app.infrastructure.security.jwt.exception.WeeRoException;
 
 @Slf4j
 @RequiredArgsConstructor

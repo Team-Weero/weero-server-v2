@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.weero.app.infrastructure.error.exception.ErrorCode;
 import team.weero.app.infrastructure.error.exception.ErrorResponse;
-import team.weero.app.infrastructure.error.exception.WeeRoException;
+import team.weero.app.infrastructure.security.jwt.exception.WeeRoException;
 
 @Slf4j
 @RestControllerAdvice

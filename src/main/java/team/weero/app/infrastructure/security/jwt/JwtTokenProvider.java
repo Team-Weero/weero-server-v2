@@ -17,8 +17,8 @@ import team.weero.app.domain.auth.exception.RefreshTokenNotFoundException;
 import team.weero.app.domain.auth.model.RefreshToken;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.UserRole;
-import team.weero.app.infrastructure.error.exception.ExpiredJwtException;
-import team.weero.app.infrastructure.error.exception.InvalidJwtException;
+import team.weero.app.infrastructure.security.jwt.exception.ExpiredJwtException;
+import team.weero.app.infrastructure.security.jwt.exception.InvalidJwtException;
 import team.weero.app.infrastructure.security.auth.AuthDetailsService;
 
 @Component

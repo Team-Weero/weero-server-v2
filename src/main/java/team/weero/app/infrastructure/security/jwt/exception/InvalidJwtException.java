@@ -1,4 +1,6 @@
-package team.weero.app.infrastructure.error.exception;
+package team.weero.app.infrastructure.security.jwt.exception;
+
+import team.weero.app.infrastructure.error.exception.ErrorCode;
 
 public class InvalidJwtException extends WeeRoException {
 
