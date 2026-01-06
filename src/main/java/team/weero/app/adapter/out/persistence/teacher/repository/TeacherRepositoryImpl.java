@@ -10,7 +10,7 @@ import team.weero.app.adapter.out.persistence.teacher.mapper.TeacherMapper;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
+
  * Teacher Repository 구현체
  * 도메인 Repository 인터페이스를 구현하는 Infrastructure 계층
  */

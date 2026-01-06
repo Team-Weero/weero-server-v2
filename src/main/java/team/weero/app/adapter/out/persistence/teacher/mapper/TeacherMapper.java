@@ -4,13 +4,13 @@ import org.springframework.stereotype.Component;
 import team.weero.app.domain.teacher.model.Teacher;
 import team.weero.app.adapter.out.persistence.teacher.entity.TeacherJpaEntity;
 
-/**
+
  * Teacher 도메인 모델과 JPA Entity 간 매퍼
  */
 @Component
 public class TeacherMapper {
 
-    /**
+    
      * JPA Entity를 도메인 모델로 변환
      * @param entity TeacherJpaEntity
      * @return Teacher 도메인 모델
@@ -31,7 +31,7 @@ public class TeacherMapper {
                 .build();
     }
 
-    /**
+    
      * 도메인 모델을 JPA Entity로 변환
      * @param domain Teacher 도메인 모델
      * @return TeacherJpaEntity
@@ -51,7 +51,7 @@ public class TeacherMapper {
                 .build();
     }
 
-    /**
+    
      * 도메인 모델의 변경사항을 JPA Entity에 적용
      * @param domain Teacher 도메인 모델
      * @param entity TeacherJpaEntity

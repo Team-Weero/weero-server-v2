@@ -33,20 +33,16 @@ public class SendMessageService implements SendMessageUseCase {
     }
 
     public MessageResponse execute(SendMessageRequest request, String accountId) {
-        // Find sender
         var sender = studentJpaRepository.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        // Find chat room
         ChatRoom chatRoom = chatRoomRepository.findById(request.chatRoomId())
                 .orElseThrow(() -> ChatRoomNotFoundException.EXCEPTION);
 
-        // Verify sender is participant
         if (!chatRoom.hasParticipant(sender.getId())) {
             throw UnauthorizedChatAccessException.EXCEPTION;
         }
 
-        // Create message
         Message message = Message.builder()
                 .chatRoomId(chatRoom.getId())
                 .senderId(sender.getId())

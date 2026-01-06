@@ -4,10 +4,6 @@ import lombok.*;
 
 import java.util.UUID;
 
-/**
- * User Domain Model
- * Pure domain object without JPA dependencies
- */
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,9 +13,6 @@ public class User {
     private String password;
     private UserRole role;
 
-    /**
-     * Create a new User with generated UUID
-     */
     public static User create(String password, UserRole role) {
         return User.builder()
                 .id(UUID.randomUUID())
@@ -28,9 +21,6 @@ public class User {
                 .build();
     }
 
-    /**
-     * Update password
-     */
     public User updatePassword(String newPassword) {
         return User.builder()
                 .id(this.id)

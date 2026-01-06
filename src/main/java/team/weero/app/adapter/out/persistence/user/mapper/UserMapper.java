@@ -4,14 +4,14 @@ import org.springframework.stereotype.Component;
 import team.weero.app.domain.user.model.User;
 import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 
-/**
+
  * User Mapper (Infrastructure Layer)
  * Converts between Domain Model and JPA Entity
  */
 @Component
 public class UserMapper {
 
-    /**
+    
      * Convert Domain User to JPA Entity
      * @param user Domain user
      * @return JPA entity
@@ -28,7 +28,7 @@ public class UserMapper {
                 .build();
     }
 
-    /**
+    
      * Convert JPA Entity to Domain User
      * @param entity JPA entity
      * @return Domain user

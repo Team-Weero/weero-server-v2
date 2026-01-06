@@ -18,7 +18,7 @@ public class Message {
     private LocalDateTime sendDate;
     private boolean readStatus;
 
-    // Domain logic methods
+    
     public boolean isSentBy(UUID userId) {
         return this.senderId.equals(userId);
     }

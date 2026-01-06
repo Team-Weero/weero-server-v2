@@ -30,15 +30,12 @@ public class CreateChatRoomService implements CreateChatRoomUseCase {
     }
 
     public ChatRoomResponse execute(CreateChatRoomRequest request, String accountId) {
-        // Find start user (current user) - assuming they're a student
         var startUserStudent = studentJpaRepository.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        // Verify receiver user exists
         var receiverUser = userJpaRepository.findById(request.receiverUserId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        // Check if chat room already exists
         var existingChatRoom = chatRoomRepository.findByParticipants(startUserStudent.getId(), receiverUser.getId());
         if (existingChatRoom.isPresent()) {
             ChatRoom chatRoom = existingChatRoom.get();
@@ -51,7 +48,6 @@ public class CreateChatRoomService implements CreateChatRoomUseCase {
             );
         }
 
-        // Create new chat room
         ChatRoom chatRoom = ChatRoom.builder()
                 .startUserId(startUserStudent.getId())
                 .receiverUserId(receiverUser.getId())

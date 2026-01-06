@@ -22,15 +22,12 @@ public class ApplyForCounselingService implements ApplyForCounselingUseCase {
 
     @Transactional
     public void execute(CounselingRequest request) {
-        // Validate student exists
         studentRepository.findById(request.studentId())
                 .orElseThrow(NotFoundException::new);
 
-        // Validate teacher exists
         teacherRepository.findById(request.teacherId())
                 .orElseThrow(NotFoundException::new);
 
-        // Check for duplicate reservation
         boolean exists = counselingRepository.existsByTeacherIdAndCounselDateAndTime(
                 request.teacherId(),
                 request.date(),
@@ -40,7 +37,6 @@ public class ApplyForCounselingService implements ApplyForCounselingUseCase {
             throw new DuplicateReservationException();
         }
 
-        // Create and save counseling application
         CounselingApplication counseling = CounselingApplication.create(
                 request.studentId(),
                 request.teacherId(),

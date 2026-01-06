@@ -14,7 +14,7 @@ public class ChatRoom {
     private UUID startUserId;
     private UUID receiverUserId;
 
-    // Domain logic methods
+    
     public boolean hasParticipant(UUID userId) {
         return startUserId.equals(userId) || receiverUserId.equals(userId);
     }

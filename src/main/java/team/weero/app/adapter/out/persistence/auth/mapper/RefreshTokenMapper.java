@@ -3,13 +3,13 @@ package team.weero.app.adapter.out.persistence.auth.mapper;
 import team.weero.app.domain.auth.model.RefreshToken;
 import team.weero.app.adapter.out.persistence.auth.entity.RefreshTokenRedisEntity;
 
-/**
+
  * RefreshToken Mapper
  * Maps between domain model and Redis entity
  */
 public class RefreshTokenMapper {
 
-    /**
+    
      * Convert domain model to Redis entity
      */
     public static RefreshTokenRedisEntity toEntity(RefreshToken domain) {
@@ -24,7 +24,7 @@ public class RefreshTokenMapper {
                 .build();
     }
 
-    /**
+    
      * Convert Redis entity to domain model
      */
     public static RefreshToken toDomain(RefreshTokenRedisEntity entity) {

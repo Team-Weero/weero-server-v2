@@ -18,7 +18,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
+    
      * WeeRoException 처리
      */
     @ExceptionHandler(WeeRoException.class)
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
-    /**
+    
      * @Valid 검증 실패 처리
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
                 .body(errors);
     }
 
-    /**
+    
      * 예상치 못한 에러 처리
      */
     @ExceptionHandler(Exception.class)

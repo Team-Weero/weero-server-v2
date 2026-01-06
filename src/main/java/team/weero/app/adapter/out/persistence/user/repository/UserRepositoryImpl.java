@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
+
  * User Repository Implementation (Infrastructure Layer)
  * Implements the domain UserRepository interface using JPA
  */

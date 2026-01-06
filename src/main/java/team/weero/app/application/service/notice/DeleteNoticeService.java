@@ -29,7 +29,6 @@ public class DeleteNoticeService implements DeleteNoticeUseCase {
     }
 
     public void execute(UUID id, String accountId) {
-        // Validate teacher access
         if (studentRepository.findByAccountId(accountId).isPresent()) {
             throw UnauthorizedNoticeAccessException.EXCEPTION;
         }

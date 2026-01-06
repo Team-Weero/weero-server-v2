@@ -7,7 +7,7 @@ import team.weero.app.domain.user.model.UserRole;
 
 import java.util.UUID;
 
-/**
+
  * User JPA Entity (Infrastructure Layer)
  * Handles database persistence with JPA annotations
  */

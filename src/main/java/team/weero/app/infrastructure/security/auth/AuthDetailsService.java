@@ -10,10 +10,6 @@ import team.weero.app.application.port.out.auth.AuthRepository;
 import team.weero.app.domain.student.model.StudentRole;
 import team.weero.app.domain.user.model.UserRole;
 
-/**
- * Auth Details Service
- * Infrastructure layer service for loading user details for Spring Security
- */
 @Service
 @RequiredArgsConstructor
 public class AuthDetailsService implements UserDetailsService {

@@ -12,10 +12,6 @@ import team.weero.app.domain.user.model.UserRole;
 
 import java.util.UUID;
 
-/**
- * Auth Domain Service
- * Handles complex business logic that spans multiple aggregates
- */
 @Service
 @RequiredArgsConstructor
 public class AuthDomainService {
@@ -23,17 +19,11 @@ public class AuthDomainService {
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Register a new student (User + Student creation)
-     * This is a domain service because it coordinates multiple aggregates
-     */
     public void registerStudent(String accountId, String username, String gcn, String password) {
-        // Check if user already exists
         if (authRepository.findStudentByAccountId(accountId).isPresent()) {
             throw UserAlreadyExistsException.EXCEPTION;
         }
 
-        // Create and save User
         User user = User.builder()
                 .id(UUID.randomUUID())
                 .password(passwordEncoder.encode(password))
@@ -42,7 +32,6 @@ public class AuthDomainService {
 
         User savedUser = authRepository.saveUser(user);
 
-        // Create and save Student
         Student student = Student.builder()
                 .id(UUID.randomUUID())
                 .accountId(accountId)
@@ -56,10 +45,6 @@ public class AuthDomainService {
         authRepository.saveStudent(student);
     }
 
-    /**
-     * Generate random nickname
-     * TODO: Implement proper random nickname generation logic
-     */
     private String generateRandomNickname() {
         return "user_" + System.currentTimeMillis();
     }

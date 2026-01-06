@@ -126,47 +126,36 @@ public class JwtTokenProvider {
     }
 
     public String refreshAccessToken(String refreshToken) {
-        // 1. Refresh Token 검증 (만료, 유효성)
         String accountId = getTokenSubject(refreshToken);
 
-        // 2. Redis에 저장된 Refresh Token과 비교
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new team.weero.app.domain.auth.exception.RefreshTokenNotFoundException());
 
-        // 3. accountId 일치 확인
         if (!storedToken.getAccountId().equals(accountId)) {
             throw new team.weero.app.domain.auth.exception.InvalidRefreshTokenException();
         }
 
-        // 4. 토큰에서 Role 정보 추출
         UserRole userRole = getUserRoleFromToken(refreshToken);
         StudentRole studentRole = getStudentRoleFromToken(refreshToken);
 
-        // 5. 새로운 Access Token 발급
         return generateAccessToken(accountId, userRole, studentRole);
     }
 
     public String reissueRefreshToken(String oldRefreshToken) {
-        // 1. 기존 Refresh Token 검증
         String accountId = getTokenSubject(oldRefreshToken);
 
-        // 2. Redis에서 기존 토큰 확인
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(oldRefreshToken)
                 .orElseThrow(() -> new team.weero.app.domain.auth.exception.RefreshTokenNotFoundException());
 
-        // 3. accountId 일치 확인
         if (!storedToken.getAccountId().equals(accountId)) {
             throw new team.weero.app.domain.auth.exception.InvalidRefreshTokenException();
         }
 
-        // 4. 기존 Refresh Token 삭제
         refreshTokenRepository.deleteByAccountId(storedToken.getAccountId());
 
-        // 5. 토큰에서 Role 정보 추출
         UserRole userRole = getUserRoleFromToken(oldRefreshToken);
         StudentRole studentRole = getStudentRoleFromToken(oldRefreshToken);
 
-        // 6. 새로운 Refresh Token 발급
         return generateRefreshToken(accountId, userRole, studentRole);
     }
 }

@@ -32,20 +32,16 @@ public class GetChatRoomMessagesService implements GetChatRoomMessagesUseCase {
     }
 
     public List<MessageResponse> execute(UUID chatRoomId, String accountId) {
-        // Find user
         var user = studentJpaRepository.findByAccountId(accountId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        // Find chat room
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> ChatRoomNotFoundException.EXCEPTION);
 
-        // Verify user is participant
         if (!chatRoom.hasParticipant(user.getId())) {
             throw UnauthorizedChatAccessException.EXCEPTION;
         }
 
-        // Get messages
         return messageRepository.findByChatRoomIdOrderBySendDateAsc(chatRoomId).stream()
                 .map(message -> new MessageResponse(
                     message.getId(),

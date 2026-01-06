@@ -7,7 +7,7 @@ import team.weero.app.adapter.out.persistence.user.entity.UserJpaEntity;
 
 import java.util.UUID;
 
-/**
+
  * Teacher JPA Entity
  * 데이터베이스 테이블과 매핑되는 엔티티
  */
@@ -44,7 +44,7 @@ public class TeacherJpaEntity {
     @JoinColumn(name = "user_id")
     private UserJpaEntity user;
 
-    /**
+    
      * 알림 설정 업데이트
      */
     public void updateNotificationSettings(String startTime, String endTime) {
@@ -52,7 +52,7 @@ public class TeacherJpaEntity {
         this.noNotificationEndTime = endTime;
     }
 
-    /**
+    
      * 디바이스 토큰 업데이트
      */
     public void updateDeviceToken(String deviceToken) {

@@ -28,7 +28,6 @@ public class GetMyNoticesService implements GetMyNoticesUseCase {
     }
 
     public List<NoticeResponse> execute(String accountId) {
-        // Validate teacher access
         if (studentRepository.findByAccountId(accountId).isPresent()) {
             throw UnauthorizedNoticeAccessException.EXCEPTION;
         }

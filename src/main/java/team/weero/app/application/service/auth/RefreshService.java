@@ -11,7 +11,7 @@ import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-/**
+
  * Refresh Token Use Case
  * Application layer use case for refreshing access tokens
  */
@@ -23,10 +23,10 @@ public class RefreshService implements RefreshUseCase {
     private final JwtProperties jwtProperties;
 
     public TokenResponse execute(RefreshTokenRequest request) {
-        // Generate new access token
+        
         String newAccessToken = jwtTokenProvider.refreshAccessToken(request.refreshToken());
 
-        // Generate new refresh token (Refresh Token Rotation)
+        
         String newRefreshToken = jwtTokenProvider.reissueRefreshToken(request.refreshToken());
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));

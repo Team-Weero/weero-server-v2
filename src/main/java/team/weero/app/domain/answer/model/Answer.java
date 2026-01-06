@@ -17,7 +17,7 @@ public class Answer {
     private String content;
     private LocalDateTime createdAt;
 
-    // Domain logic methods can be added here
+    
     public boolean isWrittenBy(UUID studentId) {
         return this.studentId.equals(studentId);
     }

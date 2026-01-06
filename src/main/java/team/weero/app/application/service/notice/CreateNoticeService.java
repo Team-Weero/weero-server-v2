@@ -29,7 +29,6 @@ public class CreateNoticeService implements CreateNoticeUseCase {
     }
 
     public void execute(CreateNoticeRequest request, String accountId) {
-        // Validate teacher access
         if (studentRepository.findByAccountId(accountId).isPresent()) {
             throw UnauthorizedNoticeAccessException.EXCEPTION;
         }

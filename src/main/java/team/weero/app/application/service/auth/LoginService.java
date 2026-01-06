@@ -19,7 +19,7 @@ import team.weero.app.infrastructure.security.jwt.JwtTokenProvider;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-/**
+
  * Login Use Case
  * Application layer use case for user authentication
  */
@@ -35,7 +35,7 @@ public class LoginService implements LoginUseCase {
     public TokenResponse execute(LoginRequest request) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        // Try to find teacher first
+        
         var teacherOpt = authRepository.findTeacherByAccountId(request.accountId());
 
         if (teacherOpt.isPresent()) {
@@ -46,7 +46,7 @@ public class LoginService implements LoginUseCase {
                 throw PasswordIncorrectException.EXCEPTION;
             }
 
-            // Update device token if provided
+            
             String deviceToken = request.deviceToken();
             if (deviceToken != null && !deviceToken.isBlank()) {
                 teacher.updateDeviceToken(deviceToken);
@@ -64,13 +64,13 @@ public class LoginService implements LoginUseCase {
                     .build();
         }
 
-        // Try to find student
+        
         var studentOpt = authRepository.findStudentByAccountId(request.accountId());
 
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();
 
-            // Get student with user for password verification (temporary until full migration)
+            
             var studentWithUserOpt = authRepository.findStudentWithUserByAccountId(request.accountId());
             if (studentWithUserOpt.isEmpty()) {
                 throw UserNotFoundException.EXCEPTION;

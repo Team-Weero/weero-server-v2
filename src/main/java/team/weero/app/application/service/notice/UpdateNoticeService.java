@@ -30,7 +30,6 @@ public class UpdateNoticeService implements UpdateNoticeUseCase {
     }
 
     public void execute(UUID id, UpdateNoticeRequest request, String accountId) {
-        // Validate teacher access
         if (studentRepository.findByAccountId(accountId).isPresent()) {
             throw UnauthorizedNoticeAccessException.EXCEPTION;
         }

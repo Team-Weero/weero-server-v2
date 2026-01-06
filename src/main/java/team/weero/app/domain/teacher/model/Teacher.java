@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.util.UUID;
 
-/**
+
  * Teacher 도메인 모델
  * DDD의 Aggregate Root
  */
@@ -24,7 +24,7 @@ public class Teacher {
     private String noNotificationStartTime;
     private String noNotificationEndTime;
 
-    /**
+    
      * 알림 설정 업데이트
      * @param startTime 알림 시작 시간
      * @param endTime 알림 종료 시간
@@ -34,7 +34,7 @@ public class Teacher {
         this.noNotificationEndTime = endTime;
     }
 
-    /**
+    
      * 디바이스 토큰 업데이트
      * @param deviceToken 디바이스 토큰
      */

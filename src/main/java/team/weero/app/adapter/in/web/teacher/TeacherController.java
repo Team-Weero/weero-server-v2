@@ -10,7 +10,7 @@ import team.weero.app.application.service.teacher.dto.response.TeacherResponse;
 import team.weero.app.application.port.in.teacher.GetMyTeacherInfoUseCase;
 import team.weero.app.application.port.in.teacher.UpdateNotificationSettingsUseCase;
 
-/**
+
  * Teacher 컨트롤러
  * RESTful API 엔드포인트 제공
  */
@@ -22,7 +22,7 @@ public class TeacherController {
     private final GetMyTeacherInfoUseCase getMyTeacherInfoUseCase;
     private final UpdateNotificationSettingsUseCase updateNotificationSettingsUseCase;
 
-    /**
+    
      * 내 선생님 정보 조회
      * @param authentication 인증 정보
      * @return TeacherResponse
@@ -32,7 +32,7 @@ public class TeacherController {
         return getMyTeacherInfoUseCase.execute(authentication.getName());
     }
 
-    /**
+    
      * 알림 설정 업데이트
      * @param request 알림 설정 요청
      * @param authentication 인증 정보

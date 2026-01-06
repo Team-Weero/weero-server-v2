@@ -5,7 +5,7 @@ import team.weero.app.adapter.out.persistence.auth.entity.RefreshTokenRedisEntit
 
 import java.util.Optional;
 
-/**
+
  * RefreshToken Redis Repository
  * Spring Data Redis repository interface
  */
