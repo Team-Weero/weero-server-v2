@@ -4,16 +4,20 @@ server:
 spring:
   application:
     name: WeeRo-Application
+
   web:
     resources:
       add-mappings: false
+
   profiles:
     active: jdbc
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
+
   jpa:
     open-in-view: true
     hibernate:
@@ -21,6 +25,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
   jwt:
     secretKey: ${JWT_SECRET_KEY}
     accessExp: ${JWT_ACCESS_EXP}
