@@ -9,7 +9,7 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Table(name = "tbl_message")
 public class ChatMessageJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
     private String text;
 
     @Column(nullable = false)

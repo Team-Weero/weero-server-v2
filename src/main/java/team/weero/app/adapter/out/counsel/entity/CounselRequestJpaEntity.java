@@ -14,7 +14,7 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Table(name = "tbl_counsel_request")
 public class CounselRequestJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String accessPassword;
 
     @Column(nullable = false)
@@ -28,6 +28,6 @@ public class CounselRequestJpaEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean hasCounselingExperience;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
     private String category;
 }

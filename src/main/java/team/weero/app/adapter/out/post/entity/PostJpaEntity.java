@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Table(name = "tbl_post")
 public class PostJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
     private String title;
 
-    @Column(nullable = false, length = 10000)
+    @Column(nullable = false, columnDefinition = "VARCHAR(10000)")
     private String content;
 
     private LocalDateTime deletedTime;

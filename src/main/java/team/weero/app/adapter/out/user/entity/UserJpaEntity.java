@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Table(name = "tbl_user")
 public class UserJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String email;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String password;
 
     private LocalDateTime deletedTime;

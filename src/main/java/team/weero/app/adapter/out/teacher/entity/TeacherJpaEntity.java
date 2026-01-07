@@ -11,10 +11,10 @@ import java.time.LocalTime;
 @Table(name = "tbl_teacher")
 public class TeacherJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private String name;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String deviceToken;
 
     @Column(nullable = false)

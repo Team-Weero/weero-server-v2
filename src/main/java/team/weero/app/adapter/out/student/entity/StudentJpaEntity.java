@@ -12,13 +12,13 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Table(name = "tbl_student")
 public class StudentJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
     private String accountId;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private String name;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
     private String nickname;
 
     @Column(nullable = false)
