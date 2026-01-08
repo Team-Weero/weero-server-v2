@@ -1,8 +1,7 @@
 package team.weero.app.adapter.out.post.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
 import java.time.LocalDateTime;
@@ -16,6 +15,10 @@ public class PostJpaEntity extends BaseTimeEntity {
 
     @Column(nullable = false, columnDefinition = "VARCHAR(10000)")
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = false)
+    private StudentJpaEntity student;
 
     private LocalDateTime deletedTime;
 

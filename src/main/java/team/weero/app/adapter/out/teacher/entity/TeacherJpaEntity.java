@@ -1,8 +1,7 @@
 package team.weero.app.adapter.out.teacher.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
 import java.time.LocalTime;
@@ -22,4 +21,8 @@ public class TeacherJpaEntity extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalTime noNotificationEndTime;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserJpaEntity user;
 }

@@ -1,8 +1,7 @@
 package team.weero.app.adapter.out.chat.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
 @Entity
@@ -14,4 +13,12 @@ public class ChatMessageJpaEntity extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Boolean readStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserJpaEntity user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_room_id", nullable = false)
+    private ChatRoomJpaEntity chatRoom;
 }
