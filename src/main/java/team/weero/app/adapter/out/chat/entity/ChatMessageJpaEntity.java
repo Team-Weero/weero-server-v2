@@ -8,17 +8,17 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Table(name = "tbl_message")
 public class ChatMessageJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
-    private String text;
+  @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
+  private String text;
 
-    @Column(nullable = false)
-    private Boolean readStatus;
+  @Column(nullable = false)
+  private Boolean readStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserJpaEntity user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private UserJpaEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_id", nullable = false)
-    private ChatRoomJpaEntity chatRoom;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "chat_room_id", nullable = false)
+  private ChatRoomJpaEntity chatRoom;
 }
