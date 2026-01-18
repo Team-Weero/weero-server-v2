@@ -7,12 +7,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_answer")
+@Getter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnswerJpaEntity extends BaseTimeEntity {
 
   @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
