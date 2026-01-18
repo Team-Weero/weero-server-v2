@@ -2,11 +2,16 @@ package team.weero.app.adapter.out.post.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import lombok.*;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_post")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class PostJpaEntity extends BaseTimeEntity {
 
   @Column(nullable = false, columnDefinition = "VARCHAR(100)")
