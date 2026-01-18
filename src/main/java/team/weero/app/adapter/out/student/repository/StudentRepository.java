@@ -9,5 +9,5 @@ import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 @Repository
 public interface StudentRepository extends CrudRepository<StudentJpaEntity, UUID> {
 
-  Optional<StudentJpaEntity> findByUserId(UUID userId);
+  Optional<StudentJpaEntity> findByUser_Id(UUID userId);
 }
