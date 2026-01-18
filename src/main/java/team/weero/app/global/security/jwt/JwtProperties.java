@@ -17,6 +17,15 @@ public class JwtProperties {
 
   public JwtProperties(
       String secretKey, int accessExp, int refreshExp, String header, String prefix) {
+    if (secretKey == null || secretKey.trim().isEmpty()) {
+      throw new IllegalArgumentException("JWT secret key cannot be null or empty");
+    }
+    if (secretKey.getBytes(StandardCharsets.UTF_8).length < 64) {
+      throw new IllegalArgumentException(
+          "JWT secret key must be at least 64 bytes for HS512 (current: "
+              + secretKey.getBytes(StandardCharsets.UTF_8).length
+              + " bytes)");
+    }
     this.secretKey = secretKey;
     this.accessExp = accessExp;
     this.refreshExp = refreshExp;
