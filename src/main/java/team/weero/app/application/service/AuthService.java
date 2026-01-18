@@ -122,8 +122,13 @@ public class AuthService
 
   @Override
   public AuthUser execute() {
-    CustomUserDetails userDetails =
-        (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    if (!(principal instanceof CustomUserDetails)) {
+      throw new IllegalStateException("Authentication principal is not CustomUserDetails");
+    }
+
+    CustomUserDetails userDetails = (CustomUserDetails) principal;
 
     return loadUserPort
         .loadByEmail(userDetails.getEmail())
