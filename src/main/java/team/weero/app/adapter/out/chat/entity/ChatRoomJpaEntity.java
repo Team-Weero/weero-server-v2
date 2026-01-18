@@ -9,11 +9,11 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Table(name = "tbl_chat_room")
 public class ChatRoomJpaEntity extends BaseTimeEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    private StudentJpaEntity student;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "student_id", nullable = false)
+  private StudentJpaEntity student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private TeacherJpaEntity teacher;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "teacher_id", nullable = false)
+  private TeacherJpaEntity teacher;
 }

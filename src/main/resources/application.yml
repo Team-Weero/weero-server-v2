@@ -14,45 +14,49 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/weero_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&createDatabaseIfNotExist=true}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:mysqlpassword}
 
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
+        show_sql: true
 
   jwt:
-    secretKey: ${JWT_SECRET_KEY}
-    accessExp: ${JWT_ACCESS_EXP}
-    refreshExp: ${JWT_REFRESH_EXP}
-    header: ${JWT_HEADER}
-    prefix: ${JWT_PREFIX}
+    secretKey: ${JWT_SECRET_KEY:test-secret-key-for-jwt-token-generation-minimum-32-characters-required}
+    accessExp: ${JWT_ACCESS_EXP:3600}
+    refreshExp: ${JWT_REFRESH_EXP:604800}
+    header: ${JWT_HEADER:Authorization}
+    prefix: ${JWT_PREFIX:Bearer }
 
   admin:
     teacher:
-      id: ${TEACHER_ID}
-      password: ${TEACHER_PASSWORD}
-      name: ${TEACHER_NAME}
-      notification-start-time: ${TEACHER_NOTIFICATION_START}
-      notification-end-time: ${TEACHER_NOTIFICATION_END}
+      email: ${ADMIN_TEACHER_EMAIL:admin@weero.com}
+      password: ${ADMIN_TEACHER_PASSWORD:admin123}
+      name: ${ADMIN_TEACHER_NAME:관리자}
+      device-token: ${ADMIN_TEACHER_DEVICE_TOKEN:admin-device-token}
+      notification-start-time: ${ADMIN_TEACHER_NOTIFICATION_START_TIME:22:00:00}
+      notification-end-time: ${ADMIN_TEACHER_NOTIFICATION_END_TIME:07:00:00}
 
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
 firebase:
   credentials:
-    json: ${FIREBASE_CREDENTIALS_JSON}
+    json: "{}"
 
 logging:
   level:
     root: INFO
-    org.springframework.jdbc: WARN
-    org.hibernate.SQL: WARN
-    org.hibernate.type.descriptor.sql.BasicBinder: OFF
+    org.springframework.jdbc: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    team.weero.app: DEBUG

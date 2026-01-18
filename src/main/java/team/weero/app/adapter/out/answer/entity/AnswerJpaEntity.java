@@ -1,35 +1,42 @@
 package team.weero.app.adapter.out.answer.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "tbl_answer")
+@Getter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnswerJpaEntity extends BaseTimeEntity {
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
-    private String answer;
+  @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
+  private String answer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserJpaEntity user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private UserJpaEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private PostJpaEntity post;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "post_id", nullable = false)
+  private PostJpaEntity post;
 
-    private LocalDateTime deletedTime;
+  private LocalDateTime deletedTime;
 
-    public void markDeleted() {
-        this.deletedTime = LocalDateTime.now();
-    }
+  public void markDeleted() {
+    this.deletedTime = LocalDateTime.now();
+  }
 }
