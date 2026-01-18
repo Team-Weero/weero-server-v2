@@ -1,10 +1,14 @@
 package team.weero.app.adapter.in.web;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +33,7 @@ import team.weero.app.application.port.in.UpdateNoticeUseCase;
 @RestController
 @RequestMapping("/api/notices")
 @RequiredArgsConstructor
+@Validated
 public class NoticeController {
 
   private final CreateNoticeUseCase createNoticeUseCase;
@@ -67,7 +72,8 @@ public class NoticeController {
 
   @GetMapping
   public ResponseEntity<NoticeListResponse> getNoticeList(
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "0") @Min(0) int page,
+      @RequestParam(defaultValue = "10") @Positive @Max(100) int size) {
     NoticeListResponse response = getNoticeListUseCase.getList(page, size);
     return ResponseEntity.ok(response);
   }
