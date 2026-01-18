@@ -15,6 +15,7 @@ import team.weero.app.application.port.out.DeleteNoticePort;
 import team.weero.app.application.port.out.LoadNoticePort;
 import team.weero.app.application.port.out.SaveNoticePort;
 import team.weero.app.domain.notice.Notice;
+import team.weero.app.global.exception.NoticeNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -73,10 +74,11 @@ public class NoticeJpaAdapter
 
   @Override
   public boolean isOwner(UUID noticeId, UUID userId) {
-    return noticeRepository
-        .findByIdAndDeletedTimeIsNull(noticeId)
-        .map(notice -> notice.getUser().getId().equals(userId))
-        .orElse(false);
+    NoticeJpaEntity notice =
+        noticeRepository
+            .findByIdAndDeletedTimeIsNull(noticeId)
+            .orElseThrow(NoticeNotFoundException::new);
+    return notice.getUser().getId().equals(userId);
   }
 
   private Notice toDomain(NoticeJpaEntity entity) {
