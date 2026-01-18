@@ -17,7 +17,7 @@ public class LoadStudentAdapter implements LoadStudentPort {
 
   @Override
   public Optional<StudentInfo> loadByUserId(UUID userId) {
-    return studentRepository.findByUserId(userId).map(this::toStudentInfo);
+    return studentRepository.findByUser_Id(userId).map(this::toStudentInfo);
   }
 
   private StudentInfo toStudentInfo(StudentJpaEntity entity) {

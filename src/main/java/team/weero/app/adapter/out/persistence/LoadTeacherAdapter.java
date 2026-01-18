@@ -17,7 +17,7 @@ public class LoadTeacherAdapter implements LoadTeacherPort {
 
   @Override
   public Optional<TeacherInfo> loadByUserId(UUID userId) {
-    return teacherRepository.findByUserId(userId).map(this::toTeacherInfo);
+    return teacherRepository.findByUser_Id(userId).map(this::toTeacherInfo);
   }
 
   private TeacherInfo toTeacherInfo(TeacherJpaEntity entity) {

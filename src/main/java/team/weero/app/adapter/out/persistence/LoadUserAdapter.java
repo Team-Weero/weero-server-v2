@@ -39,11 +39,11 @@ public class LoadUserAdapter implements LoadUserPort {
   }
 
   private Authority determineAuthority(java.util.UUID userId) {
-    if (studentRepository.findByUserId(userId).isPresent()) {
+    if (studentRepository.findByUser_Id(userId).isPresent()) {
       return Authority.STUDENT;
     }
 
-    if (teacherRepository.findByUserId(userId).isPresent()) {
+    if (teacherRepository.findByUser_Id(userId).isPresent()) {
       return Authority.TEACHER;
     }
 
