@@ -27,7 +27,7 @@ public class PostPersistenceAdapter
 
   @Override
   public Optional<Post> getById(UUID postId) {
-    return postRepository.findById(postId).map(postMapper::toDomain);
+    return postRepository.findByIdAndDeletedAtIsNull(postId).map(postMapper::toDomain);
   }
 
   @Override
