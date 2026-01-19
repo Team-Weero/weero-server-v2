@@ -1,0 +1,11 @@
+package team.weero.app.application.exception.student;
+
+import team.weero.app.application.exception.student.error.StudentErrorCode;
+import team.weero.app.global.error.exception.WeeRoException;
+
+public class StudentNotFoundException extends WeeRoException {
+
+  public StudentNotFoundException() {
+    super(StudentErrorCode.STUDENT_NOT_FOUND);
+  }
+}

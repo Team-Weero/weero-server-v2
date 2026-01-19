@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.notice.entity.NoticeJpaEntity;
 import team.weero.app.adapter.out.notice.repository.NoticeRepository;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
-import team.weero.app.application.port.out.CheckNoticeOwnerPort;
-import team.weero.app.application.port.out.DeleteNoticePort;
-import team.weero.app.application.port.out.LoadNoticePort;
-import team.weero.app.application.port.out.SaveNoticePort;
+import team.weero.app.application.exception.notice.NoticeNotFoundException;
+import team.weero.app.application.port.out.notice.CheckNoticeOwnerPort;
+import team.weero.app.application.port.out.notice.DeleteNoticePort;
+import team.weero.app.application.port.out.notice.LoadNoticePort;
+import team.weero.app.application.port.out.notice.SaveNoticePort;
 import team.weero.app.domain.notice.Notice;
-import team.weero.app.global.exception.NoticeNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class NoticeJpaAdapter
               .title(notice.getTitle())
               .content(notice.getContent())
               .user(existing.getUser())
-              .deletedTime(existing.getDeletedTime())
+              .deletedAt(existing.getDeletedAt())
               .build();
     }
 
@@ -57,17 +57,17 @@ public class NoticeJpaAdapter
 
   @Override
   public Optional<Notice> loadById(UUID id) {
-    return noticeRepository.findByIdAndDeletedTimeIsNull(id).map(this::toDomain);
+    return noticeRepository.findByIdAndDeletedAtIsNull(id).map(this::toDomain);
   }
 
   @Override
   public Page<Notice> loadAll(Pageable pageable) {
-    return noticeRepository.findAllByDeletedTimeIsNull(pageable).map(this::toDomain);
+    return noticeRepository.findAllByDeletedAtIsNull(pageable).map(this::toDomain);
   }
 
   @Override
   public void delete(UUID id) {
-    NoticeJpaEntity entity = noticeRepository.findByIdAndDeletedTimeIsNull(id).orElseThrow();
+    NoticeJpaEntity entity = noticeRepository.findByIdAndDeletedAtIsNull(id).orElseThrow();
     entity.markDeleted();
     noticeRepository.save(entity);
   }
@@ -76,7 +76,7 @@ public class NoticeJpaAdapter
   public boolean isOwner(UUID noticeId, UUID userId) {
     NoticeJpaEntity notice =
         noticeRepository
-            .findByIdAndDeletedTimeIsNull(noticeId)
+            .findByIdAndDeletedAtIsNull(noticeId)
             .orElseThrow(NoticeNotFoundException::new);
     return notice.getUser().getId().equals(userId);
   }

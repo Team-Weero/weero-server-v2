@@ -24,9 +24,9 @@ public class UserJpaEntity extends BaseTimeEntity {
   @Column(nullable = false, columnDefinition = "VARCHAR(255)")
   private String password;
 
-  private LocalDateTime deletedTime;
+  private LocalDateTime deletedAt;
 
   public void markDeleted() {
-    this.deletedTime = LocalDateTime.now();
+    this.deletedAt = LocalDateTime.now();
   }
 }

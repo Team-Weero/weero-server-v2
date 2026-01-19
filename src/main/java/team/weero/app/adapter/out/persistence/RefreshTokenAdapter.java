@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.auth.entity.RefreshTokenJpaEntity;
 import team.weero.app.adapter.out.auth.repository.RefreshTokenRedisRepository;
-import team.weero.app.application.port.out.LoadRefreshTokenPort;
-import team.weero.app.application.port.out.SaveRefreshTokenPort;
+import team.weero.app.application.port.out.auth.LoadRefreshTokenPort;
+import team.weero.app.application.port.out.auth.SaveRefreshTokenPort;
 import team.weero.app.domain.auth.RefreshToken;
 
 @Component

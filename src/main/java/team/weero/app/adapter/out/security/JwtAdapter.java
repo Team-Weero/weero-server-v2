@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
-import team.weero.app.application.port.out.JwtPort;
-import team.weero.app.application.port.out.TokenClaims;
+import team.weero.app.adapter.in.web.auth.dto.response.TokenClaims;
+import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.domain.auth.type.Authority;
-import team.weero.app.global.exception.ExpiredTokenException;
-import team.weero.app.global.exception.InvalidTokenException;
 import team.weero.app.global.security.jwt.JwtConstants;
 import team.weero.app.global.security.jwt.JwtProperties;
+import team.weero.app.global.security.jwt.exception.ExpiredTokenException;
+import team.weero.app.global.security.jwt.exception.InvalidTokenException;
 
 @Component
 public class JwtAdapter implements JwtPort {
