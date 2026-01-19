@@ -29,4 +29,9 @@ public class PostJpaEntity extends BaseTimeEntity {
   public void markDeleted() {
     this.deletedAt = LocalDateTime.now();
   }
+
+  public void update(String title, String content) {
+    if (title != null) this.title = title;
+    if (content != null) this.content = content;
+  }
 }

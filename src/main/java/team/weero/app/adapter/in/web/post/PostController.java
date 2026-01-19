@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.post.dto.request.CreatePostRequest;
+import team.weero.app.adapter.in.web.post.dto.request.UpdatePostRequest;
 import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse;
 import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
 import team.weero.app.application.port.in.post.*;
@@ -21,6 +22,7 @@ public class PostController {
   private final GetPostUseCase getPostUseCase;
   private final GetMyPostsUseCase getMyPostsUseCase;
   private final DeletePostUseCase deletePostUseCase;
+  private final UpdatePostUseCase updatePostUseCase;
 
   @PostMapping("/")
   public void create(
@@ -52,5 +54,11 @@ public class PostController {
   public void delete(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
     deletePostUseCase.execute(postId, userDetails.getUserId());
+  }
+
+  @PatchMapping("/{postId}")
+  @ResponseStatus(HttpStatus.OK)
+  public void update(@PathVariable UUID postId, @Valid @RequestBody UpdatePostRequest request) {
+    updatePostUseCase.execute(postId, request);
   }
 }

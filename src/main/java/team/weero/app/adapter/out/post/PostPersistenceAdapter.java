@@ -10,16 +10,14 @@ import team.weero.app.adapter.out.post.mapper.PostMapper;
 import team.weero.app.adapter.out.post.repository.PostRepository;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.student.repository.StudentRepository;
+import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
-import team.weero.app.application.port.out.post.DeletePostPort;
-import team.weero.app.application.port.out.post.GetPostPort;
-import team.weero.app.application.port.out.post.LoadPostEntityPort;
-import team.weero.app.application.port.out.post.SavePostPort;
+import team.weero.app.application.port.out.post.*;
 import team.weero.app.domain.post.model.Post;
 
 @Component
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements GetPostPort, SavePostPort, DeletePostPort, LoadPostEntityPort {
+public class PostPersistenceAdapter implements GetPostPort, SavePostPort, DeletePostPort, LoadPostEntityPort, UpdatePostPort {
 
   private final PostRepository postRepository;
   private final PostMapper postMapper;
@@ -64,5 +62,15 @@ public class PostPersistenceAdapter implements GetPostPort, SavePostPort, Delete
   @Override
   public void softDelete(PostJpaEntity post) {
     post.markDeleted();
+  }
+
+  @Override
+  public void update(UUID postId, String title, String content) {
+    PostJpaEntity post = postRepository.findById(postId)
+            .orElseThrow(PostNotFoundException::new);
+
+    post.update(title, content);
+
+    postRepository.save(post);
   }
 }

@@ -19,14 +19,6 @@ public class Post {
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;
 
-  public Post(UUID id, String title, String content, UUID studentId, LocalDateTime deletedAt) {
-    this.id = id;
-    this.title = title;
-    this.content = content;
-    this.studentId = studentId;
-    this.deletedAt = deletedAt;
-  }
-
   public boolean isDeleted() {
     return deletedAt != null;
   }

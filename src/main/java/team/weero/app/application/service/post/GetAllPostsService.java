@@ -13,7 +13,7 @@ import team.weero.app.domain.post.model.Post;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class GetAllPostService implements GetAllPostUseCase {
+public class GetAllPostsService implements GetAllPostUseCase {
 
   private final GetPostPort getPostPort;
 
