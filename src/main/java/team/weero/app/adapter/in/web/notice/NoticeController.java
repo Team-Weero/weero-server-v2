@@ -22,12 +22,12 @@ import team.weero.app.adapter.in.web.notice.dto.request.CreateNoticeCommand;
 import team.weero.app.adapter.in.web.notice.dto.request.CreateNoticeRequest;
 import team.weero.app.adapter.in.web.notice.dto.request.UpdateNoticeCommand;
 import team.weero.app.adapter.in.web.notice.dto.request.UpdateNoticeRequest;
+import team.weero.app.adapter.in.web.notice.dto.response.NoticeListResponse;
+import team.weero.app.adapter.in.web.notice.dto.response.NoticeResponse;
 import team.weero.app.application.port.in.notice.CreateNoticeUseCase;
 import team.weero.app.application.port.in.notice.DeleteNoticeUseCase;
 import team.weero.app.application.port.in.notice.GetNoticeListUseCase;
 import team.weero.app.application.port.in.notice.GetNoticeUseCase;
-import team.weero.app.adapter.in.web.notice.dto.response.NoticeListResponse;
-import team.weero.app.adapter.in.web.notice.dto.response.NoticeResponse;
 import team.weero.app.application.port.in.notice.UpdateNoticeUseCase;
 
 @RestController

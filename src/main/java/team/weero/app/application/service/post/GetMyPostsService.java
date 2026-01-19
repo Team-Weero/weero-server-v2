@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse;
 import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse.PostItem;
-import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
+import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.post.GetMyPostsUseCase;
-import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.application.port.out.post.GetPostPort;
+import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.domain.post.model.Post;
 
 @Service

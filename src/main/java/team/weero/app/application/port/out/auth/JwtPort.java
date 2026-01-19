@@ -2,7 +2,6 @@ package team.weero.app.application.port.out.auth;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import team.weero.app.adapter.in.web.auth.dto.response.TokenClaims;
 import team.weero.app.domain.auth.type.Authority;
 

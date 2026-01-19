@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.student.repository.StudentRepository;
-import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.application.port.out.student.LoadStudentPort;
 
 @Component
