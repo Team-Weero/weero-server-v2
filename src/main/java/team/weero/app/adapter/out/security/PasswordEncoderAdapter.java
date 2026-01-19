@@ -3,7 +3,7 @@ package team.weero.app.adapter.out.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import team.weero.app.application.port.out.PasswordEncoderPort;
+import team.weero.app.application.port.out.auth.PasswordEncoderPort;
 
 @Component
 @RequiredArgsConstructor

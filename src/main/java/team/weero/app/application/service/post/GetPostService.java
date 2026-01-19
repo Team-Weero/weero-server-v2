@@ -4,7 +4,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.adapter.in.post.dto.response.GetPostResponse;
+import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.port.in.post.GetPostUseCase;
 import team.weero.app.application.port.out.post.GetPostPort;

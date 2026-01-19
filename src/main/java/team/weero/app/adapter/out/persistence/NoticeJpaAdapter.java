@@ -11,10 +11,10 @@ import team.weero.app.adapter.out.notice.entity.NoticeJpaEntity;
 import team.weero.app.adapter.out.notice.repository.NoticeRepository;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.application.exception.notice.NoticeNotFoundException;
-import team.weero.app.application.port.out.CheckNoticeOwnerPort;
-import team.weero.app.application.port.out.DeleteNoticePort;
-import team.weero.app.application.port.out.LoadNoticePort;
-import team.weero.app.application.port.out.SaveNoticePort;
+import team.weero.app.application.port.out.notice.CheckNoticeOwnerPort;
+import team.weero.app.application.port.out.notice.DeleteNoticePort;
+import team.weero.app.application.port.out.notice.LoadNoticePort;
+import team.weero.app.application.port.out.notice.SaveNoticePort;
 import team.weero.app.domain.notice.Notice;
 
 @Component

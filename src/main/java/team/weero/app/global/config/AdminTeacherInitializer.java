@@ -10,7 +10,7 @@ import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.adapter.out.user.repository.UserRepository;
-import team.weero.app.application.port.out.PasswordEncoderPort;
+import team.weero.app.application.port.out.auth.PasswordEncoderPort;
 
 @Component
 @RequiredArgsConstructor

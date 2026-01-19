@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
-import team.weero.app.application.port.out.SaveTeacherPort;
+import team.weero.app.application.port.out.teacher.SaveTeacherPort;
 
 @Component
 @RequiredArgsConstructor

@@ -8,13 +8,10 @@ import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 import team.weero.app.application.exception.post.ForbiddenPostAccessException;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
-import team.weero.app.application.port.in.StudentInfo;
+import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.application.port.in.post.DeletePostUseCase;
-import team.weero.app.application.port.out.LoadStudentPort;
-import team.weero.app.application.port.out.post.GetPostPort;
+import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.application.port.out.post.LoadPostEntityPort;
-import team.weero.app.application.port.out.post.SavePostPort;
-import team.weero.app.domain.post.model.Post;
 
 @Service
 @RequiredArgsConstructor
