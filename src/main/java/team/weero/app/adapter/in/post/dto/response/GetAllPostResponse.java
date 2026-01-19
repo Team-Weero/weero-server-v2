@@ -1,14 +1,17 @@
 package team.weero.app.adapter.in.post.dto.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
-public record GetAllPostResponse(
-        /**
-         * 좋아요 조회수 추후에 추가
-         */
-        String title,
-        String content,
-        String name,
-        LocalDateTime createdAt
-) {
+public record GetAllPostResponse(List<PostItem> posts) {
+  public record PostItem(
+      UUID id,
+      String title,
+      String content,
+      String studentName,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt
+      /** 좋아요 조회수 추후 추가 */
+      ) {}
 }

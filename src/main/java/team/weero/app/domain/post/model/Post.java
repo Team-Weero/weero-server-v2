@@ -1,27 +1,33 @@
 package team.weero.app.domain.post.model;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
-import java.util.UUID;
-
 @Getter
+@Builder
+@AllArgsConstructor
 public class Post {
-    private final UUID id;
-    private final String title;
-    private final String content;
-    private final UUID studentId;
-    private final boolean deleted;
+  private final UUID id;
+  private final String title;
+  private final String content;
+  private final UUID studentId;
+  private String studentName;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private LocalDateTime deletedAt;
 
-    public Post(UUID id, String title, String content, UUID studentId, boolean deleted) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.studentId = studentId;
-        this.deleted = deleted;
-    }
+  public Post(UUID id, String title, String content, UUID studentId, LocalDateTime deletedAt) {
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.studentId = studentId;
+    this.deletedAt = deletedAt;
+  }
 
-    public Post markDeleted() {
-        return new Post(this.id, this.title, this.content, this.studentId, true);
-    }
+  public boolean isDeleted() {
+    return deletedAt != null;
+  }
 }
-

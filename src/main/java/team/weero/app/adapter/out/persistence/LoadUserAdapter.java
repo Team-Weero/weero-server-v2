@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.student.repository.StudentRepository;
 import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
 import team.weero.app.adapter.out.user.repository.UserRepository;
+import team.weero.app.application.exception.auth.UserNotFoundException;
 import team.weero.app.application.port.out.LoadUserPort;
 import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.auth.type.Authority;
-import team.weero.app.global.exception.UserNotFoundException;
 
 @Component
 @RequiredArgsConstructor

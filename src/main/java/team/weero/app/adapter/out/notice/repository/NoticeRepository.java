@@ -11,7 +11,7 @@ import team.weero.app.adapter.out.notice.entity.NoticeJpaEntity;
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeJpaEntity, UUID> {
 
-  Page<NoticeJpaEntity> findAllByDeletedTimeIsNull(Pageable pageable);
+  Page<NoticeJpaEntity> findAllByDeletedAtIsNull(Pageable pageable);
 
-  Optional<NoticeJpaEntity> findByIdAndDeletedTimeIsNull(UUID id);
+  Optional<NoticeJpaEntity> findByIdAndDeletedAtIsNull(UUID id);
 }

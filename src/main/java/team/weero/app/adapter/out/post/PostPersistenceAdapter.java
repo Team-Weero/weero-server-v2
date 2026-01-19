@@ -1,0 +1,68 @@
+package team.weero.app.adapter.out.post;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import team.weero.app.adapter.out.post.entity.PostJpaEntity;
+import team.weero.app.adapter.out.post.mapper.PostMapper;
+import team.weero.app.adapter.out.post.repository.PostRepository;
+import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
+import team.weero.app.adapter.out.student.repository.StudentRepository;
+import team.weero.app.application.exception.student.StudentNotFoundException;
+import team.weero.app.application.port.out.post.DeletePostPort;
+import team.weero.app.application.port.out.post.GetPostPort;
+import team.weero.app.application.port.out.post.LoadPostEntityPort;
+import team.weero.app.application.port.out.post.SavePostPort;
+import team.weero.app.domain.post.model.Post;
+
+@Component
+@RequiredArgsConstructor
+public class PostPersistenceAdapter implements GetPostPort, SavePostPort, DeletePostPort, LoadPostEntityPort {
+
+  private final PostRepository postRepository;
+  private final PostMapper postMapper;
+  private final StudentRepository studentRepository;
+
+  @Override
+  public Optional<Post> getById(UUID postId) {
+    return postRepository.findById(postId).map(postMapper::toDomain);
+  }
+
+  @Override
+  public List<Post> getAll() {
+    return postRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc().stream()
+        .map(postMapper::toDomain)
+        .toList();
+  }
+
+  @Override
+  public List<Post> getAllByStudentId(UUID studentId) {
+    return postRepository
+        .findAllByStudentIdAndDeletedAtIsNullOrderByCreatedAtDesc(studentId)
+        .stream()
+        .map(postMapper::toDomain)
+        .toList();
+  }
+
+  @Override
+  public Optional<PostJpaEntity> loadEntityById(UUID postId) {
+    return postRepository.findById(postId);
+  }
+
+  @Override
+  public Post save(Post post) {
+    StudentJpaEntity student =
+        studentRepository.findById(post.getStudentId()).orElseThrow(StudentNotFoundException::new);
+
+    PostJpaEntity entity = PostMapper.toEntity(post, student);
+    PostJpaEntity savedEntity = postRepository.save(entity);
+    return postMapper.toDomain(savedEntity);
+  }
+
+  @Override
+  public void softDelete(PostJpaEntity post) {
+    post.markDeleted();
+  }
+}
