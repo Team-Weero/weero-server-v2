@@ -28,7 +28,6 @@ public class CreatePostService implements CreatePostUseCase {
 
     Post post =
         Post.builder()
-            .id(UUID.randomUUID())
             .title(request.title())
             .content(request.content())
             .studentId(studentInfo.id())
