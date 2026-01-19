@@ -64,6 +64,7 @@ public class PostPersistenceAdapter
   @Override
   public void softDelete(PostJpaEntity post) {
     post.markDeleted();
+    postRepository.save(post);
   }
 
   @Override
