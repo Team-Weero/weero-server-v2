@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.weero.app.application.exception.notice.NoticeNotFoundException;
 import team.weero.app.application.port.in.CreateNoticeCommand;
 import team.weero.app.application.port.in.CreateNoticeUseCase;
 import team.weero.app.application.port.in.DeleteNoticeUseCase;
@@ -23,8 +24,7 @@ import team.weero.app.application.port.out.LoadNoticePort;
 import team.weero.app.application.port.out.SaveNoticePort;
 import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.notice.Notice;
-import team.weero.app.global.exception.ForbiddenException;
-import team.weero.app.global.exception.NoticeNotFoundException;
+import team.weero.app.global.common.exception.ForbiddenException;
 
 @Service
 @RequiredArgsConstructor

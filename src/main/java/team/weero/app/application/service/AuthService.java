@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
+import team.weero.app.application.exception.auth.DuplicateEmailException;
+import team.weero.app.application.exception.auth.TeacherSignUpNotAllowedException;
+import team.weero.app.application.exception.auth.UserNotFoundException;
 import team.weero.app.application.port.in.GetCurrentUserUseCase;
 import team.weero.app.application.port.in.ReissueTokenUseCase;
 import team.weero.app.application.port.in.SignInCommand;
@@ -26,13 +29,10 @@ import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.auth.RefreshToken;
 import team.weero.app.domain.auth.type.Authority;
 import team.weero.app.domain.student.type.StudentRole;
-import team.weero.app.global.exception.DuplicateEmailException;
-import team.weero.app.global.exception.ExpiredTokenException;
-import team.weero.app.global.exception.InvalidCredentialsException;
-import team.weero.app.global.exception.InvalidTokenException;
-import team.weero.app.global.exception.TeacherSignUpNotAllowedException;
-import team.weero.app.global.exception.UserNotFoundException;
 import team.weero.app.global.security.CustomUserDetails;
+import team.weero.app.global.security.jwt.exception.ExpiredTokenException;
+import team.weero.app.global.security.jwt.exception.InvalidCredentialsException;
+import team.weero.app.global.security.jwt.exception.InvalidTokenException;
 
 @Service
 @RequiredArgsConstructor
