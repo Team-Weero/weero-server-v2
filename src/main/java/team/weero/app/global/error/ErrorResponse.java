@@ -1,4 +1,4 @@
-package team.weero.app.global.exception;
+package team.weero.app.global.error;
 
 public class ErrorResponse {
 

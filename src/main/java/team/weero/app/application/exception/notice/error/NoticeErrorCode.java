@@ -1,4 +1,6 @@
-package team.weero.app.global.exception;
+package team.weero.app.application.exception.notice.error;
+
+import team.weero.app.global.error.ErrorProperty;
 
 public enum NoticeErrorCode implements ErrorProperty {
   NOTICE_NOT_FOUND(404, "Notice Not Found", 1),

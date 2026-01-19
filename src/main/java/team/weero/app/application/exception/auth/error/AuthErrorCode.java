@@ -1,4 +1,6 @@
-package team.weero.app.global.exception;
+package team.weero.app.application.exception.auth.error;
+
+import team.weero.app.global.error.ErrorProperty;
 
 public enum AuthErrorCode implements ErrorProperty {
   INVALID_CREDENTIALS(401, "Invalid Credentials", 1),
