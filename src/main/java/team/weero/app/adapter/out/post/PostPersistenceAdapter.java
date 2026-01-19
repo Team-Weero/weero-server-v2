@@ -69,7 +69,7 @@ public class PostPersistenceAdapter
 
   @Override
   public void update(UUID postId, UUID userId, String title, String content) {
-    PostJpaEntity post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    PostJpaEntity post = postRepository.findByIdAndDeletedAtIsNull(postId).orElseThrow(PostNotFoundException::new);
 
     if (!post.getStudent().getUser().getId().equals(userId)) {
       throw new ForbiddenPostAccessException();
