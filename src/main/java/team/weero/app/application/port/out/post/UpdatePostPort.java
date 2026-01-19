@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface UpdatePostPort {
 
-  void update(UUID postId, String title, String content);
+  void update(UUID postId, UUID userId, String title, String content);
 }

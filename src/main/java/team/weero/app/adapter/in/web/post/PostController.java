@@ -58,7 +58,10 @@ public class PostController {
 
   @PatchMapping("/{postId}")
   @ResponseStatus(HttpStatus.OK)
-  public void update(@PathVariable UUID postId, @Valid @RequestBody UpdatePostRequest request) {
-    updatePostUseCase.execute(postId, request);
+  public void update(
+      @PathVariable UUID postId,
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @Valid @RequestBody UpdatePostRequest request) {
+    updatePostUseCase.execute(postId, userDetails.getUserId(), request);
   }
 }

@@ -10,6 +10,7 @@ import team.weero.app.adapter.out.post.mapper.PostMapper;
 import team.weero.app.adapter.out.post.repository.PostRepository;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.student.repository.StudentRepository;
+import team.weero.app.application.exception.post.ForbiddenPostAccessException;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.out.post.*;
@@ -66,8 +67,12 @@ public class PostPersistenceAdapter
   }
 
   @Override
-  public void update(UUID postId, String title, String content) {
+  public void update(UUID postId, UUID userId, String title, String content) {
     PostJpaEntity post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+
+    if (!post.getStudent().getUser().getId().equals(userId)) {
+      throw new ForbiddenPostAccessException();
+    }
 
     post.update(title, content);
 
