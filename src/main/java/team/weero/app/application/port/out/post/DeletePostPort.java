@@ -1,7 +1,7 @@
 package team.weero.app.application.port.out.post;
 
-import team.weero.app.adapter.out.post.entity.PostJpaEntity;
+import java.util.UUID;
 
 public interface DeletePostPort {
-  void softDelete(PostJpaEntity post);
+  void softDelete(UUID postId, UUID userId);
 }

@@ -62,14 +62,22 @@ public class PostPersistenceAdapter
   }
 
   @Override
-  public void softDelete(PostJpaEntity post) {
+  public void softDelete(UUID postId, UUID userId) {
+    PostJpaEntity post =
+        postRepository.findByIdAndDeletedAtIsNull(postId).orElseThrow(PostNotFoundException::new);
+
+    if (post.getStudent() == null || !post.getStudent().getUser().getId().equals(userId)) {
+      throw new ForbiddenPostAccessException();
+    }
+
     post.markDeleted();
     postRepository.save(post);
   }
 
   @Override
   public void update(UUID postId, UUID userId, String title, String content) {
-    PostJpaEntity post = postRepository.findByIdAndDeletedAtIsNull(postId).orElseThrow(PostNotFoundException::new);
+    PostJpaEntity post =
+        postRepository.findByIdAndDeletedAtIsNull(postId).orElseThrow(PostNotFoundException::new);
 
     if (!post.getStudent().getUser().getId().equals(userId)) {
       throw new ForbiddenPostAccessException();
