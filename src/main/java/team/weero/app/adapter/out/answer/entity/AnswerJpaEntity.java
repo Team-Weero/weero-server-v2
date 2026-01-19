@@ -34,9 +34,9 @@ public class AnswerJpaEntity extends BaseTimeEntity {
   @JoinColumn(name = "post_id", nullable = false)
   private PostJpaEntity post;
 
-  private LocalDateTime deletedTime;
+  private LocalDateTime deletedAt;
 
   public void markDeleted() {
-    this.deletedTime = LocalDateTime.now();
+    this.deletedAt = LocalDateTime.now();
   }
 }

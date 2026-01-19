@@ -24,9 +24,9 @@ public class PostJpaEntity extends BaseTimeEntity {
   @JoinColumn(name = "student_id", nullable = false)
   private StudentJpaEntity student;
 
-  private LocalDateTime deletedTime;
+  private LocalDateTime deletedAt;
 
   public void markDeleted() {
-    this.deletedTime = LocalDateTime.now();
+    this.deletedAt = LocalDateTime.now();
   }
 }

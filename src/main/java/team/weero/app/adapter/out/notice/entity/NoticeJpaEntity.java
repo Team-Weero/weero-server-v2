@@ -28,9 +28,9 @@ public class NoticeJpaEntity extends BaseTimeEntity {
   private UserJpaEntity user;
 
   @Column(columnDefinition = "DATETIME")
-  private LocalDateTime deletedTime;
+  private LocalDateTime deletedAt;
 
   public void markDeleted() {
-    this.deletedTime = LocalDateTime.now();
+    this.deletedAt = LocalDateTime.now();
   }
 }
