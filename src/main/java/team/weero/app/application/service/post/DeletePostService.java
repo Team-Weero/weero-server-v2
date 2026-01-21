@@ -10,7 +10,7 @@ import team.weero.app.application.exception.post.ForbiddenPostAccessException;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.post.DeletePostUseCase;
-import team.weero.app.application.port.out.post.LoadPostEntityPort;
+import team.weero.app.application.port.out.post.LoadPostPort;
 import team.weero.app.application.port.out.student.LoadStudentPort;
 
 @Service
@@ -18,14 +18,13 @@ import team.weero.app.application.port.out.student.LoadStudentPort;
 @Transactional
 public class DeletePostService implements DeletePostUseCase {
 
-  private final LoadPostEntityPort loadPostEntityPort;
+  private final LoadPostPort loadPostPort;
   private final LoadStudentPort loadStudentPort;
 
   @Override
   public void execute(UUID postId, UUID userId) {
 
-    PostJpaEntity post =
-        loadPostEntityPort.loadEntityById(postId).orElseThrow(PostNotFoundException::new);
+    PostJpaEntity post = loadPostPort.loadById(postId).orElseThrow(PostNotFoundException::new);
 
     if (post.getDeletedAt() != null) {
       throw new PostNotFoundException();

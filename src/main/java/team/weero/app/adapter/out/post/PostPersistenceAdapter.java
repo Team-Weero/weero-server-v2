@@ -19,7 +19,7 @@ import team.weero.app.domain.post.model.Post;
 @Component
 @RequiredArgsConstructor
 public class PostPersistenceAdapter
-    implements GetPostPort, SavePostPort, DeletePostPort, LoadPostEntityPort, UpdatePostPort {
+    implements GetPostPort, SavePostPort, DeletePostPort, LoadPostPort, UpdatePostPort {
 
   private final PostRepository postRepository;
   private final PostMapper postMapper;
@@ -47,7 +47,7 @@ public class PostPersistenceAdapter
   }
 
   @Override
-  public Optional<PostJpaEntity> loadEntityById(UUID postId) {
+  public Optional<PostJpaEntity> loadById(UUID postId) {
     return postRepository.findById(postId);
   }
 

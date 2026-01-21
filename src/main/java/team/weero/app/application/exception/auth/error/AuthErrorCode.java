@@ -7,7 +7,6 @@ public enum AuthErrorCode implements ErrorProperty {
   EXPIRED_TOKEN(401, "Expired Token", 2),
   INVALID_TOKEN(401, "Invalid Token", 3),
   TEACHER_SIGNUP_NOT_ALLOWED(403, "Teacher Sign Up Not Allowed", 1),
-  USER_NOT_FOUND(404, "User Not Found", 1),
   DUPLICATE_EMAIL(409, "Duplicate Email", 1);
 
   private final int status;

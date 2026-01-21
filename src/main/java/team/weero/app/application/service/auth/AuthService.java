@@ -13,7 +13,7 @@ import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.application.exception.auth.DuplicateEmailException;
 import team.weero.app.application.exception.auth.TeacherSignUpNotAllowedException;
-import team.weero.app.application.exception.auth.UserNotFoundException;
+import team.weero.app.application.exception.user.UserNotFoundException;
 import team.weero.app.application.port.in.auth.ReissueTokenUseCase;
 import team.weero.app.application.port.in.auth.SignInUseCase;
 import team.weero.app.application.port.in.auth.SignUpUseCase;
