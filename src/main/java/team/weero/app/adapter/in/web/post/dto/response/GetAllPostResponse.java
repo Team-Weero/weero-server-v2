@@ -9,7 +9,7 @@ public record GetAllPostResponse(List<PostItem> posts) {
       UUID id,
       String title,
       String content,
-      String studentName,
+      String nickName,
       LocalDateTime createdAt,
       LocalDateTime updatedAt
       /** 좋아요 조회수 추후 추가 */

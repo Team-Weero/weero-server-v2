@@ -30,7 +30,7 @@ public class GetPostService implements GetPostUseCase {
         post.getId(),
         post.getTitle(),
         post.getContent(),
-        post.getStudentName(),
+        post.getNickName(),
         post.getCreatedAt(),
         post.getUpdatedAt());
   }
