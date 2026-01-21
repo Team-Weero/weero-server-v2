@@ -33,7 +33,8 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
     UserJpaEntity user =
         userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.INSTANCE);
 
-    PostJpaEntity post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    PostJpaEntity post =
+        postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     AnswerJpaEntity entity = AnswerJpaEntity.builder().answer(answer).user(user).post(post).build();
 
@@ -51,7 +52,8 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
   @Override
   public Answer get(UUID postId) {
 
-    PostJpaEntity post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    PostJpaEntity post =
+        postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     AnswerJpaEntity answer =
         answerRepository.findByPost(post).orElseThrow(() -> AnswerNotFoundException.INSTANCE);

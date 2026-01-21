@@ -24,17 +24,18 @@ public class DeletePostService implements DeletePostUseCase {
   @Override
   public void execute(UUID postId, UUID userId) {
 
-    PostJpaEntity post = loadPostPort.loadById(postId).orElseThrow(PostNotFoundException::new);
+    PostJpaEntity post =
+        loadPostPort.loadById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     if (post.getDeletedAt() != null) {
-      throw new PostNotFoundException();
+      throw PostNotFoundException.INSTANCE;
     }
 
     StudentInfo studentInfo =
-        loadStudentPort.loadByUserId(userId).orElseThrow(StudentNotFoundException::new);
+        loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     if (!post.getStudent().getId().equals(studentInfo.id())) {
-      throw new ForbiddenPostAccessException();
+      throw ForbiddenPostAccessException.INSTANCE;
     }
 
     post.markDeleted();

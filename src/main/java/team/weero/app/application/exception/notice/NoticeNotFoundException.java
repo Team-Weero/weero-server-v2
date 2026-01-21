@@ -5,7 +5,9 @@ import team.weero.app.global.error.exception.WeeRoException;
 
 public class NoticeNotFoundException extends WeeRoException {
 
-  public NoticeNotFoundException() {
+  public static final NoticeNotFoundException INSTANCE = new NoticeNotFoundException();
+
+  private NoticeNotFoundException() {
     super(NoticeErrorCode.NOTICE_NOT_FOUND);
   }
 }

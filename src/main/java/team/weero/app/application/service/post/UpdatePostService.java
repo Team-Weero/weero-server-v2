@@ -20,7 +20,7 @@ public class UpdatePostService implements UpdatePostUseCase {
 
   @Override
   public void execute(UUID postId, UUID userId, UpdatePostRequest request) {
-    loadStudentPort.loadByUserId(userId).orElseThrow(StudentNotFoundException::new);
+    loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     updatePostPort.update(postId, userId, request.title(), request.content());
   }

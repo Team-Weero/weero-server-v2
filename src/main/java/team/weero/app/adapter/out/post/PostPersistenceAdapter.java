@@ -54,7 +54,9 @@ public class PostPersistenceAdapter
   @Override
   public Post save(Post post) {
     StudentJpaEntity student =
-        studentRepository.findById(post.getStudentId()).orElseThrow(StudentNotFoundException::new);
+        studentRepository
+            .findById(post.getStudentId())
+            .orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     PostJpaEntity entity = PostMapper.toEntity(post, student);
     PostJpaEntity savedEntity = postRepository.save(entity);
@@ -64,10 +66,12 @@ public class PostPersistenceAdapter
   @Override
   public void softDelete(UUID postId, UUID userId) {
     PostJpaEntity post =
-        postRepository.findByIdAndDeletedAtIsNull(postId).orElseThrow(PostNotFoundException::new);
+        postRepository
+            .findByIdAndDeletedAtIsNull(postId)
+            .orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     if (post.getStudent() == null || !post.getStudent().getUser().getId().equals(userId)) {
-      throw new ForbiddenPostAccessException();
+      throw ForbiddenPostAccessException.INSTANCE;
     }
 
     post.markDeleted();
@@ -77,10 +81,12 @@ public class PostPersistenceAdapter
   @Override
   public void update(UUID postId, UUID userId, String title, String content) {
     PostJpaEntity post =
-        postRepository.findByIdAndDeletedAtIsNull(postId).orElseThrow(PostNotFoundException::new);
+        postRepository
+            .findByIdAndDeletedAtIsNull(postId)
+            .orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     if (!post.getStudent().getUser().getId().equals(userId)) {
-      throw new ForbiddenPostAccessException();
+      throw ForbiddenPostAccessException.INSTANCE;
     }
 
     post.update(title, content);
