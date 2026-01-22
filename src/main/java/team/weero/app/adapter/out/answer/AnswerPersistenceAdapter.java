@@ -45,8 +45,8 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
   public void softDelete(UUID answerId) {
     AnswerJpaEntity answer =
         answerRepository
-                .findByIdAndDeletedAtIsNull(answerId)
-                .orElseThrow(() -> PostNotFoundException.INSTANCE);
+            .findByIdAndDeletedAtIsNull(answerId)
+            .orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     answer.markDeleted();
     answerRepository.save(answer);
@@ -55,12 +55,10 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
   @Override
   public List<Answer> getAll(UUID postId) {
     PostJpaEntity post =
-            postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
+        postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     List<AnswerJpaEntity> answers = answerRepository.findByPost(post);
 
-    return answers.stream()
-            .map(answerMapper::toDomain)
-            .toList();
+    return answers.stream().map(answerMapper::toDomain).toList();
   }
 }
