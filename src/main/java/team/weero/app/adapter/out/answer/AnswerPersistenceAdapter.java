@@ -11,6 +11,7 @@ import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 import team.weero.app.adapter.out.post.repository.PostRepository;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.adapter.out.user.repository.UserRepository;
+import team.weero.app.application.exception.answer.AnswerNotFoundException;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.exception.user.UserNotFoundException;
 import team.weero.app.application.port.out.answer.CreateAnswerPort;
@@ -46,7 +47,7 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
     AnswerJpaEntity answer =
         answerRepository
             .findByIdAndDeletedAtIsNull(answerId)
-            .orElseThrow(() -> PostNotFoundException.INSTANCE);
+            .orElseThrow(() -> AnswerNotFoundException.INSTANCE);
 
     answer.markDeleted();
     answerRepository.save(answer);
