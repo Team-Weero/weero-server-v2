@@ -32,22 +32,22 @@ public class AdminTeacherInitializer implements ApplicationRunner {
       String encodedPassword = passwordEncoderPort.encode(adminTeacherProperties.getPassword());
 
       UserJpaEntity user =
-              UserJpaEntity.builder()
-                      .email(adminTeacherProperties.getEmail())
-                      .authority(Authority.TEACHER)
-                      .password(encodedPassword)
-                      .build();
+          UserJpaEntity.builder()
+              .email(adminTeacherProperties.getEmail())
+              .authority(Authority.TEACHER)
+              .password(encodedPassword)
+              .build();
 
       UserJpaEntity savedUser = userRepository.save(user);
 
       TeacherJpaEntity teacher =
-              TeacherJpaEntity.builder()
-                      .name(adminTeacherProperties.getName())
-                      .deviceToken(adminTeacherProperties.getDeviceToken())
-                      .noNotificationStartTime(adminTeacherProperties.getNotificationStartTime())
-                      .noNotificationEndTime(adminTeacherProperties.getNotificationEndTime())
-                      .user(savedUser)
-                      .build();
+          TeacherJpaEntity.builder()
+              .name(adminTeacherProperties.getName())
+              .deviceToken(adminTeacherProperties.getDeviceToken())
+              .noNotificationStartTime(adminTeacherProperties.getNotificationStartTime())
+              .noNotificationEndTime(adminTeacherProperties.getNotificationEndTime())
+              .user(savedUser)
+              .build();
 
       teacherRepository.save(teacher);
 

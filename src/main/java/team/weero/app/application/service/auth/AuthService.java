@@ -149,25 +149,25 @@ public class AuthService
     String encodedPassword = passwordEncoderPort.encode(command.password());
 
     UserJpaEntity user =
-            UserJpaEntity.builder()
-                    .email(command.email())
-                    .password(encodedPassword)
-                    .authority(command.authority())
-                    .build();
+        UserJpaEntity.builder()
+            .email(command.email())
+            .password(encodedPassword)
+            .authority(command.authority())
+            .build();
 
     UserJpaEntity savedUser = saveUserPort.save(user);
 
     StudentJpaEntity student =
-            StudentJpaEntity.builder()
-                    .accountId(command.accountId())
-                    .name(command.name())
-                    .nickname(command.nickname())
-                    .grade(command.grade())
-                    .classRoom(command.classRoom())
-                    .number(command.number())
-                    .role(StudentRole.COMMON)
-                    .user(savedUser)
-                    .build();
+        StudentJpaEntity.builder()
+            .accountId(command.accountId())
+            .name(command.name())
+            .nickname(command.nickname())
+            .grade(command.grade())
+            .classRoom(command.classRoom())
+            .number(command.number())
+            .role(StudentRole.COMMON)
+            .user(savedUser)
+            .build();
 
     saveStudentPort.save(student);
   }

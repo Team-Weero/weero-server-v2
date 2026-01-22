@@ -1,8 +1,7 @@
 package team.weero.app.adapter.in.web.answer;
 
-import java.util.UUID;
-
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

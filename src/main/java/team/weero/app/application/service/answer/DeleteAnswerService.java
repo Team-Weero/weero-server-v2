@@ -26,16 +26,15 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
   @Override
   public void execute(UUID userId, UUID answerId) {
 
-    User user = loadUserPort.loadById(userId)
-            .orElseThrow(() -> UserNotFoundException.INSTANCE);
+    User user = loadUserPort.loadById(userId).orElseThrow(() -> UserNotFoundException.INSTANCE);
 
     if (user.getAuthority() == Authority.TEACHER) {
       deleteAnswerPort.delete(answerId);
       return;
     }
 
-    StudentInfo student = loadStudentPort.loadByUserId(userId)
-            .orElseThrow(() -> StudentNotFoundException.INSTANCE);
+    StudentInfo student =
+        loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     if (student.role() == StudentRole.AGENT) {
       deleteAnswerPort.delete(answerId);

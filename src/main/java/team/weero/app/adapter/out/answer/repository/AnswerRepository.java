@@ -11,10 +11,11 @@ import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerJpaEntity, UUID> {
 
-  @Query("SELECT a FROM AnswerJpaEntity a " +
-          "JOIN FETCH a.user u " +
-          "LEFT JOIN FETCH u.student " +
-          "LEFT JOIN FETCH u.teacher " +
-          "WHERE a.post = :post AND a.deletedAt IS NULL")
+  @Query(
+      "SELECT a FROM AnswerJpaEntity a "
+          + "JOIN FETCH a.user u "
+          + "LEFT JOIN FETCH u.student "
+          + "LEFT JOIN FETCH u.teacher "
+          + "WHERE a.post = :post AND a.deletedAt IS NULL")
   Optional<AnswerJpaEntity> findByPost(PostJpaEntity post);
 }
