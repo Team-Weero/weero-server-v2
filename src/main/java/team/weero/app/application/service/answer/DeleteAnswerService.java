@@ -29,7 +29,7 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
     User user = loadUserPort.loadById(userId).orElseThrow(() -> UserNotFoundException.INSTANCE);
 
     if (user.getAuthority() == Authority.TEACHER) {
-      deleteAnswerPort.delete(answerId);
+      deleteAnswerPort.softDelete(answerId);
       return;
     }
 
@@ -37,7 +37,7 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
         loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     if (student.role() == StudentRole.AGENT) {
-      deleteAnswerPort.delete(answerId);
+      deleteAnswerPort.softDelete(answerId);
       return;
     }
 

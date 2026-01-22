@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface DeleteAnswerPort {
 
-  void delete(UUID answerId);
+  void softDelete(UUID answerId);
 }
