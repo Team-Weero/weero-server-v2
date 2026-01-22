@@ -10,6 +10,7 @@ public class UserMapper {
   public User toDomain(UserJpaEntity entity) {
     return User.builder()
         .id(entity.getId())
+        .authority(entity.getAuthority())
         .email(entity.getEmail())
         .password(entity.getPassword())
         .createdAt(entity.getCreatedAt())

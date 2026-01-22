@@ -11,6 +11,7 @@ import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.adapter.out.user.repository.UserRepository;
 import team.weero.app.application.port.out.auth.PasswordEncoderPort;
+import team.weero.app.domain.auth.type.Authority;
 
 @Component
 @RequiredArgsConstructor
@@ -31,21 +32,22 @@ public class AdminTeacherInitializer implements ApplicationRunner {
       String encodedPassword = passwordEncoderPort.encode(adminTeacherProperties.getPassword());
 
       UserJpaEntity user =
-          UserJpaEntity.builder()
-              .email(adminTeacherProperties.getEmail())
-              .password(encodedPassword)
-              .build();
+              UserJpaEntity.builder()
+                      .email(adminTeacherProperties.getEmail())
+                      .authority(Authority.TEACHER)
+                      .password(encodedPassword)
+                      .build();
 
       UserJpaEntity savedUser = userRepository.save(user);
 
       TeacherJpaEntity teacher =
-          TeacherJpaEntity.builder()
-              .name(adminTeacherProperties.getName())
-              .deviceToken(adminTeacherProperties.getDeviceToken())
-              .noNotificationStartTime(adminTeacherProperties.getNotificationStartTime())
-              .noNotificationEndTime(adminTeacherProperties.getNotificationEndTime())
-              .user(savedUser)
-              .build();
+              TeacherJpaEntity.builder()
+                      .name(adminTeacherProperties.getName())
+                      .deviceToken(adminTeacherProperties.getDeviceToken())
+                      .noNotificationStartTime(adminTeacherProperties.getNotificationStartTime())
+                      .noNotificationEndTime(adminTeacherProperties.getNotificationEndTime())
+                      .user(savedUser)
+                      .build();
 
       teacherRepository.save(teacher);
 

@@ -3,7 +3,8 @@ package team.weero.app.application.exception.answer.error;
 import team.weero.app.global.error.ErrorProperty;
 
 public enum AnswerErrorCode implements ErrorProperty {
-  ANSWER_NOT_FOUND(404, "Answer Not Found", 1);
+  ANSWER_NOT_FOUND(404, "Answer Not Found", 1),
+  ANSWER_ACCESS_DENIED(403, "Answer Access Denied", 2);
 
   private final int status;
   private final String message;

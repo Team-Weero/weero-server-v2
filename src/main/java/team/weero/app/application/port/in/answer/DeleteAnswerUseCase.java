@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface DeleteAnswerUseCase {
 
-  void execute(UUID answerId);
+  void execute(UUID userId, UUID answerId);
 }

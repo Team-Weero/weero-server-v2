@@ -1,6 +1,9 @@
 package team.weero.app.adapter.in.web.answer;
 
 import java.util.UUID;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.answer.dto.request.CreateAnswerRequest;
@@ -11,16 +14,17 @@ import team.weero.app.application.port.in.answer.GetAnswerUseCase;
 import team.weero.app.global.security.CustomUserDetails;
 
 @RestController
-@RequestMapping("/answers")
+@RequestMapping("/api/answers")
+@RequiredArgsConstructor
 public class AnswerController {
 
-  private CreateAnswerUseCase createAnswerUseCase;
-  private GetAnswerUseCase getAnswerUseCase;
-  private DeleteAnswerUseCase deleteAnswerUseCase;
+  private final CreateAnswerUseCase createAnswerUseCase;
+  private final GetAnswerUseCase getAnswerUseCase;
+  private final DeleteAnswerUseCase deleteAnswerUseCase;
 
   @PostMapping("/{postId}")
   public void create(
-      CreateAnswerRequest request,
+      @Valid @RequestBody CreateAnswerRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @PathVariable UUID postId) {
     createAnswerUseCase.execute(request, userDetails.getUserId(), postId);
@@ -32,7 +36,8 @@ public class AnswerController {
   }
 
   @DeleteMapping("/{answerId}")
-  public void delete(@PathVariable UUID answerId) {
-    deleteAnswerUseCase.execute(answerId);
+  public void delete(
+      @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable UUID answerId) {
+    deleteAnswerUseCase.execute(userDetails.getUserId(), answerId);
   }
 }

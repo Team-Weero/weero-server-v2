@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.student.repository.StudentRepository;
 import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
+import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.adapter.out.user.mapper.UserMapper;
 import team.weero.app.adapter.out.user.repository.UserRepository;
 import team.weero.app.application.exception.user.UserNotFoundException;
@@ -56,6 +57,8 @@ public class LoadUserAdapter implements LoadUserPort {
 
   @Override
   public Optional<User> loadById(UUID userId) {
-    return userRepository.findById(userId).map(userMapper::toDomain);
+    Optional<UserJpaEntity> entity = userRepository.findById(userId);
+
+    return entity.map(userMapper::toDomain);
   }
 }
