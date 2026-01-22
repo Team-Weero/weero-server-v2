@@ -1,6 +1,6 @@
 package team.weero.app.adapter.out.answer.repository;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,10 +12,10 @@ import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 public interface AnswerRepository extends JpaRepository<AnswerJpaEntity, UUID> {
 
   @Query(
-      "SELECT a FROM AnswerJpaEntity a "
-          + "JOIN FETCH a.user u "
-          + "LEFT JOIN FETCH u.student "
-          + "LEFT JOIN FETCH u.teacher "
-          + "WHERE a.post = :post AND a.deletedAt IS NULL")
-  Optional<AnswerJpaEntity> findByPost(PostJpaEntity post);
+          "SELECT a FROM AnswerJpaEntity a "
+                  + "JOIN FETCH a.user u "
+                  + "LEFT JOIN FETCH u.student "
+                  + "LEFT JOIN FETCH u.teacher "
+                  + "WHERE a.post = :post AND a.deletedAt IS NULL")
+  List<AnswerJpaEntity> findByPost(PostJpaEntity post);
 }

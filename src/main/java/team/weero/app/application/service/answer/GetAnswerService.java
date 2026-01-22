@@ -1,5 +1,6 @@
 package team.weero.app.application.service.answer;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ public class GetAnswerService implements GetAnswerUseCase {
 
   private final GetAnswerPort getAnswerPort;
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public GetAnswerResponse execute(UUID postId) {
 
-    Answer answer = getAnswerPort.get(postId);
+    List<Answer> answers = getAnswerPort.getAll(postId);
 
-    return GetAnswerResponse.from(answer);
+    return GetAnswerResponse.from(answers);
   }
 }

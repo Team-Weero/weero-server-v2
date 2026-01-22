@@ -1,5 +1,6 @@
 package team.weero.app.adapter.out.answer;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -50,14 +51,14 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
   }
 
   @Override
-  public Answer get(UUID postId) {
-
+  public List<Answer> getAll(UUID postId) {
     PostJpaEntity post =
-        postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
+            postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
-    AnswerJpaEntity answer =
-        answerRepository.findByPost(post).orElseThrow(() -> AnswerNotFoundException.INSTANCE);
+    List<AnswerJpaEntity> answers = answerRepository.findByPost(post);
 
-    return answerMapper.toDomain(answer);
+    return answers.stream()
+            .map(answerMapper::toDomain)
+            .toList();
   }
 }
