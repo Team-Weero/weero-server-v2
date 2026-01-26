@@ -77,7 +77,7 @@ public class NoticeJpaAdapter
     NoticeJpaEntity notice =
         noticeRepository
             .findByIdAndDeletedAtIsNull(noticeId)
-            .orElseThrow(NoticeNotFoundException::new);
+            .orElseThrow(() -> NoticeNotFoundException.INSTANCE);
     return notice.getUser().getId().equals(userId);
   }
 

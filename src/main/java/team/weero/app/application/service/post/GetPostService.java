@@ -20,17 +20,17 @@ public class GetPostService implements GetPostUseCase {
   @Override
   public GetPostResponse execute(UUID postId) {
 
-    Post post = getPostPort.getById(postId).orElseThrow(PostNotFoundException::new);
+    Post post = getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     if (post.isDeleted()) {
-      throw new PostNotFoundException();
+      throw PostNotFoundException.INSTANCE;
     }
 
     return new GetPostResponse(
         post.getId(),
         post.getTitle(),
         post.getContent(),
-        post.getStudentName(),
+        post.getNickName(),
         post.getCreatedAt(),
         post.getUpdatedAt());
   }

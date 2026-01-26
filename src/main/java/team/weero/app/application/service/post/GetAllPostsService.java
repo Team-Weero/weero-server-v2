@@ -30,7 +30,7 @@ public class GetAllPostsService implements GetAllPostUseCase {
                         post.getId(),
                         post.getTitle(),
                         post.getContent(),
-                        post.getStudentName(),
+                        post.getNickName(),
                         post.getCreatedAt(),
                         post.getUpdatedAt()))
             .toList();

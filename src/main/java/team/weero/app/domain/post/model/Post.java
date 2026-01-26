@@ -14,7 +14,7 @@ public class Post {
   private final String title;
   private final String content;
   private final UUID studentId;
-  private String studentName;
+  private String nickName;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;

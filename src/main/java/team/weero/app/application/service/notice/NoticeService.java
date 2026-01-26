@@ -71,7 +71,7 @@ public class NoticeService
     }
 
     Notice existingNotice =
-        loadNoticePort.loadById(command.id()).orElseThrow(NoticeNotFoundException::new);
+        loadNoticePort.loadById(command.id()).orElseThrow(() -> NoticeNotFoundException.INSTANCE);
 
     Notice updatedNotice =
         new Notice(
@@ -105,7 +105,8 @@ public class NoticeService
 
   @Override
   public NoticeResponse getById(UUID noticeId) {
-    Notice notice = loadNoticePort.loadById(noticeId).orElseThrow(NoticeNotFoundException::new);
+    Notice notice =
+        loadNoticePort.loadById(noticeId).orElseThrow(() -> NoticeNotFoundException.INSTANCE);
 
     return new NoticeResponse(
         notice.getId(),

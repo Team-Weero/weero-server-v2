@@ -7,6 +7,6 @@ public record GetPostResponse(
     UUID id,
     String title,
     String content,
-    String studentName,
+    String nickName,
     LocalDateTime createdAt,
     LocalDateTime updatedAt) {}

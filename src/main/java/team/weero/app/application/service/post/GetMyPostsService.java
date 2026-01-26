@@ -26,7 +26,7 @@ public class GetMyPostsService implements GetMyPostsUseCase {
   public GetAllPostResponse execute(UUID userId) {
 
     StudentInfo studentInfo =
-        loadStudentPort.loadByUserId(userId).orElseThrow(StudentNotFoundException::new);
+        loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     List<Post> posts = getPostPort.getAllByStudentId(studentInfo.id());
 
@@ -38,7 +38,7 @@ public class GetMyPostsService implements GetMyPostsUseCase {
                         post.getId(),
                         post.getTitle(),
                         post.getContent(),
-                        post.getStudentName(),
+                        post.getNickName(),
                         post.getCreatedAt(),
                         post.getUpdatedAt()))
             .toList();

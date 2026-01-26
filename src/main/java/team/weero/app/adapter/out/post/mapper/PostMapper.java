@@ -14,7 +14,7 @@ public class PostMapper {
         .title(entity.getTitle())
         .content(entity.getContent())
         .studentId(entity.getStudent().getId())
-        .studentName(entity.getStudent().getName())
+        .nickName(entity.getStudent().getNickname())
         .createdAt(entity.getCreatedAt())
         .updatedAt(entity.getUpdatedAt())
         .deletedAt(entity.getDeletedAt())

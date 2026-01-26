@@ -1,15 +1,19 @@
 package team.weero.app.adapter.out.persistence;
 
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.student.repository.StudentRepository;
 import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
+import team.weero.app.adapter.out.user.entity.UserJpaEntity;
+import team.weero.app.adapter.out.user.mapper.UserMapper;
 import team.weero.app.adapter.out.user.repository.UserRepository;
-import team.weero.app.application.exception.auth.UserNotFoundException;
+import team.weero.app.application.exception.user.UserNotFoundException;
 import team.weero.app.application.port.out.user.LoadUserPort;
 import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.auth.type.Authority;
+import team.weero.app.domain.user.model.User;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ public class LoadUserAdapter implements LoadUserPort {
   private final UserRepository userRepository;
   private final StudentRepository studentRepository;
   private final TeacherRepository teacherRepository;
+  private final UserMapper userMapper;
 
   @Override
   public Optional<AuthUser> loadByEmail(String email) {
@@ -48,5 +53,12 @@ public class LoadUserAdapter implements LoadUserPort {
     }
 
     throw UserNotFoundException.INSTANCE;
+  }
+
+  @Override
+  public Optional<User> loadById(UUID userId) {
+    Optional<UserJpaEntity> entity = userRepository.findById(userId);
+
+    return entity.map(userMapper::toDomain);
   }
 }
