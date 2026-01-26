@@ -1,28 +1,38 @@
 package team.weero.app.adapter.out.counsel.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
 import team.weero.app.global.entity.BaseTimeEntity;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tbl_counsel_request")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CounselRequestJpaEntity extends BaseTimeEntity {
 
   @Column(nullable = false, columnDefinition = "VARCHAR(255)")
   private String accessPassword;
 
-  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, columnDefinition = "VARCHAR(20)")
   private Status status;
 
-  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, columnDefinition = "VARCHAR(20)")
   private Gender gender;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "BOOLEAN")
   private boolean hasCounselingExperience;
 
   @Column(nullable = false, columnDefinition = "VARCHAR(20)")
@@ -35,4 +45,27 @@ public class CounselRequestJpaEntity extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "teacher_id", nullable = false)
   private TeacherJpaEntity teacher;
+
+  @Column(columnDefinition = "DATETIME")
+  private LocalDateTime deletedTime;
+
+  public void markDeleted() {
+    this.deletedTime = LocalDateTime.now();
+  }
+
+  public void update(
+      String accessPassword,
+      Status status,
+      Gender gender,
+      Boolean hasCounselingExperience,
+      String category,
+      TeacherJpaEntity teacher) {
+    if (accessPassword != null) this.accessPassword = accessPassword;
+    if (status != null) this.status = status;
+    if (gender != null) this.gender = gender;
+    if (hasCounselingExperience != null)
+      this.hasCounselingExperience = hasCounselingExperience;
+    if (category != null) this.category = category;
+    if (teacher != null) this.teacher = teacher;
+  }
 }
