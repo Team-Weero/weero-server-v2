@@ -5,7 +5,9 @@ import team.weero.app.global.error.exception.WeeRoException;
 
 public class StudentNotFoundException extends WeeRoException {
 
-  public StudentNotFoundException() {
+  public static final StudentNotFoundException INSTANCE = new StudentNotFoundException();
+
+  private StudentNotFoundException() {
     super(StudentErrorCode.STUDENT_NOT_FOUND);
   }
 }

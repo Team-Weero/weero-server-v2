@@ -24,7 +24,7 @@ public class CreatePostService implements CreatePostUseCase {
   public void execute(CreatePostRequest request, UUID userId) {
 
     StudentInfo studentInfo =
-        loadStudentPort.loadByUserId(userId).orElseThrow(StudentNotFoundException::new);
+        loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
     Post post =
         Post.builder()

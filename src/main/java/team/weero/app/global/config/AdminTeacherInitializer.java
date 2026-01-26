@@ -11,6 +11,7 @@ import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.adapter.out.user.repository.UserRepository;
 import team.weero.app.application.port.out.auth.PasswordEncoderPort;
+import team.weero.app.domain.auth.type.Authority;
 
 @Component
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class AdminTeacherInitializer implements ApplicationRunner {
       UserJpaEntity user =
           UserJpaEntity.builder()
               .email(adminTeacherProperties.getEmail())
+              .authority(Authority.TEACHER)
               .password(encodedPassword)
               .build();
 
