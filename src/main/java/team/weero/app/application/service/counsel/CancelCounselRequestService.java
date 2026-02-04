@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.application.exception.counsel.CounselRequestNotFoundException;
+import team.weero.app.application.exception.counsel.ForbiddenCounselRequestAccessException;
 import team.weero.app.application.exception.counsel.InvalidCounselRequestStatusException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.counsel.CancelCounselRequestUseCase;
@@ -30,6 +31,11 @@ public class CancelCounselRequestService implements CancelCounselRequestUseCase 
     public void execute(UUID id, UUID userId) {
         StudentInfo studentInfo =
                 loadStudentPort.loadByUserId(userId).orElseThrow(StudentNotFoundException::new);
+
+        // 소유권 검증
+        if (!checkCounselRequestOwnerPort.isStudentOwner(id, studentInfo.id())) {
+            throw new ForbiddenCounselRequestAccessException();
+        }
 
         CounselRequest existing =
                 loadCounselRequestPort.loadById(id).orElseThrow(CounselRequestNotFoundException::new);
