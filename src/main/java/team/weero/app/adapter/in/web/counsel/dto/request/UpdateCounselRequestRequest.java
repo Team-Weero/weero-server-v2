@@ -7,5 +7,5 @@ import team.weero.app.domain.counsel.type.Gender;
 public record UpdateCounselRequestRequest(
     Gender gender,
     Boolean hasCounselingExperience,
-    @Size(max = 20) String category,
+    @Size(min = 1, max = 20, message = "카테고리는 1자 이상 20자 이하여야 합니다.") String category,
     UUID teacherId) {}
