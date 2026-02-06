@@ -55,7 +55,7 @@ public class ApproveCounselRequestService implements ApproveCounselRequestUseCas
             .teacherId(existing.getTeacherId())
             .createdAt(existing.getCreatedAt())
             .updatedAt(existing.getUpdatedAt())
-            .deletedTime(existing.getDeletedTime())
+            .deletedAt(existing.getDeletedAt())
             .build();
 
     CounselRequest saved = saveCounselRequestPort.save(updated);

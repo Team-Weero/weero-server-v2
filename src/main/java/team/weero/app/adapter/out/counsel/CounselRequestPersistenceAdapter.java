@@ -56,7 +56,7 @@ public class CounselRequestPersistenceAdapter
     } else {
       entity =
           counselRequestRepository
-              .findByIdAndDeletedTimeIsNull(counselRequest.getId())
+              .findByIdAndDeletedAtIsNull(counselRequest.getId())
               .orElseThrow(CounselRequestNotFoundException::new);
 
       entity.update(
@@ -76,14 +76,14 @@ public class CounselRequestPersistenceAdapter
   @Override
   public Optional<CounselRequest> loadById(UUID id) {
     return counselRequestRepository
-        .findByIdAndDeletedTimeIsNull(id)
+        .findByIdAndDeletedAtIsNull(id)
         .map(counselRequestMapper::toDomain);
   }
 
   @Override
   public List<CounselRequest> loadAllByStudentId(UUID studentId) {
     return counselRequestRepository
-        .findAllByStudentIdAndDeletedTimeIsNullOrderByCreatedAtDesc(studentId)
+        .findAllByStudentIdAndDeletedAtIsNullOrderByCreatedAtDesc(studentId)
         .stream()
         .map(counselRequestMapper::toDomain)
         .toList();
@@ -92,7 +92,7 @@ public class CounselRequestPersistenceAdapter
   @Override
   public List<CounselRequest> loadAllByTeacherId(UUID teacherId) {
     return counselRequestRepository
-        .findAllByTeacherIdAndDeletedTimeIsNullOrderByCreatedAtDesc(teacherId)
+        .findAllByTeacherIdAndDeletedAtIsNullOrderByCreatedAtDesc(teacherId)
         .stream()
         .map(counselRequestMapper::toDomain)
         .toList();
@@ -100,7 +100,7 @@ public class CounselRequestPersistenceAdapter
 
   @Override
   public List<CounselRequest> loadAll() {
-    return counselRequestRepository.findAllByDeletedTimeIsNullOrderByCreatedAtDesc().stream()
+    return counselRequestRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc().stream()
         .map(counselRequestMapper::toDomain)
         .toList();
   }
@@ -109,7 +109,7 @@ public class CounselRequestPersistenceAdapter
   public List<CounselRequest> loadCompletedBeforeDays(int days) {
     LocalDateTime cutoffDate = LocalDateTime.now().minusDays(days);
     return counselRequestRepository
-        .findAllByStatusAndDeletedTimeIsNullAndUpdatedAtBefore(Status.COMPLETED, cutoffDate)
+        .findAllByStatusAndDeletedAtIsNullAndUpdatedAtBefore(Status.COMPLETED, cutoffDate)
         .stream()
         .map(counselRequestMapper::toDomain)
         .toList();
@@ -119,7 +119,7 @@ public class CounselRequestPersistenceAdapter
   public void softDelete(UUID id) {
     CounselRequestJpaEntity counselRequest =
         counselRequestRepository
-            .findByIdAndDeletedTimeIsNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             .orElseThrow(CounselRequestNotFoundException::new);
 
     counselRequest.markDeleted();
@@ -130,7 +130,7 @@ public class CounselRequestPersistenceAdapter
   public boolean isStudentOwner(UUID counselRequestId, UUID studentId) {
     CounselRequestJpaEntity counselRequest =
         counselRequestRepository
-            .findByIdAndDeletedTimeIsNull(counselRequestId)
+            .findByIdAndDeletedAtIsNull(counselRequestId)
             .orElseThrow(CounselRequestNotFoundException::new);
 
     return counselRequest.getStudent().getId().equals(studentId);
@@ -140,7 +140,7 @@ public class CounselRequestPersistenceAdapter
   public boolean isTeacherOwner(UUID counselRequestId, UUID teacherId) {
     CounselRequestJpaEntity counselRequest =
         counselRequestRepository
-            .findByIdAndDeletedTimeIsNull(counselRequestId)
+            .findByIdAndDeletedAtIsNull(counselRequestId)
             .orElseThrow(CounselRequestNotFoundException::new);
 
     return counselRequest.getTeacher().getId().equals(teacherId);

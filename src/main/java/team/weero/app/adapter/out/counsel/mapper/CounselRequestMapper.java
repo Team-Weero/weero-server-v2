@@ -22,7 +22,7 @@ public class CounselRequestMapper {
         .teacherName(entity.getTeacher().getName())
         .createdAt(entity.getCreatedAt())
         .updatedAt(entity.getUpdatedAt())
-        .deletedTime(entity.getDeletedTime())
+        .deletedAt(entity.getDeletedAt())
         .build();
   }
 

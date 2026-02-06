@@ -22,7 +22,7 @@ public class CounselRequestScheduler {
     LocalDateTime cutoffDate = LocalDateTime.now().minusDays(30);
 
     List<CounselRequestJpaEntity> completedRequests =
-        counselRequestRepository.findAllByStatusAndDeletedTimeIsNullAndUpdatedAtBefore(
+        counselRequestRepository.findAllByStatusAndDeletedAtIsNullAndUpdatedAtBefore(
             Status.COMPLETED, cutoffDate);
 
     completedRequests.forEach(CounselRequestJpaEntity::markDeleted);

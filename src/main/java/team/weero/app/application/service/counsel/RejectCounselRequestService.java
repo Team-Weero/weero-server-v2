@@ -54,7 +54,7 @@ public class RejectCounselRequestService implements RejectCounselRequestUseCase 
             .teacherId(existing.getTeacherId())
             .createdAt(existing.getCreatedAt())
             .updatedAt(existing.getUpdatedAt())
-            .deletedTime(existing.getDeletedTime())
+            .deletedAt(existing.getDeletedAt())
             .build();
 
     saveCounselRequestPort.save(updated);

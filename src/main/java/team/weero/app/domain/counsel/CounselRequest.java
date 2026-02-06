@@ -24,10 +24,10 @@ public class CounselRequest {
   private final String teacherName;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private final LocalDateTime deletedTime;
+  private final LocalDateTime deletedAt;
 
   public boolean isDeleted() {
-    return deletedTime != null;
+    return deletedAt != null;
   }
 
   public boolean isPending() {

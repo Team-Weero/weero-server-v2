@@ -43,10 +43,10 @@ public class CounselRequestJpaEntity extends BaseTimeEntity {
   private TeacherJpaEntity teacher;
 
   @Column(columnDefinition = "DATETIME")
-  private LocalDateTime deletedTime;
+  private LocalDateTime deletedAt;
 
   public void markDeleted() {
-    this.deletedTime = LocalDateTime.now();
+    this.deletedAt = LocalDateTime.now();
   }
 
   public void update(
