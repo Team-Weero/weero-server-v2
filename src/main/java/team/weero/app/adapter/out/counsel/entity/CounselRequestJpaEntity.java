@@ -48,17 +48,4 @@ public class CounselRequestJpaEntity extends BaseTimeEntity {
   public void markDeleted() {
     this.deletedAt = LocalDateTime.now();
   }
-
-  public void update(
-      Status status,
-      Gender gender,
-      Boolean hasCounselingExperience,
-      String category,
-      TeacherJpaEntity teacher) {
-    if (status != null) this.status = status;
-    if (gender != null) this.gender = gender;
-    if (hasCounselingExperience != null) this.hasCounselingExperience = hasCounselingExperience;
-    if (category != null) this.category = category;
-    if (teacher != null) this.teacher = teacher;
-  }
 }

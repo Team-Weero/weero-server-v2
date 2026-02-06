@@ -48,29 +48,11 @@ public class CounselRequestPersistenceAdapter
             .findById(counselRequest.getTeacherId())
             .orElseThrow(TeacherNotFoundException::new);
 
-    CounselRequestJpaEntity entity;
+    CounselRequestJpaEntity entity =
+        CounselRequestMapper.toEntity(counselRequest, student, teacher);
+    entity = counselRequestRepository.save(entity);
 
-    if (counselRequest.getId() == null) {
-      entity = CounselRequestMapper.toEntity(counselRequest, student, teacher);
-      entity = counselRequestRepository.save(entity);
-    } else {
-      entity =
-          counselRequestRepository
-              .findByIdAndDeletedAtIsNull(counselRequest.getId())
-              .orElseThrow(CounselRequestNotFoundException::new);
-
-      entity.update(
-          counselRequest.getStatus(),
-          counselRequest.getGender(),
-          counselRequest.isHasCounselingExperience(),
-          counselRequest.getCategory(),
-          teacher);
-
-      entity = counselRequestRepository.save(entity);
-    }
-
-    CounselRequestJpaEntity savedEntity = entity;
-    return counselRequestMapper.toDomain(savedEntity);
+    return counselRequestMapper.toDomain(entity);
   }
 
   @Override
