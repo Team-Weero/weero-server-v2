@@ -12,14 +12,16 @@ import team.weero.app.domain.counsel.type.Status;
 @Repository
 public interface CounselRequestRepository extends JpaRepository<CounselRequestJpaEntity, UUID> {
 
-    Optional<CounselRequestJpaEntity> findByIdAndDeletedTimeIsNull(UUID id);
+  Optional<CounselRequestJpaEntity> findByIdAndDeletedTimeIsNull(UUID id);
 
-    List<CounselRequestJpaEntity> findAllByDeletedTimeIsNullOrderByCreatedAtDesc();
+  List<CounselRequestJpaEntity> findAllByDeletedTimeIsNullOrderByCreatedAtDesc();
 
-    List<CounselRequestJpaEntity> findAllByStudentIdAndDeletedTimeIsNullOrderByCreatedAtDesc(UUID studentId);
+  List<CounselRequestJpaEntity> findAllByStudentIdAndDeletedTimeIsNullOrderByCreatedAtDesc(
+      UUID studentId);
 
-    List<CounselRequestJpaEntity> findAllByTeacherIdAndDeletedTimeIsNullOrderByCreatedAtDesc(UUID teacherId);
+  List<CounselRequestJpaEntity> findAllByTeacherIdAndDeletedTimeIsNullOrderByCreatedAtDesc(
+      UUID teacherId);
 
-    List<CounselRequestJpaEntity> findAllByStatusAndDeletedTimeIsNullAndUpdatedAtBefore(
-            Status status, LocalDateTime updatedAt);
+  List<CounselRequestJpaEntity> findAllByStatusAndDeletedTimeIsNullAndUpdatedAtBefore(
+      Status status, LocalDateTime updatedAt);
 }

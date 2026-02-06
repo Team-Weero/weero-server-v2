@@ -1,5 +1,9 @@
 package team.weero.app.adapter.out.counsel;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.counsel.entity.CounselRequestJpaEntity;
@@ -20,134 +24,130 @@ import team.weero.app.application.port.out.counsel.SaveCounselRequestPort;
 import team.weero.app.domain.counsel.CounselRequest;
 import team.weero.app.domain.counsel.type.Status;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 @Component
 @RequiredArgsConstructor
 public class CounselRequestPersistenceAdapter
-        implements SaveCounselRequestPort, LoadCounselRequestPort, DeleteCounselRequestPort,
-                CheckCounselRequestOwnerPort {
+    implements SaveCounselRequestPort,
+        LoadCounselRequestPort,
+        DeleteCounselRequestPort,
+        CheckCounselRequestOwnerPort {
 
-    private final CounselRequestRepository counselRequestRepository;
-    private final CounselRequestMapper counselRequestMapper;
-    private final StudentRepository studentRepository;
-    private final TeacherRepository teacherRepository;
+  private final CounselRequestRepository counselRequestRepository;
+  private final CounselRequestMapper counselRequestMapper;
+  private final StudentRepository studentRepository;
+  private final TeacherRepository teacherRepository;
 
-    @Override
-    public CounselRequest save(CounselRequest counselRequest) {
-        StudentJpaEntity student =
-                studentRepository
-                        .findById(counselRequest.getStudentId())
-                        .orElseThrow(StudentNotFoundException::new);
+  @Override
+  public CounselRequest save(CounselRequest counselRequest) {
+    StudentJpaEntity student =
+        studentRepository
+            .findById(counselRequest.getStudentId())
+            .orElseThrow(StudentNotFoundException::new);
 
-        TeacherJpaEntity teacher =
-                teacherRepository
-                        .findById(counselRequest.getTeacherId())
-                        .orElseThrow(TeacherNotFoundException::new);
+    TeacherJpaEntity teacher =
+        teacherRepository
+            .findById(counselRequest.getTeacherId())
+            .orElseThrow(TeacherNotFoundException::new);
 
-        CounselRequestJpaEntity entity;
+    CounselRequestJpaEntity entity;
 
-        if (counselRequest.getId() == null) {
-            entity = CounselRequestMapper.toEntity(counselRequest, student, teacher);
-            entity = counselRequestRepository.save(entity);
-        } else {
-            entity =
-                    counselRequestRepository
-                            .findByIdAndDeletedTimeIsNull(counselRequest.getId())
-                            .orElseThrow(CounselRequestNotFoundException::new);
+    if (counselRequest.getId() == null) {
+      entity = CounselRequestMapper.toEntity(counselRequest, student, teacher);
+      entity = counselRequestRepository.save(entity);
+    } else {
+      entity =
+          counselRequestRepository
+              .findByIdAndDeletedTimeIsNull(counselRequest.getId())
+              .orElseThrow(CounselRequestNotFoundException::new);
 
-            entity.update(
-                    counselRequest.getAccessPassword(),
-                    counselRequest.getStatus(),
-                    counselRequest.getGender(),
-                    counselRequest.isHasCounselingExperience(),
-                    counselRequest.getCategory(),
-                    teacher);
+      entity.update(
+          counselRequest.getStatus(),
+          counselRequest.getGender(),
+          counselRequest.isHasCounselingExperience(),
+          counselRequest.getCategory(),
+          teacher);
 
-            entity = counselRequestRepository.save(entity);
-        }
-
-        CounselRequestJpaEntity savedEntity = entity;
-        return counselRequestMapper.toDomain(savedEntity);
+      entity = counselRequestRepository.save(entity);
     }
 
-    @Override
-    public Optional<CounselRequest> loadById(UUID id) {
-        return counselRequestRepository
-                .findByIdAndDeletedTimeIsNull(id)
-                .map(counselRequestMapper::toDomain);
+    CounselRequestJpaEntity savedEntity = entity;
+    return counselRequestMapper.toDomain(savedEntity);
+  }
+
+  @Override
+  public Optional<CounselRequest> loadById(UUID id) {
+    return counselRequestRepository
+        .findByIdAndDeletedTimeIsNull(id)
+        .map(counselRequestMapper::toDomain);
+  }
+
+  @Override
+  public List<CounselRequest> loadAllByStudentId(UUID studentId) {
+    return counselRequestRepository
+        .findAllByStudentIdAndDeletedTimeIsNullOrderByCreatedAtDesc(studentId)
+        .stream()
+        .map(counselRequestMapper::toDomain)
+        .toList();
+  }
+
+  @Override
+  public List<CounselRequest> loadAllByTeacherId(UUID teacherId) {
+    return counselRequestRepository
+        .findAllByTeacherIdAndDeletedTimeIsNullOrderByCreatedAtDesc(teacherId)
+        .stream()
+        .map(counselRequestMapper::toDomain)
+        .toList();
+  }
+
+  @Override
+  public List<CounselRequest> loadAll() {
+    return counselRequestRepository.findAllByDeletedTimeIsNullOrderByCreatedAtDesc().stream()
+        .map(counselRequestMapper::toDomain)
+        .toList();
+  }
+
+  @Override
+  public List<CounselRequest> loadCompletedBeforeDays(int days) {
+    LocalDateTime cutoffDate = LocalDateTime.now().minusDays(days);
+    return counselRequestRepository
+        .findAllByStatusAndDeletedTimeIsNullAndUpdatedAtBefore(Status.COMPLETED, cutoffDate)
+        .stream()
+        .map(counselRequestMapper::toDomain)
+        .toList();
+  }
+
+  @Override
+  public void softDelete(UUID id, UUID userId) {
+    CounselRequestJpaEntity counselRequest =
+        counselRequestRepository
+            .findByIdAndDeletedTimeIsNull(id)
+            .orElseThrow(CounselRequestNotFoundException::new);
+
+    if (!counselRequest.getStudent().getUser().getId().equals(userId)) {
+      throw new ForbiddenCounselRequestAccessException();
     }
 
-    @Override
-    public List<CounselRequest> loadAllByStudentId(UUID studentId) {
-        return counselRequestRepository
-                .findAllByStudentIdAndDeletedTimeIsNullOrderByCreatedAtDesc(studentId)
-                .stream()
-                .map(counselRequestMapper::toDomain)
-                .toList();
-    }
+    counselRequest.markDeleted();
+    counselRequestRepository.save(counselRequest);
+  }
 
-    @Override
-    public List<CounselRequest> loadAllByTeacherId(UUID teacherId) {
-        return counselRequestRepository
-                .findAllByTeacherIdAndDeletedTimeIsNullOrderByCreatedAtDesc(teacherId)
-                .stream()
-                .map(counselRequestMapper::toDomain)
-                .toList();
-    }
+  @Override
+  public boolean isStudentOwner(UUID counselRequestId, UUID studentId) {
+    CounselRequestJpaEntity counselRequest =
+        counselRequestRepository
+            .findByIdAndDeletedTimeIsNull(counselRequestId)
+            .orElseThrow(CounselRequestNotFoundException::new);
 
-    @Override
-    public List<CounselRequest> loadAll() {
-        return counselRequestRepository.findAllByDeletedTimeIsNullOrderByCreatedAtDesc().stream()
-                .map(counselRequestMapper::toDomain)
-                .toList();
-    }
+    return counselRequest.getStudent().getId().equals(studentId);
+  }
 
-    @Override
-    public List<CounselRequest> loadCompletedBeforeDays(int days) {
-        LocalDateTime cutoffDate = LocalDateTime.now().minusDays(days);
-        return counselRequestRepository
-                .findAllByStatusAndDeletedTimeIsNullAndUpdatedAtBefore(Status.COMPLETED, cutoffDate)
-                .stream()
-                .map(counselRequestMapper::toDomain)
-                .toList();
-    }
+  @Override
+  public boolean isTeacherOwner(UUID counselRequestId, UUID teacherId) {
+    CounselRequestJpaEntity counselRequest =
+        counselRequestRepository
+            .findByIdAndDeletedTimeIsNull(counselRequestId)
+            .orElseThrow(CounselRequestNotFoundException::new);
 
-    @Override
-    public void softDelete(UUID id, UUID userId) {
-        CounselRequestJpaEntity counselRequest =
-                counselRequestRepository
-                        .findByIdAndDeletedTimeIsNull(id)
-                        .orElseThrow(CounselRequestNotFoundException::new);
-
-        if (!counselRequest.getStudent().getUser().getId().equals(userId)) {
-            throw new ForbiddenCounselRequestAccessException();
-        }
-
-        counselRequest.markDeleted();
-        counselRequestRepository.save(counselRequest);
-    }
-
-    @Override
-    public boolean isStudentOwner(UUID counselRequestId, UUID studentId) {
-        CounselRequestJpaEntity counselRequest =
-                counselRequestRepository
-                        .findByIdAndDeletedTimeIsNull(counselRequestId)
-                        .orElseThrow(CounselRequestNotFoundException::new);
-
-        return counselRequest.getStudent().getId().equals(studentId);
-    }
-
-    @Override
-    public boolean isTeacherOwner(UUID counselRequestId, UUID teacherId) {
-        CounselRequestJpaEntity counselRequest =
-                counselRequestRepository
-                        .findByIdAndDeletedTimeIsNull(counselRequestId)
-                        .orElseThrow(CounselRequestNotFoundException::new);
-
-        return counselRequest.getTeacher().getId().equals(teacherId);
-    }
+    return counselRequest.getTeacher().getId().equals(teacherId);
+  }
 }

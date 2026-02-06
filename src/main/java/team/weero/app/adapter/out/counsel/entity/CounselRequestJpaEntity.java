@@ -1,6 +1,7 @@
 package team.weero.app.adapter.out.counsel.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +12,6 @@ import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
 import team.weero.app.global.entity.BaseTimeEntity;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "tbl_counsel_request")
 @Getter
@@ -20,9 +19,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CounselRequestJpaEntity extends BaseTimeEntity {
-
-  @Column(nullable = false, columnDefinition = "VARCHAR(255)")
-  private String accessPassword;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, columnDefinition = "VARCHAR(20)")
@@ -54,17 +50,14 @@ public class CounselRequestJpaEntity extends BaseTimeEntity {
   }
 
   public void update(
-      String accessPassword,
       Status status,
       Gender gender,
       Boolean hasCounselingExperience,
       String category,
       TeacherJpaEntity teacher) {
-    if (accessPassword != null) this.accessPassword = accessPassword;
     if (status != null) this.status = status;
     if (gender != null) this.gender = gender;
-    if (hasCounselingExperience != null)
-      this.hasCounselingExperience = hasCounselingExperience;
+    if (hasCounselingExperience != null) this.hasCounselingExperience = hasCounselingExperience;
     if (category != null) this.category = category;
     if (teacher != null) this.teacher = teacher;
   }
