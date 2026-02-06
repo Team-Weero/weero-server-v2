@@ -4,7 +4,7 @@ import team.weero.app.application.exception.counsel.error.CounselRequestErrorCod
 import team.weero.app.global.error.exception.WeeRoException;
 
 public class CounselRequestNotFoundException extends WeeRoException {
-    public CounselRequestNotFoundException() {
-        super(CounselRequestErrorCode.COUNSEL_REQUEST_NOT_FOUND);
-    }
+  public CounselRequestNotFoundException() {
+    super(CounselRequestErrorCode.COUNSEL_REQUEST_NOT_FOUND);
+  }
 }

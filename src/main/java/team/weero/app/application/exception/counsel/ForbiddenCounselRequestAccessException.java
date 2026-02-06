@@ -4,7 +4,7 @@ import team.weero.app.application.exception.counsel.error.CounselRequestErrorCod
 import team.weero.app.global.error.exception.WeeRoException;
 
 public class ForbiddenCounselRequestAccessException extends WeeRoException {
-    public ForbiddenCounselRequestAccessException() {
-        super(CounselRequestErrorCode.FORBIDDEN_COUNSEL_REQUEST_ACCESS);
-    }
+  public ForbiddenCounselRequestAccessException() {
+    super(CounselRequestErrorCode.FORBIDDEN_COUNSEL_REQUEST_ACCESS);
+  }
 }

@@ -4,7 +4,7 @@ import team.weero.app.application.exception.counsel.error.CounselRequestErrorCod
 import team.weero.app.global.error.exception.WeeRoException;
 
 public class InvalidCounselRequestStatusException extends WeeRoException {
-    public InvalidCounselRequestStatusException() {
-        super(CounselRequestErrorCode.INVALID_COUNSEL_REQUEST_STATUS);
-    }
+  public InvalidCounselRequestStatusException() {
+    super(CounselRequestErrorCode.INVALID_COUNSEL_REQUEST_STATUS);
+  }
 }
