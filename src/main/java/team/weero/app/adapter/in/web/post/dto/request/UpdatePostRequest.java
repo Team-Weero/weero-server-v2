@@ -1,3 +1,6 @@
 package team.weero.app.adapter.in.web.post.dto.request;
 
-public record UpdatePostRequest(String title, String content) {}
+import jakarta.validation.constraints.Size;
+
+public record UpdatePostRequest(
+    @Size(max = 100) String title, @Size(max = 10_000) String content) {}

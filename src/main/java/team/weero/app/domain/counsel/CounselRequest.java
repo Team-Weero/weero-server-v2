@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import team.weero.app.application.exception.counsel.InvalidCounselRequestStatusException;
 import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
 
@@ -44,5 +45,54 @@ public class CounselRequest {
 
   public boolean isCancelled() {
     return status == Status.CANCELLED;
+  }
+
+  public CounselRequest approve() {
+    if (!isPending()) {
+      throw new InvalidCounselRequestStatusException();
+    }
+    return CounselRequest.builder()
+        .id(this.id)
+        .status(Status.IN_PROGRESS)
+        .gender(this.gender)
+        .hasCounselingExperience(this.hasCounselingExperience)
+        .category(this.category)
+        .studentId(this.studentId)
+        .studentName(this.studentName)
+        .teacherId(this.teacherId)
+        .teacherName(this.teacherName)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
+        .deletedAt(this.deletedAt)
+        .build();
+  }
+
+  public CounselRequest reject() {
+    if (!isPending()) {
+      throw new InvalidCounselRequestStatusException();
+    }
+    return CounselRequest.builder()
+        .id(this.id)
+        .status(Status.CANCELLED)
+        .gender(this.gender)
+        .hasCounselingExperience(this.hasCounselingExperience)
+        .category(this.category)
+        .studentId(this.studentId)
+        .studentName(this.studentName)
+        .teacherId(this.teacherId)
+        .teacherName(this.teacherName)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
+        .deletedAt(this.deletedAt)
+        .build();
+  }
+
+  public void validateCancellable() {
+    if (!isPending()) {
+      throw new InvalidCounselRequestStatusException();
+    }
+    if (isDeleted()) {
+      throw new InvalidCounselRequestStatusException();
+    }
   }
 }

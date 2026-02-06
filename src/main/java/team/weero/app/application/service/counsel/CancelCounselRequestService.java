@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.application.exception.counsel.CounselRequestNotFoundException;
 import team.weero.app.application.exception.counsel.ForbiddenCounselRequestAccessException;
-import team.weero.app.application.exception.counsel.InvalidCounselRequestStatusException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.counsel.CancelCounselRequestUseCase;
 import team.weero.app.application.port.out.counsel.CheckCounselRequestOwnerPort;
@@ -39,9 +38,7 @@ public class CancelCounselRequestService implements CancelCounselRequestUseCase 
     CounselRequest existing =
         loadCounselRequestPort.loadById(id).orElseThrow(CounselRequestNotFoundException::new);
 
-    if (!existing.isPending()) {
-      throw new InvalidCounselRequestStatusException();
-    }
+    existing.validateCancellable();
 
     deleteCounselRequestPort.softDelete(id);
   }
