@@ -14,7 +14,6 @@ import team.weero.app.adapter.out.student.repository.StudentRepository;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.adapter.out.teacher.repository.TeacherRepository;
 import team.weero.app.application.exception.counsel.CounselRequestNotFoundException;
-import team.weero.app.application.exception.counsel.ForbiddenCounselRequestAccessException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.out.counsel.CheckCounselRequestOwnerPort;
@@ -117,15 +116,11 @@ public class CounselRequestPersistenceAdapter
   }
 
   @Override
-  public void softDelete(UUID id, UUID userId) {
+  public void softDelete(UUID id) {
     CounselRequestJpaEntity counselRequest =
         counselRequestRepository
             .findByIdAndDeletedTimeIsNull(id)
             .orElseThrow(CounselRequestNotFoundException::new);
-
-    if (!counselRequest.getStudent().getUser().getId().equals(userId)) {
-      throw new ForbiddenCounselRequestAccessException();
-    }
 
     counselRequest.markDeleted();
     counselRequestRepository.save(counselRequest);

@@ -43,6 +43,6 @@ public class CancelCounselRequestService implements CancelCounselRequestUseCase 
       throw new InvalidCounselRequestStatusException();
     }
 
-    deleteCounselRequestPort.softDelete(id, userId);
+    deleteCounselRequestPort.softDelete(id);
   }
 }
