@@ -1,6 +1,7 @@
 package team.weero.app.application.service.counsel;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,22 +23,17 @@ public class GetAllCounselRequestsService implements GetAllCounselRequestsUseCas
     List<CounselRequest> counselRequests = loadCounselRequestPort.loadAll();
 
     List<CounselRequestResponse> responses =
-        counselRequests.stream()
-            .map(
-                cr ->
-                    new CounselRequestResponse(
-                        cr.getId(),
-                        cr.getStatus(),
-                        cr.getGender(),
-                        cr.isHasCounselingExperience(),
-                        cr.getCategory(),
-                        cr.getStudentId(),
-                        cr.getStudentName(),
-                        cr.getTeacherId(),
-                        cr.getTeacherName(),
-                        cr.getCreatedAt(),
-                        cr.getUpdatedAt()))
-            .toList();
+        counselRequests.stream().map(CounselRequestResponse::from).toList();
+
+    return new CounselRequestListResponse(responses);
+  }
+
+  @Override
+  public CounselRequestListResponse execute(UUID teacherId) {
+    List<CounselRequest> counselRequests = loadCounselRequestPort.loadAllByTeacherId(teacherId);
+
+    List<CounselRequestResponse> responses =
+        counselRequests.stream().map(CounselRequestResponse::from).toList();
 
     return new CounselRequestListResponse(responses);
   }

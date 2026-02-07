@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
 import team.weero.app.application.exception.counsel.CounselRequestNotFoundException;
+import team.weero.app.application.exception.counsel.ForbiddenCounselRequestAccessException;
 import team.weero.app.application.port.in.counsel.GetCounselRequestUseCase;
 import team.weero.app.application.port.out.counsel.LoadCounselRequestPort;
 import team.weero.app.domain.counsel.CounselRequest;
@@ -22,17 +23,18 @@ public class GetCounselRequestService implements GetCounselRequestUseCase {
     CounselRequest counselRequest =
         loadCounselRequestPort.loadById(id).orElseThrow(CounselRequestNotFoundException::new);
 
-    return new CounselRequestResponse(
-        counselRequest.getId(),
-        counselRequest.getStatus(),
-        counselRequest.getGender(),
-        counselRequest.isHasCounselingExperience(),
-        counselRequest.getCategory(),
-        counselRequest.getStudentId(),
-        counselRequest.getStudentName(),
-        counselRequest.getTeacherId(),
-        counselRequest.getTeacherName(),
-        counselRequest.getCreatedAt(),
-        counselRequest.getUpdatedAt());
+    return CounselRequestResponse.from(counselRequest);
+  }
+
+  @Override
+  public CounselRequestResponse execute(UUID id, UUID teacherId) {
+    CounselRequest counselRequest =
+        loadCounselRequestPort.loadById(id).orElseThrow(CounselRequestNotFoundException::new);
+
+    if (!counselRequest.getTeacherId().equals(teacherId)) {
+      throw new ForbiddenCounselRequestAccessException();
+    }
+
+    return CounselRequestResponse.from(counselRequest);
   }
 }

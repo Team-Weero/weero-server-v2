@@ -31,22 +31,7 @@ public class GetMyCounselRequestsService implements GetMyCounselRequestsUseCase 
         loadCounselRequestPort.loadAllByStudentId(studentInfo.id());
 
     List<CounselRequestResponse> responses =
-        counselRequests.stream()
-            .map(
-                cr ->
-                    new CounselRequestResponse(
-                        cr.getId(),
-                        cr.getStatus(),
-                        cr.getGender(),
-                        cr.isHasCounselingExperience(),
-                        cr.getCategory(),
-                        cr.getStudentId(),
-                        cr.getStudentName(),
-                        cr.getTeacherId(),
-                        cr.getTeacherName(),
-                        cr.getCreatedAt(),
-                        cr.getUpdatedAt()))
-            .toList();
+        counselRequests.stream().map(CounselRequestResponse::from).toList();
 
     return new CounselRequestListResponse(responses);
   }

@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.in.web.counsel.dto.request.CreateCounselRequestRequest;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
 import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
+import team.weero.app.adapter.in.web.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.exception.student.StudentNotFoundException;
+import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.in.counsel.CreateCounselRequestUseCase;
 import team.weero.app.application.port.out.counsel.SaveCounselRequestPort;
 import team.weero.app.application.port.out.student.LoadStudentPort;
+import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.domain.counsel.CounselRequest;
 import team.weero.app.domain.counsel.type.Status;
 
@@ -21,11 +24,15 @@ public class CreateCounselRequestService implements CreateCounselRequestUseCase 
 
   private final SaveCounselRequestPort saveCounselRequestPort;
   private final LoadStudentPort loadStudentPort;
+  private final LoadTeacherPort loadTeacherPort;
 
   @Override
   public CounselRequestResponse execute(CreateCounselRequestRequest request, UUID userId) {
     StudentInfo studentInfo =
         loadStudentPort.loadByUserId(userId).orElseThrow(StudentNotFoundException::new);
+
+    TeacherInfo teacherInfo =
+        loadTeacherPort.loadById(request.teacherId()).orElseThrow(TeacherNotFoundException::new);
 
     CounselRequest counselRequest =
         CounselRequest.builder()
@@ -39,17 +46,6 @@ public class CreateCounselRequestService implements CreateCounselRequestUseCase 
 
     CounselRequest saved = saveCounselRequestPort.save(counselRequest);
 
-    return new CounselRequestResponse(
-        saved.getId(),
-        saved.getStatus(),
-        saved.getGender(),
-        saved.isHasCounselingExperience(),
-        saved.getCategory(),
-        saved.getStudentId(),
-        saved.getStudentName(),
-        saved.getTeacherId(),
-        saved.getTeacherName(),
-        saved.getCreatedAt(),
-        saved.getUpdatedAt());
+    return CounselRequestResponse.from(saved);
   }
 }

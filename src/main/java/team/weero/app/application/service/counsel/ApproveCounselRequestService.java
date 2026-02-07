@@ -42,17 +42,6 @@ public class ApproveCounselRequestService implements ApproveCounselRequestUseCas
 
     CounselRequest saved = saveCounselRequestPort.save(updated);
 
-    return new CounselRequestResponse(
-        saved.getId(),
-        saved.getStatus(),
-        saved.getGender(),
-        saved.isHasCounselingExperience(),
-        saved.getCategory(),
-        saved.getStudentId(),
-        saved.getStudentName(),
-        saved.getTeacherId(),
-        saved.getTeacherName(),
-        saved.getCreatedAt(),
-        saved.getUpdatedAt());
+    return CounselRequestResponse.from(saved);
   }
 }
