@@ -29,6 +29,7 @@ public class CounselRequestMapper {
   public static CounselRequestJpaEntity toEntity(
       CounselRequest counselRequest, StudentJpaEntity student, TeacherJpaEntity teacher) {
     return CounselRequestJpaEntity.builder()
+        .id(counselRequest.getId())
         .status(counselRequest.getStatus())
         .gender(counselRequest.getGender())
         .hasCounselingExperience(counselRequest.isHasCounselingExperience())
