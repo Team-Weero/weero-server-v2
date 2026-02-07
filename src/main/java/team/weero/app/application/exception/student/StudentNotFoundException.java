@@ -7,7 +7,7 @@ public class StudentNotFoundException extends WeeRoException {
 
   public static final StudentNotFoundException INSTANCE = new StudentNotFoundException();
 
-  private StudentNotFoundException() {
+  public StudentNotFoundException() {
     super(StudentErrorCode.STUDENT_NOT_FOUND);
   }
 }

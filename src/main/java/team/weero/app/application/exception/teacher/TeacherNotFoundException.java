@@ -7,7 +7,7 @@ public class TeacherNotFoundException extends WeeRoException {
 
   public static final TeacherNotFoundException INSTANCE = new TeacherNotFoundException();
 
-  private TeacherNotFoundException() {
+  public TeacherNotFoundException() {
     super(TeacherErrorCode.TEACHER_NOT_FOUND);
   }
 }

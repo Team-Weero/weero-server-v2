@@ -1,5 +1,7 @@
 package team.weero.app.adapter.in.web.notice.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-public record CreateNoticeRequest(@NotBlank String title, @NotBlank String content) {}
+public record CreateNoticeRequest(
+    @NotBlank @Size(max = 200) String title, @NotBlank @Size(max = 10_000) String content) {}

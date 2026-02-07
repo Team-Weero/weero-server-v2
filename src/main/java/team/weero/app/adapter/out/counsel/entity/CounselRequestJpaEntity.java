@@ -1,6 +1,11 @@
 package team.weero.app.adapter.out.counsel.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.domain.counsel.type.Gender;
@@ -9,20 +14,21 @@ import team.weero.app.global.entity.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_counsel_request")
+@Getter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CounselRequestJpaEntity extends BaseTimeEntity {
 
-  @Column(nullable = false, columnDefinition = "VARCHAR(255)")
-  private String accessPassword;
-
-  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, columnDefinition = "VARCHAR(20)")
   private Status status;
 
-  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, columnDefinition = "VARCHAR(20)")
   private Gender gender;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "BOOLEAN")
   private boolean hasCounselingExperience;
 
   @Column(nullable = false, columnDefinition = "VARCHAR(20)")
@@ -35,4 +41,11 @@ public class CounselRequestJpaEntity extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "teacher_id", nullable = false)
   private TeacherJpaEntity teacher;
+
+  @Column(columnDefinition = "DATETIME")
+  private LocalDateTime deletedAt;
+
+  public void markDeleted() {
+    this.deletedAt = LocalDateTime.now();
+  }
 }
