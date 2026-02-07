@@ -7,10 +7,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestListResponse;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
+import team.weero.app.adapter.in.web.teacher.dto.response.TeacherInfo;
+import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.in.counsel.ApproveCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetAllCounselRequestsUseCase;
 import team.weero.app.application.port.in.counsel.GetCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.RejectCounselRequestUseCase;
+import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.global.security.CustomUserDetails;
 
 @RestController
@@ -22,17 +25,27 @@ public class TeacherCounselRequestController {
   private final GetCounselRequestUseCase getCounselRequestUseCase;
   private final ApproveCounselRequestUseCase approveCounselRequestUseCase;
   private final RejectCounselRequestUseCase rejectCounselRequestUseCase;
+  private final LoadTeacherPort loadTeacherPort;
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public CounselRequestListResponse getAll() {
-    return getAllCounselRequestsUseCase.execute();
+  public CounselRequestListResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    TeacherInfo teacherInfo =
+        loadTeacherPort
+            .loadByUserId(userDetails.getUserId())
+            .orElseThrow(TeacherNotFoundException::new);
+    return getAllCounselRequestsUseCase.execute(teacherInfo.id());
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public CounselRequestResponse get(@PathVariable UUID id) {
-    return getCounselRequestUseCase.execute(id);
+  public CounselRequestResponse get(
+      @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    TeacherInfo teacherInfo =
+        loadTeacherPort
+            .loadByUserId(userDetails.getUserId())
+            .orElseThrow(TeacherNotFoundException::new);
+    return getCounselRequestUseCase.execute(id, teacherInfo.id());
   }
 
   @PostMapping("/{id}/approve")
