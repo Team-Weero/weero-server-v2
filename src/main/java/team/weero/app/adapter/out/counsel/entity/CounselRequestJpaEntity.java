@@ -3,9 +3,9 @@ package team.weero.app.adapter.out.counsel.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.domain.counsel.type.Gender;
@@ -15,7 +15,7 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Entity
 @Table(name = "tbl_counsel_request")
 @Getter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CounselRequestJpaEntity extends BaseTimeEntity {
