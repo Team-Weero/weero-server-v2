@@ -1,5 +1,10 @@
 package team.weero.app.adapter.in.web.notice;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -30,6 +35,7 @@ import team.weero.app.application.port.in.notice.GetNoticeListUseCase;
 import team.weero.app.application.port.in.notice.GetNoticeUseCase;
 import team.weero.app.application.port.in.notice.UpdateNoticeUseCase;
 
+@Tag(name = "Notices", description = "공지사항 관리 API")
 @RestController
 @RequestMapping("/api/notices")
 @RequiredArgsConstructor
@@ -42,6 +48,13 @@ public class NoticeController {
   private final GetNoticeUseCase getNoticeUseCase;
   private final GetNoticeListUseCase getNoticeListUseCase;
 
+  @Operation(summary = "공지사항 생성", description = "새로운 공지사항을 생성합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "201", description = "생성 성공"),
+    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+    @ApiResponse(responseCode = "401", description = "인증 실패")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @PostMapping
   public ResponseEntity<NoticeResponse> createNotice(
       @RequestBody @Valid CreateNoticeRequest request) {
@@ -50,6 +63,14 @@ public class NoticeController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
+  @Operation(summary = "공지사항 수정", description = "기존 공지사항을 수정합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "수정 성공"),
+    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @PutMapping("/{id}")
   public ResponseEntity<NoticeResponse> updateNotice(
       @PathVariable UUID id, @RequestBody @Valid UpdateNoticeRequest request) {
@@ -58,18 +79,35 @@ public class NoticeController {
     return ResponseEntity.ok(response);
   }
 
+  @Operation(summary = "공지사항 삭제", description = "공지사항을 삭제합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "204", description = "삭제 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteNotice(@PathVariable UUID id) {
     deleteNoticeUseCase.delete(id);
     return ResponseEntity.noContent().build();
   }
 
+  @Operation(summary = "공지사항 상세 조회", description = "ID로 특정 공지사항의 상세 정보를 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "조회 성공"),
+    @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
+  })
   @GetMapping("/{id}")
   public ResponseEntity<NoticeResponse> getNotice(@PathVariable UUID id) {
     NoticeResponse response = getNoticeUseCase.getById(id);
     return ResponseEntity.ok(response);
   }
 
+  @Operation(summary = "공지사항 목록 조회", description = "페이지네이션을 적용한 공지사항 목록을 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "조회 성공"),
+    @ApiResponse(responseCode = "400", description = "잘못된 페이지 파라미터")
+  })
   @GetMapping
   public ResponseEntity<NoticeListResponse> getNoticeList(
       @RequestParam(defaultValue = "0") @Min(0) int page,
