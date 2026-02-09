@@ -10,6 +10,6 @@ public record CreateAnswerRequest(
             description = "답변 내용 (최대 1,000자)",
             example = "답변 내용입니다",
             requiredMode = Schema.RequiredMode.REQUIRED)
-        @NotBlank(message = "댓글은 필수 값입니다.")
+        @NotBlank(message = "답변은 필수 값입니다.")
         @Size(max = 1000)
         String answer) {}
