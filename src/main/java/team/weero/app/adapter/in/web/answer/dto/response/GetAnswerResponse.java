@@ -8,7 +8,7 @@ import team.weero.app.domain.answer.model.Answer;
 
 @Schema(description = "답변 목록 조회 응답")
 public record GetAnswerResponse(
-    @Schema(description = "답변 목록", example = "[]") List<AnswerDto> answers) {
+    @Schema(description = "답변 목록") List<AnswerDto> answers) {
 
   @Schema(description = "답변 항목")
   public record AnswerDto(
