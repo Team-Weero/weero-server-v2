@@ -1,5 +1,10 @@
 package team.weero.app.adapter.in.web.counsel;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +21,7 @@ import team.weero.app.application.port.in.counsel.RejectCounselRequestUseCase;
 import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.global.security.CustomUserDetails;
 
+@Tag(name = "Teacher Counsel Requests", description = "교사 상담 요청 관리 API")
 @RestController
 @RequestMapping("/api/counsel-requests/teacher")
 @RequiredArgsConstructor
@@ -27,6 +33,13 @@ public class TeacherCounselRequestController {
   private final RejectCounselRequestUseCase rejectCounselRequestUseCase;
   private final LoadTeacherPort loadTeacherPort;
 
+  @Operation(summary = "교사의 모든 상담 요청 조회", description = "현재 로그인한 교사에게 할당된 모든 상담 요청을 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "조회 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "교사 정보를 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestListResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -37,6 +50,13 @@ public class TeacherCounselRequestController {
     return getAllCounselRequestsUseCase.execute(teacherInfo.id());
   }
 
+  @Operation(summary = "특정 상담 요청 상세 조회", description = "ID로 특정 상담 요청의 상세 정보를 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "조회 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "상담 요청 또는 교사 정보를 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestResponse get(
@@ -48,6 +68,13 @@ public class TeacherCounselRequestController {
     return getCounselRequestUseCase.execute(id, teacherInfo.id());
   }
 
+  @Operation(summary = "상담 요청 승인", description = "학생의 상담 요청을 승인합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "승인 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "상담 요청을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @PostMapping("/{id}/approve")
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestResponse approve(
@@ -55,6 +82,13 @@ public class TeacherCounselRequestController {
     return approveCounselRequestUseCase.execute(id, userDetails.getUserId());
   }
 
+  @Operation(summary = "상담 요청 거절", description = "학생의 상담 요청을 거절합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "204", description = "거절 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "상담 요청을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @PostMapping("/{id}/reject")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void reject(

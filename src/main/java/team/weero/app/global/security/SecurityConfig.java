@@ -48,6 +48,14 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth/reissue")
                     .permitAll()
+                    .requestMatchers(
+                        "/docs",
+                        "/docs/**",
+                        "/api-docs",
+                        "/api-docs/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**")
+                    .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/auth/me")
                     .authenticated()
                     .requestMatchers(HttpMethod.POST, "/api/notices/**")
