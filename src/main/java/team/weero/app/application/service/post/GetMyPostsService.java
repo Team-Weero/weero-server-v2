@@ -39,6 +39,7 @@ public class GetMyPostsService implements GetMyPostsUseCase {
                         post.getTitle(),
                         post.getContent(),
                         post.getNickName(),
+                        post.getViewCount(),
                         post.getCreatedAt(),
                         post.getUpdatedAt()))
             .toList();

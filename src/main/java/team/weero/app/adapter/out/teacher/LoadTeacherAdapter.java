@@ -1,4 +1,4 @@
-package team.weero.app.adapter.out.persistence;
+package team.weero.app.adapter.out.teacher;
 
 import java.util.Optional;
 import java.util.UUID;

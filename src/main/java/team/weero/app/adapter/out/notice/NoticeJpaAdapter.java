@@ -1,4 +1,4 @@
-package team.weero.app.adapter.out.persistence;
+package team.weero.app.adapter.out.notice;
 
 import jakarta.persistence.EntityManager;
 import java.util.Optional;

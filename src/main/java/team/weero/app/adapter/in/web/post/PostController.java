@@ -29,6 +29,8 @@ public class PostController {
   private final GetMyPostsUseCase getMyPostsUseCase;
   private final DeletePostUseCase deletePostUseCase;
   private final UpdatePostUseCase updatePostUseCase;
+  private final IncreaseHeartUseCase increaseHeartUseCase;
+  private final DecreaseHeartUseCase decreaseHeartUseCase;
 
   @Operation(summary = "게시글 생성", description = "새로운 게시글을 생성합니다.")
   @ApiResponses({
@@ -104,5 +106,21 @@ public class PostController {
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @Valid @RequestBody UpdatePostRequest request) {
     updatePostUseCase.execute(postId, userDetails.getUserId(), request);
+  }
+
+  @PostMapping("/{postId}/heart")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void increaseHeart(
+      @PathVariable UUID postId,
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    increaseHeartUseCase.execute(postId, userDetails.getUserId());
+  }
+
+  @DeleteMapping("/{postId}/heart")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void decreaseHeart(
+      @PathVariable UUID postId,
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    decreaseHeartUseCase.execute(postId, userDetails.getUserId());
   }
 }
