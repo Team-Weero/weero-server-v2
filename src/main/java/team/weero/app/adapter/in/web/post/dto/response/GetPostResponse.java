@@ -9,5 +9,7 @@ public record GetPostResponse(
     String content,
     String nickName,
     int viewCount,
+    int heartCount,
+    boolean hearted,
     LocalDateTime createdAt,
     LocalDateTime updatedAt) {}

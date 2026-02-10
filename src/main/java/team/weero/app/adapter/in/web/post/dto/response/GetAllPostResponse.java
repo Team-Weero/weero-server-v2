@@ -8,9 +8,10 @@ public record GetAllPostResponse(List<PostItem> posts) {
   public record PostItem(
       UUID id,
       String title,
-      String content,
       String nickName,
       int viewCount,
+      int heartCount,
+      boolean hearted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt
       /** 좋아요 조회수 추후 추가 */
