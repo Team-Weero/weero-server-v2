@@ -15,6 +15,8 @@ public class PostMapper {
         .content(entity.getContent())
         .studentId(entity.getStudent().getId())
         .nickName(entity.getStudent().getNickname())
+        .viewCount(entity.getViewCount())
+        .heart(entity.getHeart())
         .createdAt(entity.getCreatedAt())
         .updatedAt(entity.getUpdatedAt())
         .deletedAt(entity.getDeletedAt())
@@ -23,9 +25,12 @@ public class PostMapper {
 
   public static PostJpaEntity toEntity(Post post, StudentJpaEntity student) {
     return PostJpaEntity.builder()
+        .id(post.getId())
         .title(post.getTitle())
         .content(post.getContent())
         .student(student)
+        .viewCount(post.getViewCount())
+        .heart(post.getHeart())
         .build();
   }
 }

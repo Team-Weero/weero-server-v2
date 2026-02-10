@@ -31,6 +31,7 @@ public class GetAllPostsService implements GetAllPostUseCase {
                         post.getTitle(),
                         post.getContent(),
                         post.getNickName(),
+                        post.getViewCount(),
                         post.getCreatedAt(),
                         post.getUpdatedAt()))
             .toList();

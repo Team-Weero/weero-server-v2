@@ -8,5 +8,6 @@ public record GetPostResponse(
     String title,
     String content,
     String nickName,
+    int viewCount,
     LocalDateTime createdAt,
     LocalDateTime updatedAt) {}

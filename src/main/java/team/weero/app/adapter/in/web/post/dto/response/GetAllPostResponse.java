@@ -10,6 +10,7 @@ public record GetAllPostResponse(List<PostItem> posts) {
       String title,
       String content,
       String nickName,
+      int viewCount,
       LocalDateTime createdAt,
       LocalDateTime updatedAt
       /** 좋아요 조회수 추후 추가 */
