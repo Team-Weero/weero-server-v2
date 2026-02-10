@@ -5,6 +5,10 @@ spring:
   application:
     name: WeeRo-Application
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   web:
     resources:
       add-mappings: false
@@ -29,7 +33,7 @@ spring:
         show_sql: true
 
   jwt:
-    secretKey: ${JWT_SECRET_KEY:test-secret-key-for-jwt-token-generation-minimum-32-characters-required}
+    secretKey: ${JWT_SECRET_KEY:test-secret-key-for-jwt-token-generation-minimum-64-bytes-required-for-hs512-algorithm-security}
     accessExp: ${JWT_ACCESS_EXP:3600}
     refreshExp: ${JWT_REFRESH_EXP:604800}
     header: ${JWT_HEADER:Authorization}
