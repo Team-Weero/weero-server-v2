@@ -12,9 +12,10 @@ public record GetAllPostResponse(@Schema(description = "게시글 목록") List<
   public record PostItem(
       UUID id,
       String title,
-      String content,
       String nickName,
       int viewCount,
+      int heartCount,
+      boolean hearted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt
       /** 좋아요 조회수 추후 추가 */

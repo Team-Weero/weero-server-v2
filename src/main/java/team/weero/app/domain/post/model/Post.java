@@ -49,12 +49,4 @@ public class Post {
   public void increaseViewCount() {
     this.viewCount += 1;
   }
-
-  public void increaseHeartCount() {
-    this.heart += 1;
-  }
-
-  public void decreaseHeartCount() {
-    this.heart -= 1;
-  }
 }

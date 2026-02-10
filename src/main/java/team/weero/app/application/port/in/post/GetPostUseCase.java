@@ -4,5 +4,5 @@ import java.util.UUID;
 import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
 
 public interface GetPostUseCase {
-  GetPostResponse execute(UUID postId);
+  GetPostResponse execute(UUID userId, UUID postId);
 }
