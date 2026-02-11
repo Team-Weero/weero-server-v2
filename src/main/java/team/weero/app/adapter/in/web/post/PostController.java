@@ -40,7 +40,7 @@ public class PostController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @PostMapping("/")
+  @PostMapping
   public void create(
       @Valid @RequestBody CreatePostRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails) {

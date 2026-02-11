@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse
 import team.weero.app.application.port.in.counsel.CancelCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.CreateCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetMyCounselRequestsUseCase;
+import team.weero.app.application.port.in.counsel.dto.request.CreateCounselRequestCommand;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestListInfo;
 import team.weero.app.global.security.CustomUserDetails;
 
 @Tag(name = "Student Counsel Requests", description = "학생 상담 요청 관리 API")
@@ -41,7 +44,14 @@ public class StudentCounselRequestController {
   public CounselRequestResponse create(
       @Valid @RequestBody CreateCounselRequestRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
-    return createCounselRequestUseCase.execute(request, userDetails.getUserId());
+    return CounselRequestResponse.from(
+        createCounselRequestUseCase.execute(
+            new CreateCounselRequestCommand(
+                request.gender(),
+                request.hasCounselingExperience(),
+                request.category(),
+                request.teacherId(),
+                userDetails.getUserId())));
   }
 
   @Operation(summary = "상담 요청 취소", description = "학생이 본인의 상담 요청을 취소합니다.")
@@ -67,6 +77,8 @@ public class StudentCounselRequestController {
   @GetMapping("/my")
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestListResponse getMy(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    return getMyCounselRequestsUseCase.execute(userDetails.getUserId());
+    CounselRequestListInfo listInfo = getMyCounselRequestsUseCase.execute(userDetails.getUserId());
+    List<CounselRequestResponse> responses = CounselRequestResponse.fromList(listInfo);
+    return new CounselRequestListResponse(responses);
   }
 }

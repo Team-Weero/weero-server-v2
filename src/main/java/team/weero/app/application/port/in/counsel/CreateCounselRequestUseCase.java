@@ -1,9 +1,8 @@
 package team.weero.app.application.port.in.counsel;
 
-import java.util.UUID;
-import team.weero.app.adapter.in.web.counsel.dto.request.CreateCounselRequestRequest;
-import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
+import team.weero.app.application.port.in.counsel.dto.request.CreateCounselRequestCommand;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
 
 public interface CreateCounselRequestUseCase {
-  CounselRequestResponse execute(CreateCounselRequestRequest request, UUID studentId);
+  CounselRequestInfo execute(CreateCounselRequestCommand command);
 }

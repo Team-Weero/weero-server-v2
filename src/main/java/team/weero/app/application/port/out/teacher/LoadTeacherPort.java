@@ -2,7 +2,7 @@ package team.weero.app.application.port.out.teacher;
 
 import java.util.Optional;
 import java.util.UUID;
-import team.weero.app.adapter.in.web.teacher.dto.response.TeacherInfo;
+import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 
 public interface LoadTeacherPort {
 

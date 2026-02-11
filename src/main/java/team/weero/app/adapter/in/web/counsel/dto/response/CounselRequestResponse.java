@@ -2,8 +2,10 @@ package team.weero.app.adapter.in.web.counsel.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
-import team.weero.app.domain.counsel.CounselRequest;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestListInfo;
 import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
 
@@ -29,18 +31,22 @@ public record CounselRequestResponse(
     @Schema(description = "생성 일시", example = "2024-01-01T10:00:00") LocalDateTime createdAt,
     @Schema(description = "수정 일시", example = "2024-01-01T10:00:00") LocalDateTime updatedAt) {
 
-  public static CounselRequestResponse from(CounselRequest counselRequest) {
+  public static CounselRequestResponse from(CounselRequestInfo info) {
     return new CounselRequestResponse(
-        counselRequest.getId(),
-        counselRequest.getStatus(),
-        counselRequest.getGender(),
-        counselRequest.isHasCounselingExperience(),
-        counselRequest.getCategory(),
-        counselRequest.getStudentId(),
-        counselRequest.getStudentName(),
-        counselRequest.getTeacherId(),
-        counselRequest.getTeacherName(),
-        counselRequest.getCreatedAt(),
-        counselRequest.getUpdatedAt());
+        info.id(),
+        info.status(),
+        info.gender(),
+        info.hasCounselingExperience(),
+        info.category(),
+        info.studentId(),
+        info.studentName(),
+        info.teacherId(),
+        info.teacherName(),
+        info.createdAt(),
+        info.updatedAt());
+  }
+
+  public static List<CounselRequestResponse> fromList(CounselRequestListInfo listInfo) {
+    return listInfo.requests().stream().map(CounselRequestResponse::from).toList();
   }
 }

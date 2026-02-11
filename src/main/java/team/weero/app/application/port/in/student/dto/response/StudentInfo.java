@@ -1,4 +1,4 @@
-package team.weero.app.adapter.in.web.student.dto.response;
+package team.weero.app.application.port.in.student.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;

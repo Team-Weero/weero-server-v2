@@ -1,4 +1,4 @@
-package team.weero.app.adapter.in.web.teacher.dto.response;
+package team.weero.app.application.port.in.teacher.dto.response;
 
 import java.util.UUID;
 

@@ -1,10 +1,10 @@
 package team.weero.app.application.port.in.counsel;
 
 import java.util.UUID;
-import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestListResponse;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestListInfo;
 
 public interface GetAllCounselRequestsUseCase {
-  CounselRequestListResponse execute();
+  CounselRequestListInfo execute();
 
-  CounselRequestListResponse execute(UUID teacherId);
+  CounselRequestListInfo execute(UUID teacherId);
 }

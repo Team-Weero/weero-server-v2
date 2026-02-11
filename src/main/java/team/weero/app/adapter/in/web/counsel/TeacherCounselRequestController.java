@@ -12,12 +12,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestListResponse;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
-import team.weero.app.adapter.in.web.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.in.counsel.ApproveCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetAllCounselRequestsUseCase;
 import team.weero.app.application.port.in.counsel.GetCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.RejectCounselRequestUseCase;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
+import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.global.security.CustomUserDetails;
 
@@ -43,11 +44,8 @@ public class TeacherCounselRequestController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestListResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    TeacherInfo teacherInfo =
-        loadTeacherPort
-            .loadByUserId(userDetails.getUserId())
-            .orElseThrow(TeacherNotFoundException::new);
-    return getAllCounselRequestsUseCase.execute(teacherInfo.id());
+    return CounselRequestListResponse.from(
+        getAllCounselRequestsUseCase.execute(userDetails.getUserId()));
   }
 
   @Operation(summary = "특정 상담 요청 상세 조회", description = "ID로 특정 상담 요청의 상세 정보를 조회합니다.")
@@ -61,11 +59,15 @@ public class TeacherCounselRequestController {
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestResponse get(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
+
     TeacherInfo teacherInfo =
         loadTeacherPort
             .loadByUserId(userDetails.getUserId())
             .orElseThrow(TeacherNotFoundException::new);
-    return getCounselRequestUseCase.execute(id, teacherInfo.id());
+
+    CounselRequestInfo info = getCounselRequestUseCase.execute(id, teacherInfo.id());
+
+    return CounselRequestResponse.from(info);
   }
 
   @Operation(summary = "상담 요청 승인", description = "학생의 상담 요청을 승인합니다.")
@@ -79,7 +81,9 @@ public class TeacherCounselRequestController {
   @ResponseStatus(HttpStatus.OK)
   public CounselRequestResponse approve(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
-    return approveCounselRequestUseCase.execute(id, userDetails.getUserId());
+    CounselRequestInfo info = approveCounselRequestUseCase.execute(id, userDetails.getUserId());
+
+    return CounselRequestResponse.from(info);
   }
 
   @Operation(summary = "상담 요청 거절", description = "학생의 상담 요청을 거절합니다.")
