@@ -11,8 +11,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +32,7 @@ import team.weero.app.application.port.in.notice.GetNoticeUseCase;
 import team.weero.app.application.port.in.notice.UpdateNoticeUseCase;
 import team.weero.app.application.port.in.notice.dto.request.CreateNoticeCommand;
 import team.weero.app.application.port.in.notice.dto.request.UpdateNoticeCommand;
+import team.weero.app.application.port.in.notice.dto.response.NoticeInfo;
 
 @Tag(name = "Notices", description = "공지사항 관리 API")
 @RestController
@@ -56,11 +55,12 @@ public class NoticeController {
   })
   @SecurityRequirement(name = "bearer-key")
   @PostMapping
-  public ResponseEntity<NoticeResponse> createNotice(
-      @RequestBody @Valid CreateNoticeRequest request) {
+  public NoticeResponse createNotice(@RequestBody @Valid CreateNoticeRequest request) {
+
     CreateNoticeCommand command = new CreateNoticeCommand(request.title(), request.content());
-    NoticeResponse response = createNoticeUseCase.create(command);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+    NoticeInfo noticeInfo = createNoticeUseCase.execute(command);
+    return NoticeResponse.from(noticeInfo);
   }
 
   @Operation(summary = "공지사항 수정", description = "기존 공지사항을 수정합니다.")
@@ -72,11 +72,12 @@ public class NoticeController {
   })
   @SecurityRequirement(name = "bearer-key")
   @PutMapping("/{id}")
-  public ResponseEntity<NoticeResponse> updateNotice(
+  public NoticeResponse updateNotice(
       @PathVariable UUID id, @RequestBody @Valid UpdateNoticeRequest request) {
     UpdateNoticeCommand command = new UpdateNoticeCommand(id, request.title(), request.content());
-    NoticeResponse response = updateNoticeUseCase.update(command);
-    return ResponseEntity.ok(response);
+
+    NoticeInfo noticeInfo = updateNoticeUseCase.execute(command);
+    return NoticeResponse.from(noticeInfo);
   }
 
   @Operation(summary = "공지사항 삭제", description = "공지사항을 삭제합니다.")
@@ -87,9 +88,8 @@ public class NoticeController {
   })
   @SecurityRequirement(name = "bearer-key")
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteNotice(@PathVariable UUID id) {
-    deleteNoticeUseCase.delete(id);
-    return ResponseEntity.noContent().build();
+  public void deleteNotice(@PathVariable UUID id) {
+    deleteNoticeUseCase.execute(id);
   }
 
   @Operation(summary = "공지사항 상세 조회", description = "ID로 특정 공지사항의 상세 정보를 조회합니다.")
@@ -98,9 +98,8 @@ public class NoticeController {
     @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
   })
   @GetMapping("/{id}")
-  public ResponseEntity<NoticeResponse> getNotice(@PathVariable UUID id) {
-    NoticeResponse response = getNoticeUseCase.getById(id);
-    return ResponseEntity.ok(response);
+  public NoticeResponse getNotice(@PathVariable UUID id) {
+    return NoticeResponse.from(getNoticeUseCase.execute(id));
   }
 
   @Operation(summary = "공지사항 목록 조회", description = "페이지네이션을 적용한 공지사항 목록을 조회합니다.")
@@ -109,10 +108,9 @@ public class NoticeController {
     @ApiResponse(responseCode = "400", description = "잘못된 페이지 파라미터")
   })
   @GetMapping
-  public ResponseEntity<NoticeListResponse> getNoticeList(
+  public NoticeListResponse getNoticeList(
       @RequestParam(defaultValue = "0") @Min(0) int page,
       @RequestParam(defaultValue = "10") @Positive @Max(100) int size) {
-    NoticeListResponse response = getNoticeListUseCase.getList(page, size);
-    return ResponseEntity.ok(response);
+    return NoticeListResponse.from(getNoticeListUseCase.execute(page, size));
   }
 }
