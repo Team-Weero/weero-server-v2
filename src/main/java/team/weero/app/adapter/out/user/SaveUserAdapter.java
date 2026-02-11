@@ -1,4 +1,4 @@
-package team.weero.app.adapter.out.persistence;
+package team.weero.app.adapter.out.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -15,6 +15,7 @@ import team.weero.app.adapter.in.web.post.dto.request.CreatePostRequest;
 import team.weero.app.adapter.in.web.post.dto.request.UpdatePostRequest;
 import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse;
 import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
+import team.weero.app.application.port.in.heart.ToggleHeartUseCase;
 import team.weero.app.application.port.in.post.*;
 import team.weero.app.global.security.CustomUserDetails;
 
@@ -23,12 +24,14 @@ import team.weero.app.global.security.CustomUserDetails;
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController {
+
   private final CreatePostUseCase createPostUseCase;
   private final GetAllPostUseCase getAllPostUseCase;
   private final GetPostUseCase getPostUseCase;
   private final GetMyPostsUseCase getMyPostsUseCase;
   private final DeletePostUseCase deletePostUseCase;
   private final UpdatePostUseCase updatePostUseCase;
+  private final ToggleHeartUseCase toggleHeartUseCase;
 
   @Operation(summary = "게시글 생성", description = "새로운 게시글을 생성합니다.")
   @ApiResponses({
@@ -48,8 +51,8 @@ public class PostController {
   @ApiResponses({@ApiResponse(responseCode = "200", description = "조회 성공")})
   @GetMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public GetAllPostResponse getAll() {
-    return getAllPostUseCase.execute();
+  public GetAllPostResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    return getAllPostUseCase.execute(userDetails.getUserId());
   }
 
   @Operation(summary = "내 게시글 목록 조회", description = "현재 로그인한 사용자의 게시글을 조회합니다.")
@@ -71,8 +74,9 @@ public class PostController {
   })
   @GetMapping("/{postId}")
   @ResponseStatus(HttpStatus.OK)
-  public GetPostResponse get(@PathVariable UUID postId) {
-    return getPostUseCase.execute(postId);
+  public GetPostResponse get(
+      @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    return getPostUseCase.execute(postId, userDetails.getUserId());
   }
 
   @Operation(summary = "게시글 삭제", description = "본인의 게시글을 삭제합니다.")
@@ -104,5 +108,12 @@ public class PostController {
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @Valid @RequestBody UpdatePostRequest request) {
     updatePostUseCase.execute(postId, userDetails.getUserId(), request);
+  }
+
+  @PostMapping("/{postId}/heart")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void toggleHeart(
+      @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    toggleHeartUseCase.execute(postId, userDetails.getUserId());
   }
 }

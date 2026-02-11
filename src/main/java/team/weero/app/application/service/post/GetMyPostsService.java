@@ -10,6 +10,7 @@ import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse.PostIt
 import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.post.GetMyPostsUseCase;
+import team.weero.app.application.port.out.heart.HeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
 import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.domain.post.model.Post;
@@ -19,30 +20,37 @@ import team.weero.app.domain.post.model.Post;
 @Transactional(readOnly = true)
 public class GetMyPostsService implements GetMyPostsUseCase {
 
-  private final GetPostPort getPostPort;
-  private final LoadStudentPort loadStudentPort;
+    private final GetPostPort getPostPort;
+    private final LoadStudentPort loadStudentPort;
+    private final HeartPort heartPort;
 
-  @Override
-  public GetAllPostResponse execute(UUID userId) {
+    @Override
+    public GetAllPostResponse execute(UUID userId) {
 
-    StudentInfo studentInfo =
-        loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
+        StudentInfo studentInfo =
+                loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
-    List<Post> posts = getPostPort.getAllByStudentId(studentInfo.id());
+        List<Post> posts = getPostPort.getAllByStudentId(studentInfo.id());
 
-    List<PostItem> postItems =
-        posts.stream()
-            .map(
-                post ->
-                    new PostItem(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getContent(),
-                        post.getNickName(),
-                        post.getCreatedAt(),
-                        post.getUpdatedAt()))
-            .toList();
+        List<PostItem> postItems =
+                posts.stream()
+                        .map(
+                                post -> {
+                                    boolean hearted = heartPort.exists(post.getId(), userId);
+                                    int heartCount = heartPort.countByPostId(post.getId());
 
-    return new GetAllPostResponse(postItems);
-  }
+                                    return new PostItem(
+                                            post.getId(),
+                                            post.getTitle(),
+                                            post.getNickName(),
+                                            post.getViewCount(),
+                                            heartCount,
+                                            hearted,
+                                            post.getCreatedAt(),
+                                            post.getUpdatedAt());
+                                })
+                        .toList();
+
+        return new GetAllPostResponse(postItems);
+    }
 }

@@ -24,7 +24,6 @@ public abstract class BaseTimeEntity extends BaseUUIDEntity {
   @Column(updatable = false, nullable = false)
   private LocalDateTime createdAt;
 
-  @LastModifiedDate
-  @Column(nullable = false)
-  private LocalDateTime updatedAt;
+  @Column(nullable = true)
+  protected LocalDateTime updatedAt;
 }

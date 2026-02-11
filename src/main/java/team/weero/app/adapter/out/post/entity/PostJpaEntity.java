@@ -3,6 +3,7 @@ package team.weero.app.adapter.out.post.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.global.entity.BaseTimeEntity;
 
@@ -11,7 +12,7 @@ import team.weero.app.global.entity.BaseTimeEntity;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class PostJpaEntity extends BaseTimeEntity {
 
   @Column(nullable = false, columnDefinition = "VARCHAR(100)")
@@ -26,6 +27,8 @@ public class PostJpaEntity extends BaseTimeEntity {
 
   private LocalDateTime deletedAt;
 
+  private int viewCount;
+
   public void markDeleted() {
     this.deletedAt = LocalDateTime.now();
   }
@@ -33,5 +36,6 @@ public class PostJpaEntity extends BaseTimeEntity {
   public void update(String title, String content) {
     if (title != null) this.title = title;
     if (content != null) this.content = content;
+    this.updatedAt = LocalDateTime.now();
   }
 }

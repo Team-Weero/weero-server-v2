@@ -7,18 +7,22 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.port.in.post.GetPostUseCase;
+import team.weero.app.application.port.out.heart.HeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
+import team.weero.app.application.port.out.post.IncrementViewCountPort;
 import team.weero.app.domain.post.model.Post;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class GetPostService implements GetPostUseCase {
 
   private final GetPostPort getPostPort;
+  private final IncrementViewCountPort incrementViewCountPort;
+  private final HeartPort heartPort;
 
   @Override
-  public GetPostResponse execute(UUID postId) {
+  public GetPostResponse execute(UUID postId, UUID userId) {
 
     Post post = getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
@@ -26,12 +30,22 @@ public class GetPostService implements GetPostUseCase {
       throw PostNotFoundException.INSTANCE;
     }
 
+    incrementViewCountPort.incrementViewCount(postId);
+
+    Post updatedPost = getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
+
+    boolean hearted = heartPort.exists(postId, userId);
+    int heartCount = heartPort.countByPostId(postId);
+
     return new GetPostResponse(
-        post.getId(),
-        post.getTitle(),
-        post.getContent(),
-        post.getNickName(),
-        post.getCreatedAt(),
-        post.getUpdatedAt());
+            updatedPost.getId(),
+            updatedPost.getTitle(),
+            updatedPost.getContent(),
+            updatedPost.getNickName(),
+            updatedPost.getViewCount(),
+            heartCount,
+            hearted,
+            updatedPost.getCreatedAt(),
+            updatedPost.getUpdatedAt());
   }
 }
