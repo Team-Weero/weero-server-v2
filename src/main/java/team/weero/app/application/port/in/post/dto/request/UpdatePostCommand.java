@@ -1,3 +1,5 @@
 package team.weero.app.application.port.in.post.dto.request;
 
-public record UpdatePostCommand(String title, String content) {}
+import java.util.UUID;
+
+public record UpdatePostCommand(UUID postId, UUID userId, String title, String content) {}

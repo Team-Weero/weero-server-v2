@@ -1,9 +1,8 @@
 package team.weero.app.application.port.in.post;
 
-import java.util.UUID;
-import team.weero.app.adapter.in.web.post.dto.request.CreatePostRequest;
+import team.weero.app.application.port.in.post.dto.request.CreatePostCommand;
 
 public interface CreatePostUseCase {
 
-  void execute(CreatePostRequest request, UUID userId);
+  void execute(CreatePostCommand command);
 }

@@ -1,8 +1,7 @@
 package team.weero.app.application.port.in.post;
 
-import java.util.UUID;
-import team.weero.app.adapter.in.web.post.dto.request.UpdatePostRequest;
+import team.weero.app.application.port.in.post.dto.request.UpdatePostCommand;
 
 public interface UpdatePostUseCase {
-  void execute(UUID postId, UUID userId, UpdatePostRequest request);
+  void execute(UpdatePostCommand command);
 }
