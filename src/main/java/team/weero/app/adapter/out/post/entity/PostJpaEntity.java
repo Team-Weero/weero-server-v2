@@ -29,8 +29,6 @@ public class PostJpaEntity extends BaseTimeEntity {
 
   private int viewCount;
 
-  private int heart;
-
   public void markDeleted() {
     this.deletedAt = LocalDateTime.now();
   }

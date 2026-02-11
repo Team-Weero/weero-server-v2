@@ -16,7 +16,6 @@ public class PostMapper {
         .studentId(entity.getStudent().getId())
         .nickName(entity.getStudent().getNickname())
         .viewCount(entity.getViewCount())
-        .heart(entity.getHeart())
         .createdAt(entity.getCreatedAt())
         .updatedAt(entity.getUpdatedAt())
         .deletedAt(entity.getDeletedAt())
@@ -30,7 +29,6 @@ public class PostMapper {
         .content(post.getContent())
         .student(student)
         .viewCount(post.getViewCount())
-        .heart(post.getHeart())
         .build();
   }
 }

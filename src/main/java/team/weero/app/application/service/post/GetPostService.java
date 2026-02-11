@@ -37,14 +37,14 @@ public class GetPostService implements GetPostUseCase {
     int heartCount = heartPort.countByPostId(postId);
 
     return new GetPostResponse(
-            updatedPost.getId(),
-            updatedPost.getTitle(),
-            updatedPost.getContent(),
-            updatedPost.getNickName(),
-            updatedPost.getViewCount(),
-            heartCount,
-            hearted,
-            updatedPost.getCreatedAt(),
-            updatedPost.getUpdatedAt());
+        updatedPost.getId(),
+        updatedPost.getTitle(),
+        updatedPost.getContent(),
+        updatedPost.getNickName(),
+        updatedPost.getViewCount(),
+        heartCount,
+        hearted,
+        updatedPost.getCreatedAt(),
+        updatedPost.getUpdatedAt());
   }
 }

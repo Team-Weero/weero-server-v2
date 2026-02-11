@@ -30,6 +30,6 @@ public class HeartPersistenceAdapter implements HeartPort {
 
   @Override
   public int countByPostId(UUID postId) {
-      return heartRepository.countByPostId(postId);
+    return heartRepository.countByPostId(postId);
   }
 }
