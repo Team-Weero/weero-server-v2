@@ -1,4 +1,4 @@
-package team.weero.app.adapter.in.web.auth.dto.request;
+package team.weero.app.application.port.in.auth.dto.request;
 
 import team.weero.app.domain.auth.type.Authority;
 
