@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import team.weero.app.global.security.filter.JwtAuthenticationFilter;
 
 @Configuration
@@ -37,6 +39,18 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
+        .cors(
+            cors ->
+                cors.configurationSource(
+                    request -> {
+                      CorsConfiguration config = new CorsConfiguration();
+                      config.setAllowedOriginPatterns(List.of("*"));
+                      config.setAllowedMethods(
+                          List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                      config.setAllowedHeaders(List.of("*"));
+                      config.setAllowCredentials(true);
+                      return config;
+                    }))
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(

@@ -32,20 +32,21 @@ public class GetPostService implements GetPostUseCase {
 
     incrementViewCountPort.incrementViewCount(postId);
 
-    Post updatedPost = getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
+    Post updatedPost =
+        getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     boolean hearted = heartPort.exists(postId, userId);
     int heartCount = heartPort.countByPostId(postId);
 
     return new GetPostResponse(
-            updatedPost.getId(),
-            updatedPost.getTitle(),
-            updatedPost.getContent(),
-            updatedPost.getNickName(),
-            updatedPost.getViewCount(),
-            heartCount,
-            hearted,
-            updatedPost.getCreatedAt(),
-            updatedPost.getUpdatedAt());
+        updatedPost.getId(),
+        updatedPost.getTitle(),
+        updatedPost.getContent(),
+        updatedPost.getNickName(),
+        updatedPost.getViewCount(),
+        heartCount,
+        hearted,
+        updatedPost.getCreatedAt(),
+        updatedPost.getUpdatedAt());
   }
 }
