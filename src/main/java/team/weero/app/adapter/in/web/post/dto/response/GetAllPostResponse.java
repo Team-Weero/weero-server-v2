@@ -18,6 +18,5 @@ public record GetAllPostResponse(@Schema(description = "게시글 목록") List<
       boolean hearted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt
-      /** 좋아요 조회수 추후 추가 */
       ) {}
 }
