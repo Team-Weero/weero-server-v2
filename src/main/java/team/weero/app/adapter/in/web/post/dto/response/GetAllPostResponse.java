@@ -17,6 +17,5 @@ public record GetAllPostResponse(@Schema(description = "게시글 목록") List<
       int heartCount,
       boolean hearted,
       LocalDateTime createdAt,
-      LocalDateTime updatedAt
-      ) {}
+      LocalDateTime updatedAt) {}
 }

@@ -19,7 +19,12 @@ import team.weero.app.domain.post.model.Post;
 @Component
 @RequiredArgsConstructor
 public class PostPersistenceAdapter
-    implements GetPostPort, SavePostPort, DeletePostPort, LoadPostPort, UpdatePostPort, IncrementViewCountPort {
+    implements GetPostPort,
+        SavePostPort,
+        DeletePostPort,
+        LoadPostPort,
+        UpdatePostPort,
+        IncrementViewCountPort {
 
   private final PostRepository postRepository;
   private final PostMapper postMapper;
