@@ -36,5 +36,6 @@ public class PostJpaEntity extends BaseTimeEntity {
   public void update(String title, String content) {
     if (title != null) this.title = title;
     if (content != null) this.content = content;
+    this.updatedAt = LocalDateTime.now();
   }
 }
