@@ -23,7 +23,7 @@ public class GetAllPostsService implements GetAllPostUseCase {
   @Override
   public GetAllPostResponse execute(UUID userId) {
 
-    List<Post> posts = getPostPort.getAll();
+        List<Post> posts = getPostPort.getAll();
 
     List<PostItem> postItems =
         posts.stream()
@@ -43,6 +43,6 @@ public class GetAllPostsService implements GetAllPostUseCase {
                 })
             .toList();
 
-    return new GetAllPostResponse(postItems);
-  }
+        return new GetAllPostResponse(postItems);
+    }
 }

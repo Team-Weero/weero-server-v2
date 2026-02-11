@@ -45,4 +45,8 @@ public class Post {
   public boolean isDeleted() {
     return deletedAt != null;
   }
+
+  public void increaseViewCount() {
+    this.viewCount += 1;
+  }
 }

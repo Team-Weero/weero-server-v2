@@ -20,37 +20,37 @@ import team.weero.app.domain.post.model.Post;
 @Transactional(readOnly = true)
 public class GetMyPostsService implements GetMyPostsUseCase {
 
-  private final GetPostPort getPostPort;
-  private final LoadStudentPort loadStudentPort;
-  private final HeartPort heartPort;
+    private final GetPostPort getPostPort;
+    private final LoadStudentPort loadStudentPort;
+    private final HeartPort heartPort;
 
-  @Override
-  public GetAllPostResponse execute(UUID userId) {
+    @Override
+    public GetAllPostResponse execute(UUID userId) {
 
-    StudentInfo studentInfo =
-        loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
+        StudentInfo studentInfo =
+                loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
-    List<Post> posts = getPostPort.getAllByStudentId(studentInfo.id());
+        List<Post> posts = getPostPort.getAllByStudentId(studentInfo.id());
 
-    List<PostItem> postItems =
-        posts.stream()
-            .map(
-                post -> {
-                  boolean hearted = heartPort.exists(post.getId(), userId);
-                  int heartCount = heartPort.countByPostId(post.getId());
+        List<PostItem> postItems =
+                posts.stream()
+                        .map(
+                                post -> {
+                                    boolean hearted = heartPort.exists(post.getId(), userId);
+                                    int heartCount = heartPort.countByPostId(post.getId());
 
-                  return new PostItem(
-                      post.getId(),
-                      post.getTitle(),
-                      post.getNickName(),
-                      post.getViewCount(),
-                      heartCount,
-                      hearted,
-                      post.getCreatedAt(),
-                      post.getUpdatedAt());
-                })
-            .toList();
+                                    return new PostItem(
+                                            post.getId(),
+                                            post.getTitle(),
+                                            post.getNickName(),
+                                            post.getViewCount(),
+                                            heartCount,
+                                            hearted,
+                                            post.getCreatedAt(),
+                                            post.getUpdatedAt());
+                                })
+                        .toList();
 
-    return new GetAllPostResponse(postItems);
-  }
+        return new GetAllPostResponse(postItems);
+    }
 }
