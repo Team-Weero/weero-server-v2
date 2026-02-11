@@ -19,7 +19,7 @@ import team.weero.app.domain.post.model.Post;
 @Component
 @RequiredArgsConstructor
 public class PostPersistenceAdapter
-    implements GetPostPort, SavePostPort, DeletePostPort, LoadPostPort, UpdatePostPort {
+    implements GetPostPort, SavePostPort, DeletePostPort, LoadPostPort, UpdatePostPort, IncrementViewCountPort {
 
   private final PostRepository postRepository;
   private final PostMapper postMapper;
@@ -61,6 +61,11 @@ public class PostPersistenceAdapter
     PostJpaEntity entity = PostMapper.toEntity(post, student);
     PostJpaEntity savedEntity = postRepository.save(entity);
     return postMapper.toDomain(savedEntity);
+  }
+
+  @Override
+  public void incrementViewCount(UUID postId) {
+    postRepository.incrementViewCount(postId);
   }
 
   @Override

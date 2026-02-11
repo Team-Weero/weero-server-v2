@@ -9,7 +9,7 @@ import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.port.in.post.GetPostUseCase;
 import team.weero.app.application.port.out.heart.HeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
-import team.weero.app.application.port.out.post.SavePostPort;
+import team.weero.app.application.port.out.post.IncrementViewCountPort;
 import team.weero.app.domain.post.model.Post;
 
 @Service
@@ -18,7 +18,7 @@ import team.weero.app.domain.post.model.Post;
 public class GetPostService implements GetPostUseCase {
 
   private final GetPostPort getPostPort;
-  private final SavePostPort savePostPort;
+  private final IncrementViewCountPort incrementViewCountPort;
   private final HeartPort heartPort;
 
   @Override
@@ -30,21 +30,22 @@ public class GetPostService implements GetPostUseCase {
       throw PostNotFoundException.INSTANCE;
     }
 
-    post.increaseViewCount();
-    Post updatedPost = savePostPort.save(post);
+    incrementViewCountPort.incrementViewCount(postId);
+
+    Post updatedPost = getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
     boolean hearted = heartPort.exists(postId, userId);
     int heartCount = heartPort.countByPostId(postId);
 
     return new GetPostResponse(
-        updatedPost.getId(),
-        updatedPost.getTitle(),
-        updatedPost.getContent(),
-        updatedPost.getNickName(),
-        updatedPost.getViewCount(),
-        heartCount,
-        hearted,
-        updatedPost.getCreatedAt(),
-        updatedPost.getUpdatedAt());
+            updatedPost.getId(),
+            updatedPost.getTitle(),
+            updatedPost.getContent(),
+            updatedPost.getNickName(),
+            updatedPost.getViewCount(),
+            heartCount,
+            hearted,
+            updatedPost.getCreatedAt(),
+            updatedPost.getUpdatedAt());
   }
 }
