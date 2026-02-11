@@ -1,9 +1,9 @@
 package team.weero.app.application.port.in.auth;
 
 import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
-import team.weero.app.adapter.in.web.auth.dto.response.SignInResponse;
+import team.weero.app.application.port.in.auth.dto.response.SignInInfo;
 
 public interface SignInUseCase {
 
-  SignInResponse execute(SignInCommand command);
+  SignInInfo execute(SignInCommand command);
 }

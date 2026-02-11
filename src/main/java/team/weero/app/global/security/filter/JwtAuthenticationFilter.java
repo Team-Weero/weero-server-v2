@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team.weero.app.adapter.in.web.auth.dto.response.TokenClaims;
+import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.application.port.out.user.LoadUserPort;
-import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.global.security.CustomUserDetails;
 import team.weero.app.global.security.jwt.JwtProperties;
 
@@ -48,13 +48,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       TokenClaims claims = jwtPort.parseToken(token);
 
-      AuthUser user =
+      UserInfo user =
           loadUserPort
               .loadByEmail(claims.email())
               .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
       CustomUserDetails userDetails =
-          new CustomUserDetails(user.getId(), user.getEmail(), user.getAuthority());
+          new CustomUserDetails(user.id(), user.email(), user.authority());
 
       UsernamePasswordAuthenticationToken authentication =
           new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

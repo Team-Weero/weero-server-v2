@@ -5,10 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
-import team.weero.app.application.port.in.auth.dto.request.SignUpCommand;
-import team.weero.app.adapter.in.web.auth.dto.response.SignInResponse;
-import team.weero.app.adapter.in.web.auth.dto.response.TokenResponse;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.application.exception.auth.DuplicateEmailException;
@@ -17,7 +13,12 @@ import team.weero.app.application.exception.user.UserNotFoundException;
 import team.weero.app.application.port.in.auth.ReissueTokenUseCase;
 import team.weero.app.application.port.in.auth.SignInUseCase;
 import team.weero.app.application.port.in.auth.SignUpUseCase;
+import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
+import team.weero.app.application.port.in.auth.dto.request.SignUpCommand;
+import team.weero.app.application.port.in.auth.dto.response.SignInInfo;
+import team.weero.app.application.port.in.auth.dto.response.TokenInfo;
 import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.application.port.out.auth.LoadRefreshTokenPort;
 import team.weero.app.application.port.out.auth.PasswordEncoderPort;
@@ -25,7 +26,6 @@ import team.weero.app.application.port.out.auth.SaveRefreshTokenPort;
 import team.weero.app.application.port.out.student.SaveStudentPort;
 import team.weero.app.application.port.out.user.LoadUserPort;
 import team.weero.app.application.port.out.user.SaveUserPort;
-import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.auth.RefreshToken;
 import team.weero.app.domain.auth.type.Authority;
 import team.weero.app.domain.student.type.StudentRole;
@@ -48,8 +48,8 @@ public class AuthService
   private final LoadRefreshTokenPort loadRefreshTokenPort;
 
   @Override
-  public SignInResponse execute(SignInCommand command) {
-    AuthUser user =
+  public SignInInfo execute(SignInCommand command) {
+    UserInfo user =
         loadUserPort.loadByEmail(command.email()).orElseThrow(() -> UserNotFoundException.INSTANCE);
 
     String encodedPassword = loadUserPort.getEncodedPasswordByEmail(command.email());
@@ -58,34 +58,30 @@ public class AuthService
       throw InvalidCredentialsException.INSTANCE;
     }
 
-    String accessToken =
-        jwtPort.generateAccessToken(user.getId(), user.getEmail(), user.getAuthority());
+    String accessToken = jwtPort.generateAccessToken(user.id(), user.email(), user.authority());
     String refreshTokenValue =
-        jwtPort.generateRefreshToken(user.getId(), user.getEmail(), user.getAuthority());
+        jwtPort.generateRefreshToken(user.id(), user.email(), user.authority());
 
     RefreshToken refreshToken =
         new RefreshToken(
-            refreshTokenValue,
-            user.getId(),
-            user.getAuthority(),
-            jwtPort.getRefreshTokenExpiredAt());
+            refreshTokenValue, user.id(), user.authority(), jwtPort.getRefreshTokenExpiredAt());
 
     saveRefreshTokenPort.save(refreshToken);
 
     LocalDateTime accessTokenExpiredAt = jwtPort.getAccessTokenExpiredAt();
     LocalDateTime refreshTokenExpiredAt = jwtPort.getRefreshTokenExpiredAt();
 
-    return new SignInResponse(
-        user.getId(),
+    return new SignInInfo(
+        user.id(),
         accessToken,
         refreshTokenValue,
         accessTokenExpiredAt,
         refreshTokenExpiredAt,
-        user.getAuthority());
+        user.authority());
   }
 
   @Override
-  public TokenResponse execute(String refreshToken) {
+  public TokenInfo execute(String refreshToken) {
     RefreshToken token =
         loadRefreshTokenPort
             .loadByToken(refreshToken)
@@ -97,31 +93,30 @@ public class AuthService
 
     String email = jwtPort.parseToken(refreshToken).email();
 
-    AuthUser user =
+    UserInfo user =
         loadUserPort.loadByEmail(email).orElseThrow(() -> UserNotFoundException.INSTANCE);
 
-    String newAccessToken =
-        jwtPort.generateAccessToken(user.getId(), user.getEmail(), user.getAuthority());
+    String newAccessToken = jwtPort.generateAccessToken(user.id(), user.email(), user.authority());
     String newRefreshToken =
-        jwtPort.generateRefreshToken(user.getId(), user.getEmail(), user.getAuthority());
+        jwtPort.generateRefreshToken(user.id(), user.email(), user.authority());
 
     loadRefreshTokenPort.deleteByToken(refreshToken);
 
     RefreshToken newRefreshTokenDomain =
         new RefreshToken(
-            newRefreshToken, user.getId(), user.getAuthority(), jwtPort.getRefreshTokenExpiredAt());
+            newRefreshToken, user.id(), user.authority(), jwtPort.getRefreshTokenExpiredAt());
 
     saveRefreshTokenPort.save(newRefreshTokenDomain);
 
     LocalDateTime accessTokenExpiredAt = jwtPort.getAccessTokenExpiredAt();
     LocalDateTime refreshTokenExpiredAt = jwtPort.getRefreshTokenExpiredAt();
 
-    return new TokenResponse(
+    return new TokenInfo(
         newAccessToken, newRefreshToken, accessTokenExpiredAt, refreshTokenExpiredAt);
   }
 
   @Override
-  public AuthUser execute() {
+  public UserInfo execute() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     if (!(principal instanceof CustomUserDetails)) {

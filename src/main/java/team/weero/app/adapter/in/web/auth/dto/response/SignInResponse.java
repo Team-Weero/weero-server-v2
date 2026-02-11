@@ -3,6 +3,7 @@ package team.weero.app.adapter.in.web.auth.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import team.weero.app.application.port.in.auth.dto.response.SignInInfo;
 import team.weero.app.domain.auth.type.Authority;
 
 @Schema(description = "로그인 응답")
@@ -20,4 +21,15 @@ public record SignInResponse(
             description = "권한",
             example = "STUDENT",
             allowableValues = {"STUDENT", "TEACHER"})
-        Authority authority) {}
+        Authority authority) {
+
+  public static SignInResponse from(SignInInfo info) {
+    return new SignInResponse(
+        info.userId(),
+        info.accessToken(),
+        info.refreshToken(),
+        info.accessTokenExpiredAt(),
+        info.refreshTokenExpiredAt(),
+        info.authority());
+  }
+}

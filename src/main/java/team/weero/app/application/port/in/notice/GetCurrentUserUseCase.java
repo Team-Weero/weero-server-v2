@@ -1,8 +1,8 @@
 package team.weero.app.application.port.in.notice;
 
-import team.weero.app.domain.auth.AuthUser;
+import team.weero.app.application.port.in.user.dto.response.UserInfo;
 
 public interface GetCurrentUserUseCase {
 
-  AuthUser execute();
+  UserInfo execute();
 }

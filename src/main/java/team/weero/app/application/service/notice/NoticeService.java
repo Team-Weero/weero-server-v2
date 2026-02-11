@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.application.port.in.notice.dto.request.CreateNoticeCommand;
-import team.weero.app.application.port.in.notice.dto.request.UpdateNoticeCommand;
 import team.weero.app.adapter.in.web.notice.dto.response.NoticeListResponse;
 import team.weero.app.adapter.in.web.notice.dto.response.NoticeResponse;
 import team.weero.app.application.exception.notice.NoticeNotFoundException;
@@ -18,11 +16,13 @@ import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
 import team.weero.app.application.port.in.notice.GetNoticeListUseCase;
 import team.weero.app.application.port.in.notice.GetNoticeUseCase;
 import team.weero.app.application.port.in.notice.UpdateNoticeUseCase;
+import team.weero.app.application.port.in.notice.dto.request.CreateNoticeCommand;
+import team.weero.app.application.port.in.notice.dto.request.UpdateNoticeCommand;
+import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.notice.CheckNoticeOwnerPort;
 import team.weero.app.application.port.out.notice.DeleteNoticePort;
 import team.weero.app.application.port.out.notice.LoadNoticePort;
 import team.weero.app.application.port.out.notice.SaveNoticePort;
-import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.notice.Notice;
 import team.weero.app.global.common.exception.ForbiddenException;
 
@@ -45,11 +45,10 @@ public class NoticeService
   @Override
   @Transactional
   public NoticeResponse create(CreateNoticeCommand command) {
-    AuthUser currentUser = getCurrentUserUseCase.execute();
+    UserInfo currentUser = getCurrentUserUseCase.execute();
 
     Notice notice =
-        new Notice(
-            null, command.title(), command.content(), currentUser.getId(), LocalDateTime.now());
+        new Notice(null, command.title(), command.content(), currentUser.id(), LocalDateTime.now());
 
     Notice savedNotice = saveNoticePort.save(notice);
 
@@ -64,9 +63,9 @@ public class NoticeService
   @Override
   @Transactional
   public NoticeResponse update(UpdateNoticeCommand command) {
-    AuthUser currentUser = getCurrentUserUseCase.execute();
+    UserInfo currentUser = getCurrentUserUseCase.execute();
 
-    if (!checkNoticeOwnerPort.isOwner(command.id(), currentUser.getId())) {
+    if (!checkNoticeOwnerPort.isOwner(command.id(), currentUser.id())) {
       throw new ForbiddenException();
     }
 
@@ -94,9 +93,9 @@ public class NoticeService
   @Override
   @Transactional
   public void delete(UUID noticeId) {
-    AuthUser currentUser = getCurrentUserUseCase.execute();
+    UserInfo currentUser = getCurrentUserUseCase.execute();
 
-    if (!checkNoticeOwnerPort.isOwner(noticeId, currentUser.getId())) {
+    if (!checkNoticeOwnerPort.isOwner(noticeId, currentUser.id())) {
       throw new ForbiddenException();
     }
 

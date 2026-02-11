@@ -4,10 +4,4 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record NoticeInfo(
-        UUID id,
-        String title,
-        String content,
-        UUID writerId,
-        LocalDateTime createdAt
-) {
-}
+    UUID id, String title, String content, UUID writerId, LocalDateTime createdAt) {}
