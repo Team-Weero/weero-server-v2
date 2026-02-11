@@ -1,12 +1,12 @@
 package team.weero.app.application.service.answer;
 
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.adapter.in.web.answer.dto.request.CreateAnswerRequest;
 import team.weero.app.application.port.in.answer.CreateAnswerUseCase;
+import team.weero.app.application.port.in.answer.dto.request.CreateAnswerCommand;
 import team.weero.app.application.port.out.answer.CreateAnswerPort;
+import team.weero.app.domain.answer.model.Answer;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +16,8 @@ public class CreateAnswerService implements CreateAnswerUseCase {
 
   @Override
   @Transactional
-  public void execute(CreateAnswerRequest request, UUID userId, UUID postId) {
-
-    createAnswerPort.save(request.answer(), userId, postId);
+  public void execute(CreateAnswerCommand command) {
+    Answer answer = Answer.create(command.answer(), command.userId(), command.postId());
+    createAnswerPort.save(answer);
   }
 }

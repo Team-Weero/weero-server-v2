@@ -1,9 +1,8 @@
 package team.weero.app.application.port.in.answer;
 
-import java.util.UUID;
-import team.weero.app.adapter.in.web.answer.dto.request.CreateAnswerRequest;
+import team.weero.app.application.port.in.answer.dto.request.CreateAnswerCommand;
 
 public interface CreateAnswerUseCase {
 
-  void execute(CreateAnswerRequest request, UUID userId, UUID postId);
+  void execute(CreateAnswerCommand command);
 }

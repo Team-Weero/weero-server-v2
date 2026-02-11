@@ -1,9 +1,9 @@
 package team.weero.app.application.port.in.answer;
 
+import java.util.List;
 import java.util.UUID;
-import team.weero.app.adapter.in.web.answer.dto.response.GetAnswerResponse;
+import team.weero.app.application.port.in.answer.dto.response.GetAnswerInfo;
 
 public interface GetAnswerUseCase {
-
-  GetAnswerResponse execute(UUID postId);
+  List<GetAnswerInfo> execute(UUID postId);
 }

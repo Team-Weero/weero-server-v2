@@ -15,6 +15,7 @@ import team.weero.app.adapter.in.web.answer.dto.response.GetAnswerResponse;
 import team.weero.app.application.port.in.answer.CreateAnswerUseCase;
 import team.weero.app.application.port.in.answer.DeleteAnswerUseCase;
 import team.weero.app.application.port.in.answer.GetAnswerUseCase;
+import team.weero.app.application.port.in.answer.dto.request.CreateAnswerCommand;
 import team.weero.app.global.security.CustomUserDetails;
 
 @Tag(name = "Answers", description = "답변 관리 API")
@@ -40,7 +41,8 @@ public class AnswerController {
       @Valid @RequestBody CreateAnswerRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @PathVariable UUID postId) {
-    createAnswerUseCase.execute(request, userDetails.getUserId(), postId);
+    createAnswerUseCase.execute(
+        new CreateAnswerCommand(request.answer(), userDetails.getUserId(), postId));
   }
 
   @Operation(summary = "게시글의 답변 목록 조회", description = "특정 게시글에 달린 모든 답변을 조회합니다.")
@@ -50,7 +52,7 @@ public class AnswerController {
   })
   @GetMapping("/{postId}")
   public GetAnswerResponse get(@PathVariable UUID postId) {
-    return getAnswerUseCase.execute(postId);
+    return GetAnswerResponse.from(getAnswerUseCase.execute(postId));
   }
 
   @Operation(summary = "답변 삭제", description = "본인의 답변을 삭제합니다.")

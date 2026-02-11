@@ -29,15 +29,20 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
   private final AnswerMapper answerMapper;
 
   @Override
-  public void save(String answer, UUID userId, UUID postId) {
+  public void save(Answer answer) {
 
     UserJpaEntity user =
-        userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.INSTANCE);
+        userRepository
+            .findById(answer.getUserId())
+            .orElseThrow(() -> UserNotFoundException.INSTANCE);
 
     PostJpaEntity post =
-        postRepository.findById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
+        postRepository
+            .findById(answer.getPostId())
+            .orElseThrow(() -> PostNotFoundException.INSTANCE);
 
-    AnswerJpaEntity entity = AnswerJpaEntity.builder().answer(answer).user(user).post(post).build();
+    AnswerJpaEntity entity =
+        AnswerJpaEntity.builder().answer(answer.getAnswer()).user(user).post(post).build();
 
     answerRepository.save(entity);
   }
