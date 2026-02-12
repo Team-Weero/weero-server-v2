@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.weero.app.global.common.exception.ErrorCode;
 import team.weero.app.global.common.exception.base.WeeRoException;
-import team.weero.app.global.error.notifier.DiscordWebhookNotifier;
 import team.weero.app.global.error.dto.ErrorProperty;
 import team.weero.app.global.error.dto.ErrorResponse;
+import team.weero.app.global.error.notifier.DiscordWebhookNotifier;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

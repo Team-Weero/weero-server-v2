@@ -1,11 +1,6 @@
 package team.weero.app.global.security.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,44 +8,27 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
+import team.weero.app.global.security.handler.CustomAccessDeniedHandler;
+import team.weero.app.global.security.handler.CustomAuthenticationEntryPoint;
 import team.weero.app.global.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
-  private final ObjectMapper objectMapper;
-
-  public SecurityConfig(
-      JwtAuthenticationFilter jwtAuthenticationFilter, ObjectMapper objectMapper) {
-    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    this.objectMapper = objectMapper;
-  }
+  private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+  private final CustomAccessDeniedHandler accessDeniedHandler;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
-        .cors(
-            cors ->
-                cors.configurationSource(
-                    request -> {
-                      CorsConfiguration config = new CorsConfiguration();
-                      config.setAllowedOriginPatterns(List.of("*"));
-                      config.setAllowedMethods(
-                          List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                      config.setAllowedHeaders(List.of("*"));
-                      config.setAllowCredentials(true);
-                      return config;
-                    }))
+        .cors(AbstractHttpConfigurer::disable)
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
@@ -73,43 +51,43 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/auth/me")
                     .authenticated()
                     .requestMatchers(HttpMethod.POST, "/api/notices/**")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.PUT, "/api/notices/{id}")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.GET, "/api/notices/{id}")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/api/notices")
                     .authenticated()
                     .requestMatchers(HttpMethod.DELETE, "/api/notices/{id}")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.POST, "/api/posts/")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.GET, "/api/posts/")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/api/posts/my")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.GET, "/api/posts/{postId}")
                     .authenticated()
                     .requestMatchers(HttpMethod.DELETE, "/api/posts/{postId}")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.PATCH, "/api/posts/{postId}")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.POST, "/api/counsel-requests/student")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.PATCH, "/api/counsel-requests/student/{id}")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.DELETE, "/api/counsel-requests/student/{id}")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.GET, "/api/counsel-requests/student/my")
-                    .hasAnyAuthority("STUDENT")
+                    .hasAuthority("STUDENT")
                     .requestMatchers(HttpMethod.GET, "/api/counsel-requests/teacher")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.GET, "/api/counsel-requests/teacher/{id}")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.POST, "/api/counsel-requests/teacher/{id}/approve")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.POST, "/api/counsel-requests/teacher/{id}/reject")
-                    .hasAnyAuthority("TEACHER")
+                    .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.POST, "/api/answers/{postId}")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/api/answers/{postId}")
@@ -122,56 +100,10 @@ public class SecurityConfig {
         .exceptionHandling(
             exception ->
                 exception
-                    .authenticationEntryPoint(customAuthenticationEntryPoint())
-                    .accessDeniedHandler(customAccessDeniedHandler()));
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedHandler(accessDeniedHandler));
 
     return http.build();
-  }
-
-  @Bean
-  public AuthenticationEntryPoint customAuthenticationEntryPoint() {
-    return (HttpServletRequest request,
-        HttpServletResponse response,
-        AuthenticationException authException) -> {
-      response.setContentType("application/json");
-      response.setCharacterEncoding("UTF-8");
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-      Map<String, Object> errorResponse =
-          Map.of(
-              "status", 401,
-              "message", "Unauthorized",
-              "code", "UNAUTHORIZED");
-
-      try {
-        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    };
-  }
-
-  @Bean
-  public AccessDeniedHandler customAccessDeniedHandler() {
-    return (HttpServletRequest request,
-        HttpServletResponse response,
-        org.springframework.security.access.AccessDeniedException accessDeniedException) -> {
-      response.setContentType("application/json");
-      response.setCharacterEncoding("UTF-8");
-      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-      Map<String, Object> errorResponse =
-          Map.of(
-              "status", 403,
-              "message", "Forbidden",
-              "code", "FORBIDDEN");
-
-      try {
-        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    };
   }
 
   @Bean

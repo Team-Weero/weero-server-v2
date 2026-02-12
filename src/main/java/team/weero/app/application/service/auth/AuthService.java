@@ -29,10 +29,10 @@ import team.weero.app.application.port.out.user.SaveUserPort;
 import team.weero.app.domain.auth.RefreshToken;
 import team.weero.app.domain.auth.type.Authority;
 import team.weero.app.domain.student.type.StudentRole;
-import team.weero.app.global.security.principal.CustomUserDetails;
 import team.weero.app.global.security.jwt.exception.ExpiredTokenException;
 import team.weero.app.global.security.jwt.exception.InvalidCredentialsException;
 import team.weero.app.global.security.jwt.exception.InvalidTokenException;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Service
 @RequiredArgsConstructor
