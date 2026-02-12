@@ -3,6 +3,7 @@ package team.weero.app.application.service.answer;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.exception.answer.AnswerAccessDeniedException;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.exception.user.UserNotFoundException;
@@ -17,6 +18,7 @@ import team.weero.app.domain.user.model.User;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DeleteAnswerService implements DeleteAnswerUseCase {
 
   private final DeleteAnswerPort deleteAnswerPort;
