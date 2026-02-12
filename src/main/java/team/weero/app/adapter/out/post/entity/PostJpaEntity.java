@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
+import team.weero.app.domain.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_post")

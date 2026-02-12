@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
+import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
 

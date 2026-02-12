@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
+import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.domain.student.type.StudentRole;
 
 @Entity

@@ -19,12 +19,7 @@ import team.weero.app.domain.post.model.Post;
 @Component
 @RequiredArgsConstructor
 public class PostPersistenceAdapter
-    implements GetPostPort,
-        SavePostPort,
-        DeletePostPort,
-        LoadPostPort,
-        UpdatePostPort,
-        IncrementViewCountPort {
+    implements GetPostPort, SavePostPort, LoadPostPort, UpdatePostPort, IncrementViewCountPort {
 
   private final PostRepository postRepository;
   private final PostMapper postMapper;
@@ -71,21 +66,6 @@ public class PostPersistenceAdapter
   @Override
   public void incrementViewCount(UUID postId) {
     postRepository.incrementViewCount(postId);
-  }
-
-  @Override
-  public void softDelete(UUID postId, UUID userId) {
-    PostJpaEntity post =
-        postRepository
-            .findByIdAndDeletedAtIsNull(postId)
-            .orElseThrow(() -> PostNotFoundException.INSTANCE);
-
-    if (post.getStudent() == null || !post.getStudent().getUser().getId().equals(userId)) {
-      throw ForbiddenPostAccessException.INSTANCE;
-    }
-
-    post.markDeleted();
-    postRepository.save(post);
   }
 
   @Override
