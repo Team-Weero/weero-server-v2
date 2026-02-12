@@ -1,4 +1,4 @@
-package team.weero.app.adapter.out;
+package team.weero.app.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

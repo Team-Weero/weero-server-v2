@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
-import team.weero.app.adapter.out.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_notice")
