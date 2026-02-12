@@ -59,7 +59,7 @@ public class NoticeController {
 
   @Operation(summary = "공지사항 수정", description = "기존 공지사항을 수정합니다.")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "수정 성공"),
+    @ApiResponse(responseCode = "204", description = "수정 성공"),
     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
     @ApiResponse(responseCode = "401", description = "인증 실패"),
     @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")

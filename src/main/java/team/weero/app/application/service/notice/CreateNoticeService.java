@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.port.in.notice.CreateNoticeUseCase;
-import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
 import team.weero.app.application.port.in.notice.dto.request.CreateNoticeCommand;
 import team.weero.app.application.port.in.notice.dto.response.NoticeInfo;
 import team.weero.app.application.port.in.user.dto.response.UserInfo;

@@ -110,7 +110,7 @@ public class PostController {
 
   @Operation(summary = "게시글 수정", description = "본인의 게시글을 수정합니다.")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "수정 성공"),
+    @ApiResponse(responseCode = "204", description = "수정 성공"),
     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
     @ApiResponse(responseCode = "401", description = "인증 실패"),
     @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")

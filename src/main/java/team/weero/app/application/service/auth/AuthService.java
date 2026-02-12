@@ -17,7 +17,7 @@ import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
 import team.weero.app.application.port.in.auth.dto.request.SignUpCommand;
 import team.weero.app.application.port.in.auth.dto.response.SignInInfo;
 import team.weero.app.application.port.in.auth.dto.response.TokenInfo;
-import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
 import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.application.port.out.auth.LoadRefreshTokenPort;

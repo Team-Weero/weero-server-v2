@@ -18,7 +18,7 @@ import team.weero.app.application.port.in.auth.ReissueTokenUseCase;
 import team.weero.app.application.port.in.auth.SignInUseCase;
 import team.weero.app.application.port.in.auth.SignUpUseCase;
 import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
-import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
 
 @Tag(name = "Authentication", description = "인증 및 회원 관리 API")
 @RestController

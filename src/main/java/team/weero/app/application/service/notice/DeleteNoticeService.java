@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.port.in.notice.DeleteNoticeUseCase;
-import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
 import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.notice.CheckNoticeOwnerPort;
 import team.weero.app.application.port.out.notice.DeleteNoticePort;

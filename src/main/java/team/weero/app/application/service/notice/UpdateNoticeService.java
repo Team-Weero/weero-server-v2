@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.exception.notice.NoticeNotFoundException;
-import team.weero.app.application.port.in.notice.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
 import team.weero.app.application.port.in.notice.UpdateNoticeUseCase;
 import team.weero.app.application.port.in.notice.dto.request.UpdateNoticeCommand;
 import team.weero.app.application.port.in.notice.dto.response.NoticeInfo;
