@@ -1,4 +1,4 @@
-package team.weero.app.adapter.out.security;
+package team.weero.app.global.security.encoder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

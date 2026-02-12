@@ -21,7 +21,7 @@ import team.weero.app.application.port.in.post.dto.request.CreatePostCommand;
 import team.weero.app.application.port.in.post.dto.request.UpdatePostCommand;
 import team.weero.app.application.port.in.post.dto.response.GetAllPostInfo;
 import team.weero.app.application.port.in.post.dto.response.GetPostInfo;
-import team.weero.app.global.security.CustomUserDetails;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Posts", description = "게시글 관리 API")
 @RestController

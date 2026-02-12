@@ -1,6 +1,6 @@
 package team.weero.app.application.exception.answer.error;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum AnswerErrorCode implements ErrorProperty {
   ANSWER_NOT_FOUND(404, "Answer Not Found", 1),

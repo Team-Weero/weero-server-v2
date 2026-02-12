@@ -1,4 +1,4 @@
-package team.weero.app.global.config;
+package team.weero.app.global.config.init;
 
 import java.time.LocalTime;
 import lombok.Getter;

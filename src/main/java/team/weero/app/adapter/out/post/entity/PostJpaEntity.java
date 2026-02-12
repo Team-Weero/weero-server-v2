@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
-import team.weero.app.global.entity.BaseTimeEntity;
+import team.weero.app.adapter.out.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_post")

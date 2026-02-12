@@ -1,4 +1,4 @@
-package team.weero.app.global.security.filter;
+package team.weero.app.global.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,8 +15,7 @@ import team.weero.app.adapter.in.web.auth.dto.response.TokenClaims;
 import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.application.port.out.user.LoadUserPort;
-import team.weero.app.global.security.CustomUserDetails;
-import team.weero.app.global.security.jwt.JwtProperties;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Component
 @Slf4j

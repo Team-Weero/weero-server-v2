@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
 import team.weero.app.domain.auth.type.Authority;
-import team.weero.app.global.entity.BaseTimeEntity;
+import team.weero.app.adapter.out.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_user")

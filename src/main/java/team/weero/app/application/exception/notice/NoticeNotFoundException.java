@@ -1,7 +1,7 @@
 package team.weero.app.application.exception.notice;
 
 import team.weero.app.application.exception.notice.error.NoticeErrorCode;
-import team.weero.app.global.error.exception.WeeRoException;
+import team.weero.app.global.common.exception.base.WeeRoException;
 
 public class NoticeNotFoundException extends WeeRoException {
 

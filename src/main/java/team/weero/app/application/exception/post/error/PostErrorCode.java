@@ -1,6 +1,6 @@
 package team.weero.app.application.exception.post.error;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum PostErrorCode implements ErrorProperty {
   POST_NOT_FOUND(404, "Post Not Found", 1),

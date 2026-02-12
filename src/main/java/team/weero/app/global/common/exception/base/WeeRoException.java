@@ -1,6 +1,6 @@
-package team.weero.app.global.error.exception;
+package team.weero.app.global.common.exception.base;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public abstract class WeeRoException extends RuntimeException {
 

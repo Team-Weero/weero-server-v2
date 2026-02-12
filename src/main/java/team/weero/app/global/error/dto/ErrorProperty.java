@@ -1,4 +1,4 @@
-package team.weero.app.global.error;
+package team.weero.app.global.error.dto;
 
 public interface ErrorProperty {
 

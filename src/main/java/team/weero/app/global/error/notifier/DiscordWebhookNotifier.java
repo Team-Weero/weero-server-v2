@@ -1,4 +1,4 @@
-package team.weero.app.global.error;
+package team.weero.app.global.error.notifier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.PrintWriter;

@@ -16,7 +16,7 @@ import team.weero.app.application.port.in.answer.CreateAnswerUseCase;
 import team.weero.app.application.port.in.answer.DeleteAnswerUseCase;
 import team.weero.app.application.port.in.answer.GetAnswerUseCase;
 import team.weero.app.application.port.in.answer.dto.request.CreateAnswerCommand;
-import team.weero.app.global.security.CustomUserDetails;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Answers", description = "답변 관리 API")
 @RestController

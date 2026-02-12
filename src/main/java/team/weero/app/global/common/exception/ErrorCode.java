@@ -1,6 +1,6 @@
-package team.weero.app.global.common.exception.error;
+package team.weero.app.global.common.exception;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum ErrorCode implements ErrorProperty {
   BAD_REQUEST(400, "Bad Request", 1),

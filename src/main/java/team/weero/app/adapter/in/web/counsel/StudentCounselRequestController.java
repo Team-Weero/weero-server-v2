@@ -20,7 +20,7 @@ import team.weero.app.application.port.in.counsel.CreateCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetMyCounselRequestsUseCase;
 import team.weero.app.application.port.in.counsel.dto.request.CreateCounselRequestCommand;
 import team.weero.app.application.port.in.counsel.dto.response.CounselRequestListInfo;
-import team.weero.app.global.security.CustomUserDetails;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Student Counsel Requests", description = "학생 상담 요청 관리 API")
 @RestController

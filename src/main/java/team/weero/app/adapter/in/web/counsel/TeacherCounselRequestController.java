@@ -20,7 +20,7 @@ import team.weero.app.application.port.in.counsel.RejectCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
 import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.out.teacher.LoadTeacherPort;
-import team.weero.app.global.security.CustomUserDetails;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Teacher Counsel Requests", description = "교사 상담 요청 관리 API")
 @RestController

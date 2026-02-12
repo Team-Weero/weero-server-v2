@@ -1,4 +1,4 @@
-package team.weero.app.adapter.out.security;
+package team.weero.app.global.security.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 import team.weero.app.adapter.in.web.auth.dto.response.TokenClaims;
 import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.domain.auth.type.Authority;
-import team.weero.app.global.security.jwt.JwtConstants;
-import team.weero.app.global.security.jwt.JwtProperties;
 import team.weero.app.global.security.jwt.exception.ExpiredTokenException;
 import team.weero.app.global.security.jwt.exception.InvalidTokenException;
 

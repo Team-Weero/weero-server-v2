@@ -1,12 +1,15 @@
-package team.weero.app.global.error;
+package team.weero.app.global.error.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import team.weero.app.global.common.exception.error.ErrorCode;
-import team.weero.app.global.error.exception.WeeRoException;
+import team.weero.app.global.common.exception.ErrorCode;
+import team.weero.app.global.common.exception.base.WeeRoException;
+import team.weero.app.global.error.notifier.DiscordWebhookNotifier;
+import team.weero.app.global.error.dto.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

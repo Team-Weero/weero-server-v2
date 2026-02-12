@@ -3,7 +3,7 @@ package team.weero.app.adapter.out.chat.entity;
 import jakarta.persistence.*;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
-import team.weero.app.global.entity.BaseTimeEntity;
+import team.weero.app.adapter.out.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_chat_room")

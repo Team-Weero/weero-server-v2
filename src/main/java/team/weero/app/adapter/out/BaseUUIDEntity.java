@@ -1,4 +1,4 @@
-package team.weero.app.global.entity;
+package team.weero.app.adapter.out;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

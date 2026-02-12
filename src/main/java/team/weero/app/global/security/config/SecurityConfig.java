@@ -1,4 +1,4 @@
-package team.weero.app.global.security;
+package team.weero.app.global.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import team.weero.app.global.security.filter.JwtAuthenticationFilter;
+import team.weero.app.global.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity

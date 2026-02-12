@@ -1,4 +1,4 @@
-package team.weero.app.global.security;
+package team.weero.app.global.security.principal;
 
 import java.util.Collection;
 import java.util.List;

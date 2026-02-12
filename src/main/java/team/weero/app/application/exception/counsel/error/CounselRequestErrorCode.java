@@ -1,6 +1,6 @@
 package team.weero.app.application.exception.counsel.error;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum CounselRequestErrorCode implements ErrorProperty {
   COUNSEL_REQUEST_NOT_FOUND(404, "Counsel Request Not Found", 1),

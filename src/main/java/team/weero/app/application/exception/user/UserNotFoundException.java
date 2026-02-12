@@ -1,7 +1,7 @@
 package team.weero.app.application.exception.user;
 
 import team.weero.app.application.exception.user.error.UserErrorCode;
-import team.weero.app.global.error.exception.WeeRoException;
+import team.weero.app.global.common.exception.base.WeeRoException;
 
 public class UserNotFoundException extends WeeRoException {
 
