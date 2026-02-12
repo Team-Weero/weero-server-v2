@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ import team.weero.app.application.port.in.counsel.CancelCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.CreateCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetMyCounselRequestsUseCase;
 import team.weero.app.application.port.in.counsel.dto.request.CreateCounselRequestCommand;
-import team.weero.app.application.port.in.counsel.dto.response.CounselRequestListInfo;
 import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Student Counsel Requests", description = "학생 상담 요청 관리 API")
@@ -77,8 +75,7 @@ public class StudentCounselRequestController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/my")
   public CounselRequestListResponse getMy(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    CounselRequestListInfo listInfo = getMyCounselRequestsUseCase.execute(userDetails.getUserId());
-    List<CounselRequestResponse> responses = CounselRequestResponse.fromList(listInfo);
-    return new CounselRequestListResponse(responses);
+    return CounselRequestListResponse.from(
+        getMyCounselRequestsUseCase.execute(userDetails.getUserId()));
   }
 }
