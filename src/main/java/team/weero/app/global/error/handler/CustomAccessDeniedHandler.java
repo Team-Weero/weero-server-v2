@@ -1,4 +1,4 @@
-package team.weero.app.global.security.handler;
+package team.weero.app.global.error.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
