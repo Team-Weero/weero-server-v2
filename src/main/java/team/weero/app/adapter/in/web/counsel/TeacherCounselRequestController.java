@@ -12,13 +12,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestListResponse;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
-import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.in.counsel.ApproveCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetAllCounselRequestsUseCase;
 import team.weero.app.application.port.in.counsel.GetCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.RejectCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
-import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.global.security.principal.CustomUserDetails;
 
@@ -60,12 +58,7 @@ public class TeacherCounselRequestController {
   public CounselRequestResponse get(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-    TeacherInfo teacherInfo =
-        loadTeacherPort
-            .loadByUserId(userDetails.getUserId())
-            .orElseThrow(TeacherNotFoundException::new);
-
-    CounselRequestInfo info = getCounselRequestUseCase.execute(id, teacherInfo.id());
+    CounselRequestInfo info = getCounselRequestUseCase.execute(id, userDetails.getUserId());
 
     return CounselRequestResponse.from(info);
   }
@@ -81,6 +74,7 @@ public class TeacherCounselRequestController {
   @PostMapping("/{id}/approve")
   public CounselRequestResponse approve(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
+
     CounselRequestInfo info = approveCounselRequestUseCase.execute(id, userDetails.getUserId());
 
     return CounselRequestResponse.from(info);
@@ -97,6 +91,7 @@ public class TeacherCounselRequestController {
   @PostMapping("/{id}/reject")
   public void reject(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
+
     rejectCounselRequestUseCase.execute(id, userDetails.getUserId());
   }
 }
