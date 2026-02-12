@@ -37,7 +37,7 @@ public class AuthController {
     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.OK)
   @PostMapping("/signin")
   public SignInResponse signIn(@RequestBody @Valid SignInRequest request) {
     return SignInResponse.from(
@@ -49,7 +49,7 @@ public class AuthController {
     @ApiResponse(responseCode = "200", description = "재발급 성공"),
     @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰")
   })
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.OK)
   @PostMapping("/reissue")
   public TokenResponse reissueToken(@RequestHeader("Authorization") String authorization) {
     String token = authorization.substring("Bearer ".length());
