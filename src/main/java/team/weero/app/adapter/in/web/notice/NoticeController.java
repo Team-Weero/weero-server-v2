@@ -11,16 +11,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.notice.dto.request.CreateNoticeRequest;
 import team.weero.app.adapter.in.web.notice.dto.request.UpdateNoticeRequest;
 import team.weero.app.adapter.in.web.notice.dto.response.NoticeListResponse;
@@ -54,6 +47,7 @@ public class NoticeController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public NoticeResponse createNotice(@RequestBody @Valid CreateNoticeRequest request) {
 
@@ -71,6 +65,7 @@ public class NoticeController {
     @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @PutMapping("/{id}")
   public NoticeResponse updateNotice(
       @PathVariable UUID id, @RequestBody @Valid UpdateNoticeRequest request) {
@@ -87,6 +82,7 @@ public class NoticeController {
     @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void deleteNotice(@PathVariable UUID id) {
     deleteNoticeUseCase.execute(id);
@@ -97,6 +93,7 @@ public class NoticeController {
     @ApiResponse(responseCode = "200", description = "조회 성공"),
     @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음")
   })
+  @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}")
   public NoticeResponse getNotice(@PathVariable UUID id) {
     return NoticeResponse.from(getNoticeUseCase.execute(id));
@@ -107,6 +104,7 @@ public class NoticeController {
     @ApiResponse(responseCode = "200", description = "조회 성공"),
     @ApiResponse(responseCode = "400", description = "잘못된 페이지 파라미터")
   })
+  @ResponseStatus(HttpStatus.OK)
   @GetMapping
   public NoticeListResponse getNoticeList(
       @RequestParam(defaultValue = "0") @Min(0) int page,

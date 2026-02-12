@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.answer.dto.request.CreateAnswerRequest;
@@ -36,6 +37,7 @@ public class AnswerController {
     @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{postId}")
   public void create(
       @Valid @RequestBody CreateAnswerRequest request,
@@ -50,6 +52,7 @@ public class AnswerController {
     @ApiResponse(responseCode = "200", description = "조회 성공"),
     @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
   })
+  @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{postId}")
   public GetAnswerResponse get(@PathVariable UUID postId) {
     return GetAnswerResponse.from(getAnswerUseCase.execute(postId));
@@ -62,6 +65,7 @@ public class AnswerController {
     @ApiResponse(responseCode = "404", description = "답변을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{answerId}")
   public void delete(
       @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable UUID answerId) {

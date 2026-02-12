@@ -41,8 +41,8 @@ public class TeacherCounselRequestController {
     @ApiResponse(responseCode = "404", description = "교사 정보를 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @GetMapping
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping
   public CounselRequestListResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
     return CounselRequestListResponse.from(
         getAllCounselRequestsUseCase.execute(userDetails.getUserId()));
@@ -55,8 +55,8 @@ public class TeacherCounselRequestController {
     @ApiResponse(responseCode = "404", description = "상담 요청 또는 교사 정보를 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/{id}")
   public CounselRequestResponse get(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
 
@@ -77,8 +77,8 @@ public class TeacherCounselRequestController {
     @ApiResponse(responseCode = "404", description = "상담 요청을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @PostMapping("/{id}/approve")
   @ResponseStatus(HttpStatus.OK)
+  @PostMapping("/{id}/approve")
   public CounselRequestResponse approve(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     CounselRequestInfo info = approveCounselRequestUseCase.execute(id, userDetails.getUserId());
@@ -93,8 +93,8 @@ public class TeacherCounselRequestController {
     @ApiResponse(responseCode = "404", description = "상담 요청을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @PostMapping("/{id}/reject")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PostMapping("/{id}/reject")
   public void reject(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     rejectCounselRequestUseCase.execute(id, userDetails.getUserId());

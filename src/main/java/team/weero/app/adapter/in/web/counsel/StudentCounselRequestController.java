@@ -39,8 +39,8 @@ public class StudentCounselRequestController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
   public CounselRequestResponse create(
       @Valid @RequestBody CreateCounselRequestRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -61,8 +61,8 @@ public class StudentCounselRequestController {
     @ApiResponse(responseCode = "404", description = "상담 요청을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{id}")
   public void cancel(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     cancelCounselRequestUseCase.execute(id, userDetails.getUserId());
@@ -74,8 +74,8 @@ public class StudentCounselRequestController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @GetMapping("/my")
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/my")
   public CounselRequestListResponse getMy(@AuthenticationPrincipal CustomUserDetails userDetails) {
     CounselRequestListInfo listInfo = getMyCounselRequestsUseCase.execute(userDetails.getUserId());
     List<CounselRequestResponse> responses = CounselRequestResponse.fromList(listInfo);

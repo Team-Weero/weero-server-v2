@@ -7,12 +7,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.auth.dto.request.SignInRequest;
 import team.weero.app.adapter.in.web.auth.dto.request.SignUpRequest;
 import team.weero.app.adapter.in.web.auth.dto.response.SignInResponse;
@@ -41,6 +37,7 @@ public class AuthController {
     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/signin")
   public SignInResponse signIn(@RequestBody @Valid SignInRequest request) {
     return SignInResponse.from(
@@ -52,6 +49,7 @@ public class AuthController {
     @ApiResponse(responseCode = "200", description = "재발급 성공"),
     @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰")
   })
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/reissue")
   public TokenResponse reissueToken(@RequestHeader("Authorization") String authorization) {
     String token = authorization.substring("Bearer ".length());
@@ -64,6 +62,7 @@ public class AuthController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.OK)
   @GetMapping("/me")
   public UserResponse getCurrentUser() {
     return UserResponse.from(getCurrentUserUseCase.execute());
@@ -75,6 +74,7 @@ public class AuthController {
     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
     @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일")
   })
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/signup")
   public void signUp(@RequestBody @Valid SignUpRequest request) {
     signUpUseCase.execute(SignUpRequest.from(request));

@@ -44,8 +44,8 @@ public class PostController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
   public void create(
       @Valid @RequestBody CreatePostRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -59,6 +59,7 @@ public class PostController {
   @Operation(summary = "모든 게시글 조회", description = "모든 게시글 목록을 조회합니다.")
   @ApiResponses({@ApiResponse(responseCode = "200", description = "조회 성공")})
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping
   public GetAllPostResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
     GetAllPostInfo postListInfo = getAllPostUseCase.execute(userDetails.getUserId());
 
@@ -71,8 +72,8 @@ public class PostController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @GetMapping("/my")
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/my")
   public GetAllPostResponse getMyPosts(@AuthenticationPrincipal CustomUserDetails userDetails) {
     GetAllPostInfo postListInfo = getMyPostsUseCase.execute(userDetails.getUserId());
 
@@ -84,8 +85,8 @@ public class PostController {
     @ApiResponse(responseCode = "200", description = "조회 성공"),
     @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
   })
-  @GetMapping("/{postId}")
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/{postId}")
   public GetPostResponse get(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
     GetPostInfo postInfo = getPostUseCase.execute(postId, userDetails.getUserId());
@@ -100,8 +101,8 @@ public class PostController {
     @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @DeleteMapping("/{postId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{postId}")
   public void delete(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
     deletePostUseCase.execute(postId, userDetails.getUserId());
@@ -115,8 +116,8 @@ public class PostController {
     @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @PatchMapping("/{postId}")
-  @ResponseStatus(HttpStatus.OK)
   public void update(
       @PathVariable UUID postId,
       @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -127,8 +128,8 @@ public class PostController {
     updatePostUseCase.execute(command);
   }
 
-  @PostMapping("/{postId}/heart")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PostMapping("/{postId}/heart")
   public void toggleHeart(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
     toggleHeartUseCase.execute(postId, userDetails.getUserId());
