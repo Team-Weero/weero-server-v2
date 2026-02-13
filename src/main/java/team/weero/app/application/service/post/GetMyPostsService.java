@@ -1,19 +1,15 @@
 package team.weero.app.application.service.post;
 
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse;
-import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse.PostItem;
-import team.weero.app.adapter.in.web.student.dto.response.StudentInfo;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.post.GetMyPostsUseCase;
+import team.weero.app.application.port.in.post.dto.response.GetAllPostInfo;
 import team.weero.app.application.port.out.heart.HeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
 import team.weero.app.application.port.out.student.LoadStudentPort;
-import team.weero.app.domain.post.model.Post;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +21,21 @@ public class GetMyPostsService implements GetMyPostsUseCase {
   private final HeartPort heartPort;
 
   @Override
-  public GetAllPostResponse execute(UUID userId) {
+  public GetAllPostInfo execute(UUID userId) {
 
-    StudentInfo studentInfo =
+    var studentInfo =
         loadStudentPort.loadByUserId(userId).orElseThrow(() -> StudentNotFoundException.INSTANCE);
 
-    List<Post> posts = getPostPort.getAllByStudentId(studentInfo.id());
+    var posts = getPostPort.getAllByStudentId(studentInfo.id());
 
-    List<PostItem> postItems =
+    var postItems =
         posts.stream()
             .map(
                 post -> {
                   boolean hearted = heartPort.exists(post.getId(), userId);
                   int heartCount = heartPort.countByPostId(post.getId());
 
-                  return new PostItem(
+                  return new GetAllPostInfo.PostInfo(
                       post.getId(),
                       post.getTitle(),
                       post.getNickName(),
@@ -51,6 +47,6 @@ public class GetMyPostsService implements GetMyPostsUseCase {
                 })
             .toList();
 
-    return new GetAllPostResponse(postItems);
+    return new GetAllPostInfo(postItems);
   }
 }

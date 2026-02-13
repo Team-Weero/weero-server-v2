@@ -1,8 +1,8 @@
 package team.weero.app.application.port.in.post;
 
 import java.util.UUID;
-import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
+import team.weero.app.application.port.in.post.dto.response.GetPostInfo;
 
 public interface GetPostUseCase {
-  GetPostResponse execute(UUID userId, UUID postId);
+  GetPostInfo execute(UUID userId, UUID postId);
 }

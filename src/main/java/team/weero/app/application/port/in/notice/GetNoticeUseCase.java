@@ -1,9 +1,9 @@
 package team.weero.app.application.port.in.notice;
 
 import java.util.UUID;
-import team.weero.app.adapter.in.web.notice.dto.response.NoticeResponse;
+import team.weero.app.application.port.in.notice.dto.response.NoticeInfo;
 
 public interface GetNoticeUseCase {
 
-  NoticeResponse getById(UUID noticeId);
+  NoticeInfo execute(UUID noticeId);
 }

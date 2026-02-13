@@ -4,15 +4,18 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
-import team.weero.app.adapter.in.web.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.exception.counsel.CounselRequestNotFoundException;
 import team.weero.app.application.exception.counsel.ForbiddenCounselRequestAccessException;
+import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.in.counsel.ApproveCounselRequestUseCase;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
+import team.weero.app.application.port.in.student.dto.response.StudentInfo;
+import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.out.counsel.CheckCounselRequestOwnerPort;
 import team.weero.app.application.port.out.counsel.LoadCounselRequestPort;
 import team.weero.app.application.port.out.counsel.SaveCounselRequestPort;
+import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.domain.counsel.CounselRequest;
 
@@ -25,9 +28,10 @@ public class ApproveCounselRequestService implements ApproveCounselRequestUseCas
   private final SaveCounselRequestPort saveCounselRequestPort;
   private final CheckCounselRequestOwnerPort checkCounselRequestOwnerPort;
   private final LoadTeacherPort loadTeacherPort;
+  private final LoadStudentPort loadStudentPort;
 
   @Override
-  public CounselRequestResponse execute(UUID id, UUID userId) {
+  public CounselRequestInfo execute(UUID id, UUID userId) {
     TeacherInfo teacherInfo =
         loadTeacherPort.loadByUserId(userId).orElseThrow(TeacherNotFoundException::new);
 
@@ -39,9 +43,11 @@ public class ApproveCounselRequestService implements ApproveCounselRequestUseCas
         loadCounselRequestPort.loadById(id).orElseThrow(CounselRequestNotFoundException::new);
 
     CounselRequest updated = existing.approve();
-
     CounselRequest saved = saveCounselRequestPort.save(updated);
 
-    return CounselRequestResponse.from(saved);
+    StudentInfo studentInfo =
+        loadStudentPort.loadById(saved.getStudentId()).orElseThrow(StudentNotFoundException::new);
+
+    return CounselRequestInfo.from(saved, studentInfo, teacherInfo);
   }
 }

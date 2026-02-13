@@ -2,6 +2,7 @@ package team.weero.app.adapter.in.web.user.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
+import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.domain.auth.type.Authority;
 
 @Schema(description = "사용자 응답")
@@ -12,4 +13,8 @@ public record UserResponse(
             description = "권한",
             example = "STUDENT",
             allowableValues = {"STUDENT", "TEACHER"})
-        Authority authority) {}
+        Authority authority) {
+  public static UserResponse from(UserInfo info) {
+    return new UserResponse(info.id(), info.email(), info.authority());
+  }
+}

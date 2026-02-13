@@ -4,9 +4,9 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.port.in.post.GetPostUseCase;
+import team.weero.app.application.port.in.post.dto.response.GetPostInfo;
 import team.weero.app.application.port.out.heart.HeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
 import team.weero.app.application.port.out.post.IncrementViewCountPort;
@@ -22,7 +22,7 @@ public class GetPostService implements GetPostUseCase {
   private final HeartPort heartPort;
 
   @Override
-  public GetPostResponse execute(UUID postId, UUID userId) {
+  public GetPostInfo execute(UUID postId, UUID userId) {
 
     Post post = getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
@@ -38,7 +38,7 @@ public class GetPostService implements GetPostUseCase {
     boolean hearted = heartPort.exists(postId, userId);
     int heartCount = heartPort.countByPostId(postId);
 
-    return new GetPostResponse(
+    return new GetPostInfo(
         updatedPost.getId(),
         updatedPost.getTitle(),
         updatedPost.getContent(),

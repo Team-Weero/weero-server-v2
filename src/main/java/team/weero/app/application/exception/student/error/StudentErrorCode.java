@@ -1,6 +1,6 @@
 package team.weero.app.application.exception.student.error;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum StudentErrorCode implements ErrorProperty {
   STUDENT_NOT_FOUND(404, "Student Not Found", 1);

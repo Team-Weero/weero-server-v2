@@ -1,6 +1,6 @@
 package team.weero.app.application.exception.user.error;
 
-import team.weero.app.global.error.ErrorProperty;
+import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum UserErrorCode implements ErrorProperty {
   USER_NOT_FOUND(404, "User Not Found", 1);

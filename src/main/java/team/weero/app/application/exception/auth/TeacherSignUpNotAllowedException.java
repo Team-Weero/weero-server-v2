@@ -1,7 +1,7 @@
 package team.weero.app.application.exception.auth;
 
 import team.weero.app.application.exception.auth.error.AuthErrorCode;
-import team.weero.app.global.error.exception.WeeRoException;
+import team.weero.app.global.common.exception.base.WeeRoException;
 
 public class TeacherSignUpNotAllowedException extends WeeRoException {
 

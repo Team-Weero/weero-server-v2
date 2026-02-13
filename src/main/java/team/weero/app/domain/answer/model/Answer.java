@@ -17,7 +17,7 @@ public class Answer {
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;
 
-  public boolean isDeleted() {
-    return deletedAt != null;
+  public static Answer create(String answer, UUID userId, UUID postId) {
+    return Answer.builder().answer(answer).userId(userId).postId(postId).build();
   }
 }

@@ -10,8 +10,8 @@ import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.adapter.out.user.mapper.UserMapper;
 import team.weero.app.adapter.out.user.repository.UserRepository;
 import team.weero.app.application.exception.user.UserNotFoundException;
+import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.user.LoadUserPort;
-import team.weero.app.domain.auth.AuthUser;
 import team.weero.app.domain.auth.type.Authority;
 import team.weero.app.domain.user.model.User;
 
@@ -25,13 +25,13 @@ public class LoadUserAdapter implements LoadUserPort {
   private final UserMapper userMapper;
 
   @Override
-  public Optional<AuthUser> loadByEmail(String email) {
+  public Optional<UserInfo> loadByEmail(String email) {
     return userRepository
         .findByEmail(email)
         .map(
             user -> {
               Authority authority = determineAuthority(user.getId());
-              return new AuthUser(user.getId(), user.getEmail(), authority);
+              return new UserInfo(user.getId(), user.getEmail(), authority);
             });
   }
 
@@ -43,7 +43,7 @@ public class LoadUserAdapter implements LoadUserPort {
         .getPassword();
   }
 
-  private Authority determineAuthority(java.util.UUID userId) {
+  private Authority determineAuthority(UUID userId) {
     if (studentRepository.findByUser_Id(userId).isPresent()) {
       return Authority.STUDENT;
     }

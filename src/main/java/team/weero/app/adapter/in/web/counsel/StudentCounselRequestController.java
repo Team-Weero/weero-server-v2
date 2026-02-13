@@ -17,7 +17,8 @@ import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse
 import team.weero.app.application.port.in.counsel.CancelCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.CreateCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.GetMyCounselRequestsUseCase;
-import team.weero.app.global.security.CustomUserDetails;
+import team.weero.app.application.port.in.counsel.dto.request.CreateCounselRequestCommand;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Student Counsel Requests", description = "학생 상담 요청 관리 API")
 @RestController
@@ -36,12 +37,19 @@ public class StudentCounselRequestController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
   public CounselRequestResponse create(
       @Valid @RequestBody CreateCounselRequestRequest request,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
-    return createCounselRequestUseCase.execute(request, userDetails.getUserId());
+    return CounselRequestResponse.from(
+        createCounselRequestUseCase.execute(
+            new CreateCounselRequestCommand(
+                request.gender(),
+                request.hasCounselingExperience(),
+                request.category(),
+                request.teacherId(),
+                userDetails.getUserId())));
   }
 
   @Operation(summary = "상담 요청 취소", description = "학생이 본인의 상담 요청을 취소합니다.")
@@ -51,8 +59,8 @@ public class StudentCounselRequestController {
     @ApiResponse(responseCode = "404", description = "상담 요청을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
-  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{id}")
   public void cancel(
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     cancelCounselRequestUseCase.execute(id, userDetails.getUserId());
@@ -64,9 +72,10 @@ public class StudentCounselRequestController {
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @GetMapping("/my")
   @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/my")
   public CounselRequestListResponse getMy(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    return getMyCounselRequestsUseCase.execute(userDetails.getUserId());
+    return CounselRequestListResponse.from(
+        getMyCounselRequestsUseCase.execute(userDetails.getUserId()));
   }
 }

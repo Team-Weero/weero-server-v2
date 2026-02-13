@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface DeleteNoticeUseCase {
 
-  void delete(UUID noticeId);
+  void execute(UUID noticeId);
 }

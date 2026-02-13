@@ -1,8 +1,8 @@
 package team.weero.app.application.port.in.auth;
 
-import team.weero.app.adapter.in.web.auth.dto.response.TokenResponse;
+import team.weero.app.application.port.in.auth.dto.response.TokenInfo;
 
 public interface ReissueTokenUseCase {
 
-  TokenResponse execute(String refreshToken);
+  TokenInfo execute(String refreshToken);
 }

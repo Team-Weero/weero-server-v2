@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
-import team.weero.app.global.entity.BaseTimeEntity;
+import team.weero.app.domain.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_answer")

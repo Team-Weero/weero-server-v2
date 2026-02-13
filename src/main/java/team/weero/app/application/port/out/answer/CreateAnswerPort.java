@@ -1,8 +1,8 @@
 package team.weero.app.application.port.out.answer;
 
-import java.util.UUID;
+import team.weero.app.domain.answer.model.Answer;
 
 public interface CreateAnswerPort {
 
-  void save(String answer, UUID userId, UUID postId);
+  void save(Answer answer);
 }

@@ -5,10 +5,16 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestListResponse;
-import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
+import team.weero.app.application.exception.student.StudentNotFoundException;
+import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.port.in.counsel.GetAllCounselRequestsUseCase;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
+import team.weero.app.application.port.in.counsel.dto.response.CounselRequestListInfo;
+import team.weero.app.application.port.in.student.dto.response.StudentInfo;
+import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.out.counsel.LoadCounselRequestPort;
+import team.weero.app.application.port.out.student.LoadStudentPort;
+import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.domain.counsel.CounselRequest;
 
 @Service
@@ -17,24 +23,53 @@ import team.weero.app.domain.counsel.CounselRequest;
 public class GetAllCounselRequestsService implements GetAllCounselRequestsUseCase {
 
   private final LoadCounselRequestPort loadCounselRequestPort;
+  private final LoadStudentPort loadStudentPort;
+  private final LoadTeacherPort loadTeacherPort;
 
   @Override
-  public CounselRequestListResponse execute() {
+  public CounselRequestListInfo execute() {
     List<CounselRequest> counselRequests = loadCounselRequestPort.loadAll();
 
-    List<CounselRequestResponse> responses =
-        counselRequests.stream().map(CounselRequestResponse::from).toList();
+    List<CounselRequestInfo> responses =
+        counselRequests.stream()
+            .map(
+                request -> {
+                  StudentInfo student =
+                      loadStudentPort
+                          .loadById(request.getStudentId())
+                          .orElseThrow(StudentNotFoundException::new);
+                  TeacherInfo teacher =
+                      loadTeacherPort
+                          .loadById(request.getTeacherId())
+                          .orElseThrow(TeacherNotFoundException::new);
+                  return CounselRequestInfo.from(request, student, teacher);
+                })
+            .toList();
 
-    return new CounselRequestListResponse(responses);
+    return new CounselRequestListInfo(responses);
   }
 
   @Override
-  public CounselRequestListResponse execute(UUID teacherId) {
+  public CounselRequestListInfo execute(UUID teacherId) {
     List<CounselRequest> counselRequests = loadCounselRequestPort.loadAllByTeacherId(teacherId);
+    List<CounselRequestInfo> responses =
+        counselRequests.stream()
+            .map(
+                request -> {
+                  StudentInfo student =
+                      loadStudentPort
+                          .loadById(request.getStudentId())
+                          .orElseThrow(StudentNotFoundException::new);
 
-    List<CounselRequestResponse> responses =
-        counselRequests.stream().map(CounselRequestResponse::from).toList();
+                  TeacherInfo teacher =
+                      loadTeacherPort
+                          .loadById(request.getTeacherId())
+                          .orElseThrow(TeacherNotFoundException::new);
 
-    return new CounselRequestListResponse(responses);
+                  return CounselRequestInfo.from(request, student, teacher);
+                })
+            .toList();
+
+    return new CounselRequestListInfo(responses);
   }
 }

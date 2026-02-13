@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
+import team.weero.app.domain.BaseTimeEntity;
 import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
-import team.weero.app.global.entity.BaseTimeEntity;
 
 @Entity
 @Table(name = "tbl_counsel_request")
