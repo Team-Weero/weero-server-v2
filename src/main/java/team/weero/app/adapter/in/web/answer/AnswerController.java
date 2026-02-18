@@ -74,12 +74,17 @@ public class AnswerController {
     deleteAnswerUseCase.execute(userDetails.getUserId(), answerId);
   }
 
-  @Operation(summary = "답변 좋아요 토글", description = "답변에 좋아요를 추가하거나 취소합니다.")
+  @Operation(summary = "답변 좋아요", description = "답변에 좋아요를 추가하거나 취소합니다.")
+  @ApiResponses({
+          @ApiResponse(responseCode = "204", description = "좋아요 성공"),
+          @ApiResponse(responseCode = "401", description = "인증 실패"),
+          @ApiResponse(responseCode = "404", description = "답변을 찾을 수 없음")
+  })
   @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PostMapping("/{answerId}/heart")
   public void toggleHeart(
-      @PathVariable UUID answerId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+          @PathVariable UUID answerId, @AuthenticationPrincipal CustomUserDetails userDetails) {
     toggleAnswerHeartUseCase.execute(answerId, userDetails.getUserId());
   }
 }
