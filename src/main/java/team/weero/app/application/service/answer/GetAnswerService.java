@@ -21,13 +21,15 @@ public class GetAnswerService implements GetAnswerUseCase {
   @Override
   public List<GetAnswerInfo> execute(UUID postId, UUID userId) {
     return getAnswerPort.getAll(postId).stream()
-            .map(a -> new GetAnswerInfo(
+        .map(
+            a ->
+                new GetAnswerInfo(
                     a.getId(),
                     a.getAnswer(),
                     a.getNickName(),
                     a.getCreatedAt(),
                     answerHeartPort.countByAnswerId(a.getId()),
                     answerHeartPort.exists(a.getId(), userId)))
-            .toList();
+        .toList();
   }
 }

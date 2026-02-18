@@ -130,15 +130,15 @@ public class PostController {
 
   @Operation(summary = "게시글 좋아요", description = "게시글에 좋아요를 추가하거나 취소합니다.")
   @ApiResponses({
-          @ApiResponse(responseCode = "204", description = "좋아요 성공"),
-          @ApiResponse(responseCode = "401", description = "인증 실패"),
-          @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
+    @ApiResponse(responseCode = "204", description = "좋아요 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
   })
   @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PostMapping("/{postId}/heart")
   public void toggleHeart(
-          @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+      @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
     togglePostHeartUseCase.execute(postId, userDetails.getUserId());
   }
 }

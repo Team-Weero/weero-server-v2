@@ -20,10 +20,17 @@ public record GetAnswerResponse(@Schema(description = "답변 목록") List<Answ
 
   public static GetAnswerResponse from(List<GetAnswerInfo> infos) {
     List<AnswerDto> answerDto =
-            infos.stream()
-                    .map(a -> new AnswerDto(
-                            a.id(), a.answer(), a.nickName(), a.createdAt(), a.heartCount(), a.hearted()))
-                    .toList();
+        infos.stream()
+            .map(
+                a ->
+                    new AnswerDto(
+                        a.id(),
+                        a.answer(),
+                        a.nickName(),
+                        a.createdAt(),
+                        a.heartCount(),
+                        a.hearted()))
+            .toList();
     return new GetAnswerResponse(answerDto);
   }
 }
