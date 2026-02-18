@@ -17,6 +17,7 @@ import team.weero.app.application.port.in.answer.CreateAnswerUseCase;
 import team.weero.app.application.port.in.answer.DeleteAnswerUseCase;
 import team.weero.app.application.port.in.answer.GetAnswerUseCase;
 import team.weero.app.application.port.in.answer.dto.request.CreateAnswerCommand;
+import team.weero.app.application.port.in.heart.ToggleAnswerHeartUseCase;
 import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Answers", description = "답변 관리 API")
@@ -28,6 +29,7 @@ public class AnswerController {
   private final CreateAnswerUseCase createAnswerUseCase;
   private final GetAnswerUseCase getAnswerUseCase;
   private final DeleteAnswerUseCase deleteAnswerUseCase;
+  private final ToggleAnswerHeartUseCase toggleAnswerHeartUseCase;
 
   @Operation(summary = "답변 생성", description = "게시글에 대한 답변을 생성합니다.")
   @ApiResponses({
@@ -54,8 +56,9 @@ public class AnswerController {
   })
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{postId}")
-  public GetAnswerResponse get(@PathVariable UUID postId) {
-    return GetAnswerResponse.from(getAnswerUseCase.execute(postId));
+  public GetAnswerResponse get(
+      @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    return GetAnswerResponse.from(getAnswerUseCase.execute(postId, userDetails.getUserId()));
   }
 
   @Operation(summary = "답변 삭제", description = "본인의 답변을 삭제합니다.")
@@ -70,5 +73,19 @@ public class AnswerController {
   public void delete(
       @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable UUID answerId) {
     deleteAnswerUseCase.execute(userDetails.getUserId(), answerId);
+  }
+
+  @Operation(summary = "답변 좋아요", description = "답변에 좋아요를 추가하거나 취소합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "204", description = "좋아요 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "답변을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PostMapping("/{answerId}/heart")
+  public void toggleHeart(
+      @PathVariable UUID answerId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    toggleAnswerHeartUseCase.execute(answerId, userDetails.getUserId());
   }
 }

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.port.in.post.GetMyPostsUseCase;
 import team.weero.app.application.port.in.post.dto.response.GetAllPostInfo;
-import team.weero.app.application.port.out.heart.HeartPort;
+import team.weero.app.application.port.out.heart.PostHeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
 import team.weero.app.application.port.out.student.LoadStudentPort;
 
@@ -18,7 +18,7 @@ public class GetMyPostsService implements GetMyPostsUseCase {
 
   private final GetPostPort getPostPort;
   private final LoadStudentPort loadStudentPort;
-  private final HeartPort heartPort;
+  private final PostHeartPort postHeartPort;
 
   @Override
   public GetAllPostInfo execute(UUID userId) {
@@ -32,8 +32,8 @@ public class GetMyPostsService implements GetMyPostsUseCase {
         posts.stream()
             .map(
                 post -> {
-                  boolean hearted = heartPort.exists(post.getId(), userId);
-                  int heartCount = heartPort.countByPostId(post.getId());
+                  boolean hearted = postHeartPort.exists(post.getId(), userId);
+                  int heartCount = postHeartPort.countByPostId(post.getId());
 
                   return new GetAllPostInfo.PostInfo(
                       post.getId(),

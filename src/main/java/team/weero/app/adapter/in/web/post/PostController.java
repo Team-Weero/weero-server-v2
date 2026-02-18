@@ -15,7 +15,7 @@ import team.weero.app.adapter.in.web.post.dto.request.CreatePostRequest;
 import team.weero.app.adapter.in.web.post.dto.request.UpdatePostRequest;
 import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse;
 import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
-import team.weero.app.application.port.in.heart.ToggleHeartUseCase;
+import team.weero.app.application.port.in.heart.TogglePostHeartUseCase;
 import team.weero.app.application.port.in.post.*;
 import team.weero.app.application.port.in.post.dto.request.CreatePostCommand;
 import team.weero.app.application.port.in.post.dto.request.UpdatePostCommand;
@@ -35,7 +35,7 @@ public class PostController {
   private final GetMyPostsUseCase getMyPostsUseCase;
   private final DeletePostUseCase deletePostUseCase;
   private final UpdatePostUseCase updatePostUseCase;
-  private final ToggleHeartUseCase toggleHeartUseCase;
+  private final TogglePostHeartUseCase togglePostHeartUseCase;
 
   @Operation(summary = "게시글 생성", description = "새로운 게시글을 생성합니다.")
   @ApiResponses({
@@ -128,10 +128,17 @@ public class PostController {
     updatePostUseCase.execute(command);
   }
 
+  @Operation(summary = "게시글 좋아요", description = "게시글에 좋아요를 추가하거나 취소합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "204", description = "좋아요 성공"),
+    @ApiResponse(responseCode = "401", description = "인증 실패"),
+    @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PostMapping("/{postId}/heart")
   public void toggleHeart(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-    toggleHeartUseCase.execute(postId, userDetails.getUserId());
+    togglePostHeartUseCase.execute(postId, userDetails.getUserId());
   }
 }
