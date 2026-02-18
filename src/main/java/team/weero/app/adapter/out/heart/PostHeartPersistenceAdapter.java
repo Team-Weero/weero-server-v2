@@ -3,6 +3,7 @@ package team.weero.app.adapter.out.heart;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.out.heart.entity.PostHeartJpaEntity;
 import team.weero.app.adapter.out.heart.repository.PostHeartRepository;
 import team.weero.app.application.port.out.heart.PostHeartPort;
@@ -23,6 +24,7 @@ public class PostHeartPersistenceAdapter implements PostHeartPort {
     postHeartRepository.save(PostHeartJpaEntity.of(postId, userId));
   }
 
+  @Transactional
   @Override
   public void delete(UUID postId, UUID userId) {
     postHeartRepository.deleteByPostIdAndUserId(postId, userId);
