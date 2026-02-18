@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.exception.post.PostNotFoundException;
 import team.weero.app.application.port.in.post.GetPostUseCase;
 import team.weero.app.application.port.in.post.dto.response.GetPostInfo;
-import team.weero.app.application.port.out.heart.HeartPort;
+import team.weero.app.application.port.out.heart.PostHeartPort;
 import team.weero.app.application.port.out.post.GetPostPort;
 import team.weero.app.application.port.out.post.IncrementViewCountPort;
 import team.weero.app.domain.post.model.Post;
@@ -19,7 +19,7 @@ public class GetPostService implements GetPostUseCase {
 
   private final GetPostPort getPostPort;
   private final IncrementViewCountPort incrementViewCountPort;
-  private final HeartPort heartPort;
+  private final PostHeartPort postHeartPort;
 
   @Override
   public GetPostInfo execute(UUID postId, UUID userId) {
@@ -35,8 +35,8 @@ public class GetPostService implements GetPostUseCase {
     Post updatedPost =
         getPostPort.getById(postId).orElseThrow(() -> PostNotFoundException.INSTANCE);
 
-    boolean hearted = heartPort.exists(postId, userId);
-    int heartCount = heartPort.countByPostId(postId);
+    boolean hearted = postHeartPort.exists(postId, userId);
+    int heartCount = postHeartPort.countByPostId(postId);
 
     return new GetPostInfo(
         updatedPost.getId(),

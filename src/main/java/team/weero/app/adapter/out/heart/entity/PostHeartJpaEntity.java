@@ -8,7 +8,7 @@ import java.util.UUID;
 @Table(
     name = "post_heart",
     uniqueConstraints = {@UniqueConstraint(columnNames = {"post_id", "user_id"})})
-public class HeartJpaEntity {
+public class PostHeartJpaEntity {
 
   @Id @GeneratedValue private UUID id;
 
@@ -18,8 +18,8 @@ public class HeartJpaEntity {
   @Column(nullable = false)
   private UUID userId;
 
-  public static HeartJpaEntity of(UUID postId, UUID userId) {
-    HeartJpaEntity heart = new HeartJpaEntity();
+  public static PostHeartJpaEntity of(UUID postId, UUID userId) {
+    PostHeartJpaEntity heart = new PostHeartJpaEntity();
     heart.postId = postId;
     heart.userId = userId;
     return heart;
