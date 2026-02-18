@@ -95,6 +95,8 @@ public class SecurityConfig {
                     .authenticated()
                     .requestMatchers(HttpMethod.DELETE, "/api/answers/{answerId}")
                     .authenticated()
+                    .requestMatchers(HttpMethod.POST, "api/answers/{answerId}/heart")
+                    .authenticated()
                     .anyRequest()
                     .authenticated())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
