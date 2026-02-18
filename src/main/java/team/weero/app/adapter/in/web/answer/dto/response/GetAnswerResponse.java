@@ -16,13 +16,13 @@ public record GetAnswerResponse(@Schema(description = "답변 목록") List<Answ
       @Schema(description = "작성자 닉네임", example = "홍길동") String nickName,
       @Schema(description = "생성 일시", example = "2024-01-01T10:00:00") LocalDateTime createdAt,
       @Schema(description = "좋아요 수") int heartCount,
-      @Schema(description = "좋아요 여부") boolean isHearted) {}
+      @Schema(description = "좋아요 여부") boolean hearted) {}
 
   public static GetAnswerResponse from(List<GetAnswerInfo> infos) {
     List<AnswerDto> answerDto =
             infos.stream()
                     .map(a -> new AnswerDto(
-                            a.id(), a.answer(), a.nickName(), a.createdAt(), a.heartCount(), a.isHearted()))
+                            a.id(), a.answer(), a.nickName(), a.createdAt(), a.heartCount(), a.hearted()))
                     .toList();
     return new GetAnswerResponse(answerDto);
   }
