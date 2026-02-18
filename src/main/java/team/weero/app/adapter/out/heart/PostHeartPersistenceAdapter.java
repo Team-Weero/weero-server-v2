@@ -9,7 +9,7 @@ import team.weero.app.application.port.out.heart.PostHeartPort;
 
 @Component
 @RequiredArgsConstructor
-public class PostPostHeartPersistenceAdapter implements PostHeartPort {
+public class PostHeartPersistenceAdapter implements PostHeartPort {
 
   private final PostHeartRepository postHeartRepository;
 
