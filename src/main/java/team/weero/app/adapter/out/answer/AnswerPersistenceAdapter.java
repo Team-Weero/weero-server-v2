@@ -67,4 +67,13 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
 
     return answers.stream().map(answerMapper::toDomain).toList();
   }
+
+  @Override
+  public Answer getById(UUID answerId) {
+    AnswerJpaEntity answer =
+        answerRepository
+            .findByIdAndDeletedAtIsNull(answerId)
+            .orElseThrow(() -> AnswerNotFoundException.INSTANCE);
+    return answerMapper.toDomain(answer);
+  }
 }

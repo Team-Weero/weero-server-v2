@@ -6,4 +6,6 @@ import team.weero.app.domain.answer.model.Answer;
 
 public interface GetAnswerPort {
   List<Answer> getAll(UUID postId);
+
+  Answer getById(UUID answerId);
 }

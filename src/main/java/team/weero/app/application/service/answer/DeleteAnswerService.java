@@ -10,8 +10,10 @@ import team.weero.app.application.exception.user.UserNotFoundException;
 import team.weero.app.application.port.in.answer.DeleteAnswerUseCase;
 import team.weero.app.application.port.in.student.dto.response.StudentInfo;
 import team.weero.app.application.port.out.answer.DeleteAnswerPort;
+import team.weero.app.application.port.out.answer.GetAnswerPort;
 import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.application.port.out.user.LoadUserPort;
+import team.weero.app.domain.answer.model.Answer;
 import team.weero.app.domain.auth.type.Authority;
 import team.weero.app.domain.student.type.StudentRole;
 import team.weero.app.domain.user.model.User;
@@ -24,6 +26,7 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
   private final DeleteAnswerPort deleteAnswerPort;
   private final LoadStudentPort loadStudentPort;
   private final LoadUserPort loadUserPort;
+  private final GetAnswerPort getAnswerPort;
 
   @Override
   public void execute(UUID userId, UUID answerId) {
@@ -41,6 +44,11 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
     if (student.role() == StudentRole.AGENT) {
       deleteAnswerPort.softDelete(answerId);
       return;
+    }
+
+    Answer answer = getAnswerPort.getById(answerId);
+    if (!answer.getUserId().equals(userId)) {
+      throw AnswerAccessDeniedException.INSTANCE;
     }
 
     throw AnswerAccessDeniedException.INSTANCE;
