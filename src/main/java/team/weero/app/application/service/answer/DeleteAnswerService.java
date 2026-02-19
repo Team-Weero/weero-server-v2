@@ -51,6 +51,6 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
       throw AnswerAccessDeniedException.INSTANCE;
     }
 
-    throw AnswerAccessDeniedException.INSTANCE;
+    deleteAnswerPort.softDelete(answerId);
   }
 }
