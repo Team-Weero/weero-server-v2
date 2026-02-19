@@ -71,9 +71,9 @@ public class AnswerPersistenceAdapter implements CreateAnswerPort, GetAnswerPort
   @Override
   public Answer getById(UUID answerId) {
     AnswerJpaEntity answer =
-        answerRepository
-            .findByIdAndDeletedAtIsNull(answerId)
-            .orElseThrow(() -> AnswerNotFoundException.INSTANCE);
+            answerRepository
+                    .findByIdWithUser(answerId)
+                    .orElseThrow(() -> AnswerNotFoundException.INSTANCE);
     return answerMapper.toDomain(answer);
   }
 }
