@@ -55,11 +55,14 @@ public class ApproveCounselRequestService implements ApproveCounselRequestUseCas
             .studentId(saved.getStudentId())
             .build();
 
-    saveChatRoomPort.save(chatRoom);
+    ChatRoom savedChatRoom = saveChatRoomPort.save(chatRoom);
+
+    CounselRequest savedWithChatRoom = saved.toBuilder().chatRoomId(savedChatRoom.getId()).build();
+    saveCounselRequestPort.save(savedWithChatRoom);
 
     StudentInfo studentInfo =
         loadStudentPort.loadById(saved.getStudentId()).orElseThrow(StudentNotFoundException::new);
 
-    return CounselRequestInfo.from(saved, studentInfo, teacherInfo);
+    return CounselRequestInfo.from(savedWithChatRoom, studentInfo, teacherInfo);
   }
 }
