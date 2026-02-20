@@ -11,9 +11,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ChatRoom {
 
-    private final UUID id;
-    private final UUID counselRequestId;
-    private final UUID teacherId;
-    private final UUID studentId;
-    private final LocalDateTime createdAt;
+  private final UUID id;
+  private final UUID counselRequestId;
+  private final UUID teacherId;
+  private final UUID studentId;
+  private final LocalDateTime createdAt;
 }

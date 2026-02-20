@@ -25,8 +25,8 @@ public interface AnswerRepository extends JpaRepository<AnswerJpaEntity, UUID> {
   Optional<AnswerJpaEntity> findByIdAndDeletedAtIsNull(UUID id);
 
   @Query(
-          "SELECT a FROM AnswerJpaEntity a "
-                  + "JOIN FETCH a.user u "
-                  + "WHERE a.id = :id AND a.deletedAt IS NULL")
+      "SELECT a FROM AnswerJpaEntity a "
+          + "JOIN FETCH a.user u "
+          + "WHERE a.id = :id AND a.deletedAt IS NULL")
   Optional<AnswerJpaEntity> findByIdWithUser(@Param("id") UUID id);
 }

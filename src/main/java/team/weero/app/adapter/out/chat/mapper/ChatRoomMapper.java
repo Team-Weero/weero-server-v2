@@ -12,24 +12,25 @@ import team.weero.app.domain.chat.ChatRoom;
 @RequiredArgsConstructor
 public class ChatRoomMapper {
 
-    public ChatRoomJpaEntity toEntity(ChatRoom chatRoom,
-                                      StudentJpaEntity student,
-                                      TeacherJpaEntity teacher,
-                                      CounselRequestJpaEntity counselRequest) {
-        return ChatRoomJpaEntity.builder()
-                .student(student)
-                .teacher(teacher)
-                .counselRequest(counselRequest)
-                .build();
-    }
+  public ChatRoomJpaEntity toEntity(
+      ChatRoom chatRoom,
+      StudentJpaEntity student,
+      TeacherJpaEntity teacher,
+      CounselRequestJpaEntity counselRequest) {
+    return ChatRoomJpaEntity.builder()
+        .student(student)
+        .teacher(teacher)
+        .counselRequest(counselRequest)
+        .build();
+  }
 
-    public ChatRoom toDomain(ChatRoomJpaEntity entity) {
-        return ChatRoom.builder()
-                .id(entity.getId())
-                .counselRequestId(entity.getCounselRequest().getId())
-                .teacherId(entity.getTeacher().getId())
-                .studentId(entity.getStudent().getId())
-                .createdAt(entity.getCreatedAt())
-                .build();
-    }
+  public ChatRoom toDomain(ChatRoomJpaEntity entity) {
+    return ChatRoom.builder()
+        .id(entity.getId())
+        .counselRequestId(entity.getCounselRequest().getId())
+        .teacherId(entity.getTeacher().getId())
+        .studentId(entity.getStudent().getId())
+        .createdAt(entity.getCreatedAt())
+        .build();
+  }
 }

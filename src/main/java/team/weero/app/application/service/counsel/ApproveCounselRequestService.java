@@ -48,7 +48,8 @@ public class ApproveCounselRequestService implements ApproveCounselRequestUseCas
     CounselRequest updated = existing.approve();
     CounselRequest saved = saveCounselRequestPort.save(updated);
 
-    ChatRoom chatRoom = ChatRoom.builder()
+    ChatRoom chatRoom =
+        ChatRoom.builder()
             .counselRequestId(saved.getId())
             .teacherId(teacherInfo.id())
             .studentId(saved.getStudentId())
