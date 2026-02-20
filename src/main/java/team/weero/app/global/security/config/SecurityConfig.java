@@ -89,7 +89,8 @@ public class SecurityConfig {
                     .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.POST, "/api/counsel-requests/teacher/{id}/reject")
                     .hasAuthority("TEACHER")
-                    .requestMatchers(HttpMethod.PATCH, "/api/counsel-requests/teacher/rooms/{chatRoomId}/close")
+                    .requestMatchers(
+                        HttpMethod.PATCH, "/api/counsel-requests/teacher/rooms/{chatRoomId}/close")
                     .hasAuthority("TEACHER")
                     .requestMatchers(HttpMethod.POST, "/api/answers/{postId}")
                     .authenticated()

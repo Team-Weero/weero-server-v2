@@ -1,4 +1,4 @@
-package team.weero.app.global.handler;
+package team.weero.app.global.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -12,7 +12,6 @@ import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import team.weero.app.adapter.in.web.chat.dto.request.ChatMessageRequest;
 import team.weero.app.adapter.in.web.chat.dto.response.ChatMessageResponse;
-import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.application.port.out.chat.NotifyCounselClosedPort;
 import team.weero.app.application.port.out.chat.SaveMessagePort;
 import team.weero.app.domain.chat.ChatMessage;
@@ -24,24 +23,37 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
 
   private final Map<UUID, Set<WebSocketSession>> chatRooms = new ConcurrentHashMap<>();
   private final Map<WebSocketSession, UUID> sessionUserMap = new ConcurrentHashMap<>();
+
   private final ObjectMapper objectMapper;
   private final SaveMessagePort saveMessagePort;
-  private final JwtPort jwtPort;
 
   @Override
   public void afterConnectionEstablished(WebSocketSession session) {
-    String token = getToken(session);
-    UUID userId = jwtPort.parseToken(token).userId();
 
-    UUID chatRoomId = getChatRoomId(session);
+    UUID userId = (UUID) session.getAttributes().get("userId");
+    if (userId == null) {
+      closeSession(session, "Unauthorized");
+      return;
+    }
+
+    UUID chatRoomId = extractRoomId(session);
+
     chatRooms.computeIfAbsent(chatRoomId, k -> ConcurrentHashMap.newKeySet()).add(session);
+
     sessionUserMap.put(session, userId);
   }
 
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    UUID chatRoomId = getChatRoomId(session);
+
+    UUID chatRoomId = extractRoomId(session);
     UUID senderId = sessionUserMap.get(session);
+
+    if (senderId == null) {
+      closeSession(session, "Unauthorized");
+      return;
+    }
+
     ChatMessageRequest request =
         objectMapper.readValue(message.getPayload(), ChatMessageRequest.class);
 
@@ -62,7 +74,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
                 .sendDate(saved.getSendDate())
                 .build());
 
-    for (WebSocketSession s : chatRooms.get(chatRoomId)) {
+    Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
+    if (sessions == null) return;
+
+    for (WebSocketSession s : sessions) {
       if (s.isOpen()) {
         s.sendMessage(new TextMessage(responseJson));
       }
@@ -71,31 +86,47 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
 
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-    UUID chatRoomId = getChatRoomId(session);
-    chatRooms.get(chatRoomId).remove(session);
+
+    UUID chatRoomId = extractRoomId(session);
+
+    Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
+    if (sessions != null) {
+      sessions.remove(session);
+      if (sessions.isEmpty()) chatRooms.remove(chatRoomId);
+    }
+
     sessionUserMap.remove(session);
-  }
-
-  private String getToken(WebSocketSession session) {
-    String query = session.getUri().getQuery();
-    return query.substring(query.indexOf("=") + 1);
-  }
-
-  private UUID getChatRoomId(WebSocketSession session) {
-    String path = session.getUri().getPath();
-    return UUID.fromString(path.substring(path.lastIndexOf("/") + 1));
   }
 
   @Override
   public void notify(UUID chatRoomId) throws IOException {
+
     Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
     if (sessions == null) return;
 
     String json = objectMapper.writeValueAsString(Map.of("type", Status.COMPLETED.name()));
+
     for (WebSocketSession s : sessions) {
       if (s.isOpen()) {
         s.sendMessage(new TextMessage(json));
       }
+    }
+  }
+
+  private UUID extractRoomId(WebSocketSession session) {
+    try {
+      String path = session.getUri().getPath();
+      String id = path.substring(path.lastIndexOf("/") + 1);
+      return UUID.fromString(id);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid roomId");
+    }
+  }
+
+  private void closeSession(WebSocketSession session, String reason) {
+    try {
+      session.close(CloseStatus.NOT_ACCEPTABLE.withReason(reason));
+    } catch (IOException ignored) {
     }
   }
 }
