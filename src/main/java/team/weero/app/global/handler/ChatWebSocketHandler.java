@@ -60,7 +60,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
                 .senderId(saved.getSenderId())
                 .text(saved.getText())
                 .sendDate(saved.getSendDate())
-                .readStatus(saved.getReadStatus())
                 .build());
 
     for (WebSocketSession s : chatRooms.get(chatRoomId)) {

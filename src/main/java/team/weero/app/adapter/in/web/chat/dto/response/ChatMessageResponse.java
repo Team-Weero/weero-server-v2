@@ -7,14 +7,13 @@ import team.weero.app.application.port.in.chat.dto.response.ChatMessageInfo;
 
 @Builder
 public record ChatMessageResponse(
-    UUID messageId, UUID senderId, String text, LocalDateTime sendDate, Boolean readStatus) {
+    UUID messageId, UUID senderId, String text, LocalDateTime sendDate) {
   public static ChatMessageResponse from(ChatMessageInfo info) {
     return ChatMessageResponse.builder()
         .messageId(info.messageId())
         .senderId(info.senderId())
         .text(info.text())
         .sendDate(info.sendDate())
-        .readStatus(info.readStatus())
         .build();
   }
 }

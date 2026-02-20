@@ -15,5 +15,4 @@ public class ChatMessage {
   private final UUID senderId;
   private final String text;
   private final LocalDateTime sendDate;
-  private final Boolean readStatus;
 }

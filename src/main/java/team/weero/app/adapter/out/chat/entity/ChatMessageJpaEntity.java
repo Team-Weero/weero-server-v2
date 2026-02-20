@@ -19,9 +19,6 @@ public class ChatMessageJpaEntity extends BaseTimeEntity {
   @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
   private String text;
 
-  @Column(nullable = false)
-  private Boolean readStatus;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private UserJpaEntity user;

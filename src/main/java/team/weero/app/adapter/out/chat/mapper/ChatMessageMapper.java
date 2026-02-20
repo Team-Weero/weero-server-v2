@@ -15,7 +15,6 @@ public class ChatMessageMapper {
       ChatMessage chatMessage, UserJpaEntity user, ChatRoomJpaEntity chatRoom) {
     return ChatMessageJpaEntity.builder()
         .text(chatMessage.getText())
-        .readStatus(false)
         .user(user)
         .chatRoom(chatRoom)
         .build();
@@ -28,7 +27,6 @@ public class ChatMessageMapper {
         .senderId(entity.getUser().getId())
         .text(entity.getText())
         .sendDate(entity.getCreatedAt())
-        .readStatus(entity.getReadStatus())
         .build();
   }
 }
