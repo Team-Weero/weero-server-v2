@@ -7,7 +7,7 @@ public class UserNotFoundException extends WeeRoException {
 
   public static final UserNotFoundException INSTANCE = new UserNotFoundException();
 
-  private UserNotFoundException() {
+  public UserNotFoundException() {
     super(UserErrorCode.USER_NOT_FOUND);
   }
 }

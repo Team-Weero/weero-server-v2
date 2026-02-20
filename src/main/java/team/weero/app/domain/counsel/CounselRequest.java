@@ -87,6 +87,26 @@ public class CounselRequest {
         .build();
   }
 
+  public CounselRequest close() {
+    if (!isInProgress()) {
+      throw new InvalidCounselRequestStatusException();
+    }
+    return CounselRequest.builder()
+        .id(this.id)
+        .status(Status.COMPLETED)
+        .gender(this.gender)
+        .hasCounselingExperience(this.hasCounselingExperience)
+        .category(this.category)
+        .studentId(this.studentId)
+        .studentName(this.studentName)
+        .teacherId(this.teacherId)
+        .teacherName(this.teacherName)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
+        .deletedAt(this.deletedAt)
+        .build();
+  }
+
   public void validateCancellable() {
     if (!isPending()) {
       throw new InvalidCounselRequestStatusException();
