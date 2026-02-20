@@ -9,17 +9,17 @@ import team.weero.app.application.port.in.chat.dto.response.ChatMessageInfo;
 @Schema(description = "채팅 메시지 응답")
 @Builder
 public record ChatMessageResponse(
-        @Schema(description = "메시지 ID") UUID messageId,
-        @Schema(description = "발신자 ID") UUID senderId,
-        @Schema(description = "메시지 내용") String text,
-        @Schema(description = "전송 시각") LocalDateTime sendDate) {
+    @Schema(description = "메시지 ID") UUID messageId,
+    @Schema(description = "발신자 ID") UUID senderId,
+    @Schema(description = "메시지 내용") String text,
+    @Schema(description = "전송 시각") LocalDateTime sendDate) {
 
   public static ChatMessageResponse from(ChatMessageInfo info) {
     return ChatMessageResponse.builder()
-            .messageId(info.messageId())
-            .senderId(info.senderId())
-            .text(info.text())
-            .sendDate(info.sendDate())
-            .build();
+        .messageId(info.messageId())
+        .senderId(info.senderId())
+        .text(info.text())
+        .sendDate(info.sendDate())
+        .build();
   }
 }
