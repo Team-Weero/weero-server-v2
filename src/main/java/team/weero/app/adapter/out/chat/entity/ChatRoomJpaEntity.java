@@ -2,9 +2,9 @@ package team.weero.app.adapter.out.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.counsel.entity.CounselRequestJpaEntity;
 import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.teacher.entity.TeacherJpaEntity;
@@ -12,7 +12,7 @@ import team.weero.app.domain.BaseTimeEntity;
 
 @Entity
 @Getter
-@Builder
+@SuperBuilder
 @Table(name = "tbl_chat_room")
 @NoArgsConstructor
 @AllArgsConstructor
