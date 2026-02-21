@@ -29,7 +29,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
 
   @Override
   public void afterConnectionEstablished(WebSocketSession session) {
-
     UUID userId = (UUID) session.getAttributes().get("userId");
     if (userId == null) {
       closeSession(session, "Unauthorized");
@@ -37,15 +36,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
     }
 
     UUID chatRoomId = extractRoomId(session);
-
     chatRooms.computeIfAbsent(chatRoomId, k -> ConcurrentHashMap.newKeySet()).add(session);
-
     sessionUserMap.put(session, userId);
   }
 
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
     UUID chatRoomId = extractRoomId(session);
     UUID senderId = sessionUserMap.get(session);
 
@@ -55,38 +51,33 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
     }
 
     ChatMessageRequest request =
-        objectMapper.readValue(message.getPayload(), ChatMessageRequest.class);
+            objectMapper.readValue(message.getPayload(), ChatMessageRequest.class);
 
     ChatMessage saved =
-        saveMessagePort.save(
-            ChatMessage.builder()
-                .chatRoomId(chatRoomId)
-                .senderId(senderId)
-                .text(request.text())
-                .build());
+            saveMessagePort.save(
+                    ChatMessage.builder()
+                            .chatRoomId(chatRoomId)
+                            .senderId(senderId)
+                            .text(request.text())
+                            .build());
 
     String responseJson =
-        objectMapper.writeValueAsString(
-            ChatMessageResponse.builder()
-                .messageId(saved.getId())
-                .senderId(saved.getSenderId())
-                .text(saved.getText())
-                .sendDate(saved.getSendDate())
-                .build());
+            objectMapper.writeValueAsString(
+                    ChatMessageResponse.builder()
+                            .messageId(saved.getId())
+                            .senderId(saved.getSenderId())
+                            .text(saved.getText())
+                            .sendDate(saved.getSendDate())
+                            .build());
 
     Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
     if (sessions == null) return;
 
-    for (WebSocketSession s : sessions) {
-      if (s.isOpen()) {
-        s.sendMessage(new TextMessage(responseJson));
-      }
-    }
+    broadcast(sessions, responseJson, chatRoomId);
   }
 
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-
     UUID chatRoomId = extractRoomId(session);
 
     Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
@@ -99,17 +90,48 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
   }
 
   @Override
-  public void notify(UUID chatRoomId) throws IOException {
-
+  public void notify(UUID chatRoomId) {
     Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
     if (sessions == null) return;
 
-    String json = objectMapper.writeValueAsString(Map.of("type", Status.COMPLETED.name()));
+    String json;
+    try {
+      json = objectMapper.writeValueAsString(Map.of("type", Status.COMPLETED.name()));
+    } catch (Exception e) {
+      return;
+    }
 
+    broadcast(sessions, json, chatRoomId);
+  }
+
+  private void broadcast(Set<WebSocketSession> sessions, String message, UUID chatRoomId) {
     for (WebSocketSession s : sessions) {
-      if (s.isOpen()) {
-        s.sendMessage(new TextMessage(json));
+      if (!s.isOpen()) {
+        cleanupSession(s, sessions, chatRoomId);
+        continue;
       }
+
+      try {
+        s.sendMessage(new TextMessage(message));
+      } catch (IOException e) {
+        cleanupSession(s, sessions, chatRoomId);
+      }
+    }
+
+    if (sessions.isEmpty()) {
+      chatRooms.remove(chatRoomId);
+    }
+  }
+
+  private void cleanupSession(WebSocketSession session, Set<WebSocketSession> sessions, UUID chatRoomId) {
+    try {
+      session.close(CloseStatus.SERVER_ERROR);
+    } catch (IOException ignored) {
+    }
+    sessions.remove(session);
+    sessionUserMap.remove(session);
+    if (sessions.isEmpty()) {
+      chatRooms.remove(chatRoomId);
     }
   }
 
