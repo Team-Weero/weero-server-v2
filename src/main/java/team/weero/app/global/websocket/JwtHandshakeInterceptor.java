@@ -1,6 +1,5 @@
 package team.weero.app.global.websocket;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +18,24 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
   @Override
   public boolean beforeHandshake(
-      ServerHttpRequest request,
-      ServerHttpResponse response,
-      WebSocketHandler wsHandler,
-      Map<String, Object> attributes) {
+          ServerHttpRequest request,
+          ServerHttpResponse response,
+          WebSocketHandler wsHandler,
+          Map<String, Object> attributes) {
 
-    String token = extractToken(request.getURI().getQuery());
-
+    String token = extractToken(request);
     if (token == null) return false;
 
     try {
-      UUID userId = jwtPort.parseToken(token).userId();
+      var payload = jwtPort.parseToken(token);
+      UUID userId = payload.userId();
+      if (userId == null) return false;
+
+      UUID roomId = extractRoomId(request);
+      if (roomId == null) return false;
+
       attributes.put("userId", userId);
+      attributes.put("roomId", roomId);
       return true;
 
     } catch (Exception e) {
@@ -40,19 +45,24 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
   @Override
   public void afterHandshake(
-      ServerHttpRequest request,
-      ServerHttpResponse response,
-      WebSocketHandler wsHandler,
-      Exception exception) {}
+          ServerHttpRequest request,
+          ServerHttpResponse response,
+          WebSocketHandler wsHandler,
+          Exception exception) {}
 
-  private String extractToken(String query) {
-    if (query == null) return null;
+  private String extractToken(ServerHttpRequest request) {
+    String auth = request.getHeaders().getFirst("Authorization");
+    if (auth == null || !auth.startsWith("Bearer ")) return null;
+    return auth.substring(7);
+  }
 
-    return Arrays.stream(query.split("&"))
-        .map(param -> param.split("="))
-        .filter(pair -> pair.length == 2 && pair[0].equals("token"))
-        .map(pair -> pair[1])
-        .findFirst()
-        .orElse(null);
+  private UUID extractRoomId(ServerHttpRequest request) {
+    try {
+      String path = request.getURI().getPath();
+      String id = path.substring(path.lastIndexOf("/") + 1);
+      return UUID.fromString(id);
+    } catch (Exception e) {
+      return null;
+    }
   }
 }
