@@ -3,7 +3,9 @@ package team.weero.app.application.exception.chat.error;
 import team.weero.app.global.error.dto.ErrorProperty;
 
 public enum ChatErrorCode implements ErrorProperty {
-  CHAT_ROOM_NOT_FOUND(404, "Chat Room Not Found", 1);
+  CHAT_ROOM_NOT_FOUND(404, "Chat Room Not Found", 1),
+  FORBIDDEN_CHAT_ROOM_ACCESS(403, "Forbidden Chatroom Access", 1),
+  ;
 
   private final int status;
   private final String message;

@@ -16,4 +16,8 @@ public class ChatRoom {
   private final UUID teacherId;
   private final UUID studentId;
   private final LocalDateTime createdAt;
+
+  public boolean isParticipant(UUID userId) {
+    return teacherId.equals(userId) || studentId.equals(userId);
+  }
 }

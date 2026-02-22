@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.chat.dto.response.ChatMessageResponse;
 import team.weero.app.application.port.in.chat.GetChatMessagesUseCase;
+import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Chat", description = "채팅 API")
 @RestController
@@ -33,8 +35,9 @@ public class ChatController {
   public List<ChatMessageResponse> getChatMessages(
       @PathVariable UUID chatRoomId,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "20") int size) {
-    return getChatMessagesUseCase.execute(chatRoomId, page, size).stream()
+      @RequestParam(defaultValue = "20") int size,
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    return getChatMessagesUseCase.execute(userDetails.getUserId(), chatRoomId, page, size).stream()
         .map(ChatMessageResponse::from)
         .toList();
   }
