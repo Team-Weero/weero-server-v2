@@ -28,6 +28,8 @@ public record CounselRequestResponse(
     @Schema(description = "학생 이름", example = "홍길동") String studentName,
     @Schema(description = "교사 ID", example = "550e8400-e29b-41d4-a716-446655440002") UUID teacherId,
     @Schema(description = "교사 이름", example = "김선생") String teacherName,
+    @Schema(description = "채팅방 ID", example = "fb956595-de05-478c-82c5-a9d36cf40803")
+        UUID chatRoomId,
     @Schema(description = "생성 일시", example = "2024-01-01T10:00:00") LocalDateTime createdAt,
     @Schema(description = "수정 일시", example = "2024-01-01T10:00:00") LocalDateTime updatedAt) {
 
@@ -42,6 +44,7 @@ public record CounselRequestResponse(
         info.studentName(),
         info.teacherId(),
         info.teacherName(),
+        info.chatRoomId(),
         info.createdAt(),
         info.updatedAt());
   }

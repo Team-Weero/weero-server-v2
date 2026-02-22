@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestListResponse;
 import team.weero.app.adapter.in.web.counsel.dto.response.CounselRequestResponse;
 import team.weero.app.application.port.in.counsel.ApproveCounselRequestUseCase;
+import team.weero.app.application.port.in.counsel.CloseCounselUseCase;
 import team.weero.app.application.port.in.counsel.GetAllCounselRequestsUseCase;
 import team.weero.app.application.port.in.counsel.GetCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.RejectCounselRequestUseCase;
 import team.weero.app.application.port.in.counsel.dto.response.CounselRequestInfo;
-import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.global.security.principal.CustomUserDetails;
 
 @Tag(name = "Teacher Counsel Requests", description = "교사 상담 요청 관리 API")
@@ -30,7 +30,7 @@ public class TeacherCounselRequestController {
   private final GetCounselRequestUseCase getCounselRequestUseCase;
   private final ApproveCounselRequestUseCase approveCounselRequestUseCase;
   private final RejectCounselRequestUseCase rejectCounselRequestUseCase;
-  private final LoadTeacherPort loadTeacherPort;
+  private final CloseCounselUseCase closeCounselUseCase;
 
   @Operation(summary = "교사의 모든 상담 요청 조회", description = "현재 로그인한 교사에게 할당된 모든 상담 요청을 조회합니다.")
   @ApiResponses({
@@ -93,5 +93,19 @@ public class TeacherCounselRequestController {
       @PathVariable UUID id, @AuthenticationPrincipal CustomUserDetails userDetails) {
 
     rejectCounselRequestUseCase.execute(id, userDetails.getUserId());
+  }
+
+  @Operation(summary = "상담 종료", description = "선생님이 상담을 종료합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "종료 성공"),
+    @ApiResponse(responseCode = "403", description = "권한 없음"),
+    @ApiResponse(responseCode = "404", description = "채팅방을 찾을 수 없음")
+  })
+  @SecurityRequirement(name = "bearer-key")
+  @ResponseStatus(HttpStatus.OK)
+  @PatchMapping("/rooms/{chatRoomId}/close")
+  public void closeCounsel(
+      @PathVariable UUID chatRoomId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    closeCounselUseCase.execute(chatRoomId, userDetails.getUserId());
   }
 }

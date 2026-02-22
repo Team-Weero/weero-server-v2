@@ -10,7 +10,7 @@ import team.weero.app.domain.counsel.type.Gender;
 import team.weero.app.domain.counsel.type.Status;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 public class CounselRequest {
 
@@ -23,6 +23,7 @@ public class CounselRequest {
   private final String studentName;
   private final UUID teacherId;
   private final String teacherName;
+  private final UUID chatRoomId;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
   private final LocalDateTime deletedAt;
@@ -61,6 +62,7 @@ public class CounselRequest {
         .studentName(this.studentName)
         .teacherId(this.teacherId)
         .teacherName(this.teacherName)
+        .chatRoomId(this.chatRoomId)
         .createdAt(this.createdAt)
         .updatedAt(this.updatedAt)
         .deletedAt(this.deletedAt)
@@ -81,6 +83,28 @@ public class CounselRequest {
         .studentName(this.studentName)
         .teacherId(this.teacherId)
         .teacherName(this.teacherName)
+        .chatRoomId(this.chatRoomId)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
+        .deletedAt(this.deletedAt)
+        .build();
+  }
+
+  public CounselRequest close() {
+    if (!isInProgress()) {
+      throw new InvalidCounselRequestStatusException();
+    }
+    return CounselRequest.builder()
+        .id(this.id)
+        .status(Status.COMPLETED)
+        .gender(this.gender)
+        .hasCounselingExperience(this.hasCounselingExperience)
+        .category(this.category)
+        .studentId(this.studentId)
+        .studentName(this.studentName)
+        .teacherId(this.teacherId)
+        .teacherName(this.teacherName)
+        .chatRoomId(this.chatRoomId)
         .createdAt(this.createdAt)
         .updatedAt(this.updatedAt)
         .deletedAt(this.deletedAt)

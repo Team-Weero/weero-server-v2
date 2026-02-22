@@ -18,6 +18,7 @@ public record CounselRequestInfo(
     String studentName,
     UUID teacherId,
     String teacherName,
+    UUID chatRoomId,
     LocalDateTime createdAt,
     LocalDateTime updatedAt) {
 
@@ -33,6 +34,7 @@ public record CounselRequestInfo(
         student.name(),
         request.getTeacherId(),
         teacher.name(),
+        request.getChatRoomId(),
         request.getCreatedAt(),
         request.getUpdatedAt());
   }
@@ -48,6 +50,7 @@ public record CounselRequestInfo(
         student.name(),
         request.getTeacherId(),
         null, // teacherName 없음
+        request.getChatRoomId(),
         request.getCreatedAt(),
         request.getUpdatedAt());
   }

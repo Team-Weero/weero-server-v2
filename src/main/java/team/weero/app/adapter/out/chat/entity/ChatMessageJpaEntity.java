@@ -1,18 +1,23 @@
 package team.weero.app.adapter.out.chat.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.domain.BaseTimeEntity;
 
 @Entity
+@SuperBuilder
+@Getter
 @Table(name = "tbl_message")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatMessageJpaEntity extends BaseTimeEntity {
 
   @Column(nullable = false, columnDefinition = "VARCHAR(1000)")
   private String text;
-
-  @Column(nullable = false)
-  private Boolean readStatus;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
