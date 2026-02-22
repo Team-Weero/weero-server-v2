@@ -1,6 +1,8 @@
 package team.weero.app.global.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -8,10 +10,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.*;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import team.weero.app.adapter.in.web.chat.dto.request.ChatMessageRequest;
 import team.weero.app.adapter.in.web.chat.dto.response.ChatMessageResponse;
+import team.weero.app.application.port.out.chat.CheckChatParticipantPort;
 import team.weero.app.application.port.out.chat.NotifyCounselClosedPort;
 import team.weero.app.application.port.out.chat.SaveMessagePort;
 import team.weero.app.domain.chat.ChatMessage;
@@ -26,6 +31,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
 
   private final ObjectMapper objectMapper;
   private final SaveMessagePort saveMessagePort;
+  private final Validator validator;
+  private final CheckChatParticipantPort checkChatParticipantPort;
 
   @Override
   public void afterConnectionEstablished(WebSocketSession session) {
@@ -42,6 +49,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
 
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    if (message.getPayloadLength() > 2000) {
+      closeSession(session, "Payload too large");
+      return;
+    }
+
     UUID chatRoomId = extractRoomId(session);
     UUID senderId = sessionUserMap.get(session);
 
@@ -50,25 +62,49 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
       return;
     }
 
-    ChatMessageRequest request =
-            objectMapper.readValue(message.getPayload(), ChatMessageRequest.class);
+    ChatMessageRequest request;
+    try {
+      request = objectMapper.readValue(message.getPayload(), ChatMessageRequest.class);
+    } catch (Exception e) {
+      session.sendMessage(new TextMessage("{\"type\":\"ERROR\",\"message\":\"Invalid JSON\"}"));
+      return;
+    }
+
+    Set<ConstraintViolation<ChatMessageRequest>> violations = validator.validate(request);
+    if (!violations.isEmpty()) {
+      String error =
+          violations.stream()
+              .map(ConstraintViolation::getMessage)
+              .findFirst()
+              .orElse("Invalid message");
+
+      session.sendMessage(
+          new TextMessage(
+              objectMapper.writeValueAsString(Map.of("type", "ERROR", "message", error))));
+      return;
+    }
+
+    if (!checkChatParticipantPort.isParticipant(chatRoomId, senderId)) {
+      closeSession(session, "Forbidden");
+      return;
+    }
 
     ChatMessage saved =
-            saveMessagePort.save(
-                    ChatMessage.builder()
-                            .chatRoomId(chatRoomId)
-                            .senderId(senderId)
-                            .text(request.text())
-                            .build());
+        saveMessagePort.save(
+            ChatMessage.builder()
+                .chatRoomId(chatRoomId)
+                .senderId(senderId)
+                .text(request.text())
+                .build());
 
     String responseJson =
-            objectMapper.writeValueAsString(
-                    ChatMessageResponse.builder()
-                            .messageId(saved.getId())
-                            .senderId(saved.getSenderId())
-                            .text(saved.getText())
-                            .sendDate(saved.getSendDate())
-                            .build());
+        objectMapper.writeValueAsString(
+            ChatMessageResponse.builder()
+                .messageId(saved.getId())
+                .senderId(saved.getSenderId())
+                .text(saved.getText())
+                .sendDate(saved.getSendDate())
+                .build());
 
     Set<WebSocketSession> sessions = chatRooms.get(chatRoomId);
     if (sessions == null) return;
@@ -123,7 +159,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler implements Notify
     }
   }
 
-  private void cleanupSession(WebSocketSession session, Set<WebSocketSession> sessions, UUID chatRoomId) {
+  private void cleanupSession(
+      WebSocketSession session, Set<WebSocketSession> sessions, UUID chatRoomId) {
     try {
       session.close(CloseStatus.SERVER_ERROR);
     } catch (IOException ignored) {

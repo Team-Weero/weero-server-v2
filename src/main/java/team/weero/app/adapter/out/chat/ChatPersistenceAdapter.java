@@ -25,17 +25,18 @@ import team.weero.app.application.exception.counsel.CounselRequestNotFoundExcept
 import team.weero.app.application.exception.student.StudentNotFoundException;
 import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.exception.user.UserNotFoundException;
-import team.weero.app.application.port.out.chat.LoadChatMessagePort;
-import team.weero.app.application.port.out.chat.LoadChatRoomPort;
-import team.weero.app.application.port.out.chat.SaveChatRoomPort;
-import team.weero.app.application.port.out.chat.SaveMessagePort;
+import team.weero.app.application.port.out.chat.*;
 import team.weero.app.domain.chat.ChatMessage;
 import team.weero.app.domain.chat.ChatRoom;
 
 @Component
 @RequiredArgsConstructor
 public class ChatPersistenceAdapter
-    implements SaveChatRoomPort, SaveMessagePort, LoadChatRoomPort, LoadChatMessagePort {
+    implements SaveChatRoomPort,
+        SaveMessagePort,
+        LoadChatRoomPort,
+        LoadChatMessagePort,
+        CheckChatParticipantPort {
 
   private final ChatRoomRepository chatRoomRepository;
   private final StudentRepository studentRepository;
@@ -90,5 +91,16 @@ public class ChatPersistenceAdapter
     return chatMessageRepository.findByChatRoom_Id(chatRoomId, pageable).stream()
         .map(chatMessageMapper::toDomain)
         .toList();
+  }
+
+  @Override
+  public boolean isParticipant(UUID chatRoomId, UUID userId) {
+    return chatRoomRepository
+        .findById(chatRoomId)
+        .map(
+            room ->
+                userId.equals(room.getTeacher().getId())
+                    || userId.equals(room.getStudent().getId()))
+        .orElse(false);
   }
 }
