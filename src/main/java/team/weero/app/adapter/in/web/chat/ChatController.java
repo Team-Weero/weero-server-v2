@@ -30,8 +30,11 @@ public class ChatController {
   @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/rooms/{chatRoomId}/messages")
-  public List<ChatMessageResponse> getChatMessages(@PathVariable UUID chatRoomId) {
-    return getChatMessagesUseCase.execute(chatRoomId).stream()
+  public List<ChatMessageResponse> getChatMessages(
+      @PathVariable UUID chatRoomId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
+    return getChatMessagesUseCase.execute(chatRoomId, page, size).stream()
         .map(ChatMessageResponse::from)
         .toList();
   }

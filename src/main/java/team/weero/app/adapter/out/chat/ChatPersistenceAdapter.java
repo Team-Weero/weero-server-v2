@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.chat.entity.ChatMessageJpaEntity;
 import team.weero.app.adapter.out.chat.entity.ChatRoomJpaEntity;
@@ -83,10 +84,10 @@ public class ChatPersistenceAdapter
   }
 
   @Override
-  public List<ChatMessage> loadByChatRoomId(UUID chatRoomId) {
+  public List<ChatMessage> loadByChatRoomId(UUID chatRoomId, Pageable pageable) {
     chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
 
-    return chatMessageRepository.findByChatRoomId(chatRoomId).stream()
+    return chatMessageRepository.findByChatRoomId(chatRoomId, pageable).stream()
         .map(chatMessageMapper::toDomain)
         .toList();
   }
