@@ -13,13 +13,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.post.dto.request.CreatePostRequest;
 import team.weero.app.adapter.in.web.post.dto.request.UpdatePostRequest;
-import team.weero.app.adapter.in.web.post.dto.response.GetAllPostResponse;
 import team.weero.app.adapter.in.web.post.dto.response.GetPostResponse;
+import team.weero.app.adapter.in.web.post.dto.response.PagedPostResponse;
 import team.weero.app.application.port.in.heart.TogglePostHeartUseCase;
 import team.weero.app.application.port.in.post.*;
 import team.weero.app.application.port.in.post.dto.request.CreatePostCommand;
 import team.weero.app.application.port.in.post.dto.request.UpdatePostCommand;
-import team.weero.app.application.port.in.post.dto.response.GetAllPostInfo;
 import team.weero.app.application.port.in.post.dto.response.GetPostInfo;
 import team.weero.app.global.security.principal.CustomUserDetails;
 
@@ -58,12 +57,15 @@ public class PostController {
 
   @Operation(summary = "모든 게시글 조회", description = "모든 게시글 목록을 조회합니다.")
   @ApiResponses({@ApiResponse(responseCode = "200", description = "조회 성공")})
+  @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.OK)
   @GetMapping
-  public GetAllPostResponse getAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    GetAllPostInfo postListInfo = getAllPostUseCase.execute(userDetails.getUserId());
+  public PagedPostResponse getAll(
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
 
-    return GetAllPostResponse.from(postListInfo);
+    return PagedPostResponse.from(getAllPostUseCase.execute(userDetails.getUserId(), page, size));
   }
 
   @Operation(summary = "내 게시글 목록 조회", description = "현재 로그인한 사용자의 게시글을 조회합니다.")
@@ -74,10 +76,12 @@ public class PostController {
   @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/my")
-  public GetAllPostResponse getMyPosts(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    GetAllPostInfo postListInfo = getMyPostsUseCase.execute(userDetails.getUserId());
+  public PagedPostResponse getMyPosts(
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
 
-    return GetAllPostResponse.from(postListInfo);
+    return PagedPostResponse.from(getMyPostsUseCase.execute(userDetails.getUserId(), page, size));
   }
 
   @Operation(summary = "게시글 상세 조회", description = "ID로 특정 게시글의 상세 정보를 조회합니다.")
@@ -89,8 +93,8 @@ public class PostController {
   @GetMapping("/{postId}")
   public GetPostResponse get(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-    GetPostInfo postInfo = getPostUseCase.execute(postId, userDetails.getUserId());
 
+    GetPostInfo postInfo = getPostUseCase.execute(postId, userDetails.getUserId());
     return GetPostResponse.from(postInfo);
   }
 
@@ -105,6 +109,7 @@ public class PostController {
   @DeleteMapping("/{postId}")
   public void delete(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+
     deletePostUseCase.execute(postId, userDetails.getUserId());
   }
 
@@ -122,6 +127,7 @@ public class PostController {
       @PathVariable UUID postId,
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @Valid @RequestBody UpdatePostRequest request) {
+
     UpdatePostCommand command =
         new UpdatePostCommand(postId, userDetails.getUserId(), request.title(), request.content());
 
@@ -139,6 +145,7 @@ public class PostController {
   @PostMapping("/{postId}/heart")
   public void toggleHeart(
       @PathVariable UUID postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+
     togglePostHeartUseCase.execute(postId, userDetails.getUserId());
   }
 }
