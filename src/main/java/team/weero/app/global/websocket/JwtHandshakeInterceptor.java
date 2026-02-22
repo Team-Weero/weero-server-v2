@@ -19,10 +19,10 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
   @Override
   public boolean beforeHandshake(
-          ServerHttpRequest request,
-          ServerHttpResponse response,
-          WebSocketHandler wsHandler,
-          Map<String, Object> attributes) {
+      ServerHttpRequest request,
+      ServerHttpResponse response,
+      WebSocketHandler wsHandler,
+      Map<String, Object> attributes) {
 
     String token = extractToken(request);
     if (token == null) {
@@ -56,10 +56,10 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
   @Override
   public void afterHandshake(
-          ServerHttpRequest request,
-          ServerHttpResponse response,
-          WebSocketHandler wsHandler,
-          Exception exception) {}
+      ServerHttpRequest request,
+      ServerHttpResponse response,
+      WebSocketHandler wsHandler,
+      Exception exception) {}
 
   private String extractToken(ServerHttpRequest request) {
     String auth = request.getHeaders().getFirst("Authorization");

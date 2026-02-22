@@ -20,6 +20,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     registry
         .addHandler(chatWebSocketHandler, "/ws/chat/{roomId}")
         .addInterceptors(jwtHandshakeInterceptor)
-        .setAllowedOrigins("*");
+        .setAllowedOrigins("*"); // 환경변수로 분리하기
   }
 }

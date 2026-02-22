@@ -26,31 +26,20 @@ public class JwtAdapter implements JwtPort {
   @Override
   public String generateAccessToken(UUID userId, String email, Authority authority) {
     return generateToken(
-            userId,
-            email,
-            authority,
-            jwtProperties.getAccessExp(),
-            JwtConstants.TYPE_ACCESS);
+        userId, email, authority, jwtProperties.getAccessExp(), JwtConstants.TYPE_ACCESS);
   }
 
   @Override
   public String generateRefreshToken(UUID userId, String email, Authority authority) {
     return generateToken(
-            userId,
-            email,
-            authority,
-            jwtProperties.getRefreshExp(),
-            JwtConstants.TYPE_REFRESH);
+        userId, email, authority, jwtProperties.getRefreshExp(), JwtConstants.TYPE_REFRESH);
   }
 
   @Override
   public TokenClaims parseToken(String token) {
     try {
       var jws =
-              Jwts.parserBuilder()
-                      .setSigningKey(jwtProperties.getKey())
-                      .build()
-                      .parseClaimsJws(token);
+          Jwts.parserBuilder().setSigningKey(jwtProperties.getKey()).build().parseClaimsJws(token);
 
       var header = jws.getHeader();
       var claims = jws.getBody();
@@ -63,7 +52,7 @@ public class JwtAdapter implements JwtPort {
       UUID userId = UUID.fromString(claims.getSubject());
       String email = claims.get(JwtConstants.CLAIM_EMAIL, String.class);
       Authority authority =
-              Authority.valueOf(claims.get(JwtConstants.CLAIM_AUTHORITY, String.class));
+          Authority.valueOf(claims.get(JwtConstants.CLAIM_AUTHORITY, String.class));
 
       return new TokenClaims(userId, email, authority);
 
@@ -85,23 +74,19 @@ public class JwtAdapter implements JwtPort {
   }
 
   private String generateToken(
-          UUID userId,
-          String email,
-          Authority authority,
-          int expiration,
-          String tokenType) {
+      UUID userId, String email, Authority authority, int expiration, String tokenType) {
 
     Date now = new Date();
     Date expiryDate = new Date(now.getTime() + expiration * 1000L);
 
     return Jwts.builder()
-            .setHeaderParam(JwtConstants.HEADER_TOKEN_TYPE, tokenType)
-            .setSubject(userId.toString())
-            .claim(JwtConstants.CLAIM_EMAIL, email)
-            .claim(JwtConstants.CLAIM_AUTHORITY, authority.name())
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
-            .signWith(jwtProperties.getKey(), SignatureAlgorithm.HS512)
-            .compact();
+        .setHeaderParam(JwtConstants.HEADER_TOKEN_TYPE, tokenType)
+        .setSubject(userId.toString())
+        .claim(JwtConstants.CLAIM_EMAIL, email)
+        .claim(JwtConstants.CLAIM_AUTHORITY, authority.name())
+        .setIssuedAt(now)
+        .setExpiration(expiryDate)
+        .signWith(jwtProperties.getKey(), SignatureAlgorithm.HS512)
+        .compact();
   }
 }
