@@ -16,7 +16,7 @@ public interface PostRepository extends JpaRepository<PostJpaEntity, UUID> {
 
   Optional<PostJpaEntity> findByIdAndDeletedAtIsNull(UUID id);
 
-  @Query("SELECT p FROM PostJpaEntity p WHERE p.deletedAt IS NULL ORDER BY p.createdAt DESC")
+  @Query("SELECT p FROM PostJpaEntity p WHERE p.deletedAt IS NULL")
   Page<PostJpaEntity> findAllByDeletedAtIsNull(Pageable pageable);
 
   Page<PostJpaEntity> findAllByStudentIdAndDeletedAtIsNull(UUID studentId, Pageable pageable);
