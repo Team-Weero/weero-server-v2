@@ -1,8 +1,8 @@
 package team.weero.app.application.service.chat;
 
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +13,7 @@ import team.weero.app.application.port.in.chat.GetChatMessagesUseCase;
 import team.weero.app.application.port.in.chat.dto.response.ChatMessageInfo;
 import team.weero.app.application.port.out.chat.LoadChatMessagePort;
 import team.weero.app.application.port.out.chat.LoadChatRoomPort;
+import team.weero.app.domain.chat.ChatMessage;
 import team.weero.app.domain.chat.ChatRoom;
 
 @Service
@@ -23,8 +24,7 @@ public class GetChatMessagesService implements GetChatMessagesUseCase {
   private final LoadChatRoomPort loadChatRoomPort;
 
   @Override
-  public List<ChatMessageInfo> execute(UUID userId, UUID chatRoomId, int page, int size) {
-
+  public Page<ChatMessageInfo> execute(UUID userId, UUID chatRoomId, int page, int size) {
     ChatRoom chatRoom =
         loadChatRoomPort.loadById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
 
@@ -34,8 +34,8 @@ public class GetChatMessagesService implements GetChatMessagesUseCase {
 
     Pageable pageable = PageRequest.of(page, size, Sort.by("sendDate").descending());
 
-    return loadChatMessagePort.loadByChatRoomId(chatRoomId, pageable).stream()
-        .map(ChatMessageInfo::from)
-        .toList();
+    Page<ChatMessage> messages = loadChatMessagePort.loadByChatRoomId(chatRoomId, pageable);
+
+    return messages.map(ChatMessageInfo::from);
   }
 }
