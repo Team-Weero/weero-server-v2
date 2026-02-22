@@ -87,7 +87,7 @@ public class ChatPersistenceAdapter
   public List<ChatMessage> loadByChatRoomId(UUID chatRoomId, Pageable pageable) {
     chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
 
-    return chatMessageRepository.findByChatRoomId(chatRoomId, pageable).stream()
+    return chatMessageRepository.findByChatRoom_Id(chatRoomId, pageable).stream()
         .map(chatMessageMapper::toDomain)
         .toList();
   }

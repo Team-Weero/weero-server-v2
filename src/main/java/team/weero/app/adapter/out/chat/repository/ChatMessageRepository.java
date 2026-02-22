@@ -9,5 +9,5 @@ import team.weero.app.adapter.out.chat.entity.ChatMessageJpaEntity;
 
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessageJpaEntity, UUID> {
-  Page<ChatMessageJpaEntity> findByChatRoomId(UUID chatRoomId, Pageable pageable);
+  Page<ChatMessageJpaEntity> findByChatRoom_Id(UUID chatRoomId, Pageable pageable);
 }
