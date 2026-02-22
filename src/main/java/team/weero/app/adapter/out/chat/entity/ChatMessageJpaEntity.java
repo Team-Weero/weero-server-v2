@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.domain.BaseTimeEntity;
 
 @Entity
-@Builder
+@SuperBuilder
 @Getter
 @Table(name = "tbl_message")
 @NoArgsConstructor

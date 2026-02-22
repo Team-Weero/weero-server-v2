@@ -98,7 +98,7 @@ public class SecurityConfig {
                     .authenticated()
                     .requestMatchers(HttpMethod.DELETE, "/api/answers/{answerId}")
                     .authenticated()
-                    .requestMatchers(HttpMethod.POST, "api/answers/{answerId}/heart")
+                    .requestMatchers(HttpMethod.POST, "/api/answers/{answerId}/heart")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/api/chat/rooms/{chatRoomId}/messages")
                     .authenticated()

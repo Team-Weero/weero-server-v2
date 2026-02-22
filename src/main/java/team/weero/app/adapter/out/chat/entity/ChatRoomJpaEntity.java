@@ -27,6 +27,6 @@ public class ChatRoomJpaEntity extends BaseTimeEntity {
   private TeacherJpaEntity teacher;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "counsel_id")
+  @JoinColumn(name = "counsel_id", nullable = false)
   private CounselRequestJpaEntity counselRequest;
 }
