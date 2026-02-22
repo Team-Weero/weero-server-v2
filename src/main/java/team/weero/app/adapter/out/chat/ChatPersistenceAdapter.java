@@ -6,6 +6,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.adapter.out.chat.entity.ChatMessageJpaEntity;
 import team.weero.app.adapter.out.chat.entity.ChatRoomJpaEntity;
 import team.weero.app.adapter.out.chat.mapper.ChatMessageMapper;
@@ -32,7 +33,7 @@ import team.weero.app.domain.chat.ChatRoom;
 @Component
 @RequiredArgsConstructor
 public class ChatPersistenceAdapter
-    implements SaveChatRoomPort,
+        implements SaveChatRoomPort,
         SaveMessagePort,
         LoadChatRoomPort,
         LoadChatMessagePort,
@@ -48,59 +49,71 @@ public class ChatPersistenceAdapter
   private final ChatMessageMapper chatMessageMapper;
 
   @Override
+  @Transactional
   public ChatRoom save(ChatRoom chatRoom) {
     StudentJpaEntity student =
-        studentRepository
-            .findById(chatRoom.getStudentId())
-            .orElseThrow(StudentNotFoundException::new);
+            studentRepository
+                    .findById(chatRoom.getStudentId())
+                    .orElseThrow(StudentNotFoundException::new);
+
     TeacherJpaEntity teacher =
-        teacherRepository
-            .findById(chatRoom.getTeacherId())
-            .orElseThrow(TeacherNotFoundException::new);
+            teacherRepository
+                    .findById(chatRoom.getTeacherId())
+                    .orElseThrow(TeacherNotFoundException::new);
+
     CounselRequestJpaEntity counselRequest =
-        counselRequestRepository
-            .findById(chatRoom.getCounselRequestId())
-            .orElseThrow(CounselRequestNotFoundException::new);
+            counselRequestRepository
+                    .findById(chatRoom.getCounselRequestId())
+                    .orElseThrow(CounselRequestNotFoundException::new);
 
     ChatRoomJpaEntity entity = chatRoomMapper.toEntity(null, student, teacher, counselRequest);
+
     return chatRoomMapper.toDomain(chatRoomRepository.save(entity));
   }
 
   @Override
+  @Transactional
   public ChatMessage save(ChatMessage chatMessage) {
     UserJpaEntity user =
-        userRepository.findById(chatMessage.getSenderId()).orElseThrow(UserNotFoundException::new);
-    ChatRoomJpaEntity chatRoom =
-        chatRoomRepository
-            .findById(chatMessage.getChatRoomId())
-            .orElseThrow(ChatRoomNotFoundException::new);
+            userRepository.findById(chatMessage.getSenderId())
+                    .orElseThrow(UserNotFoundException::new);
 
-    ChatMessageJpaEntity entity = chatMessageMapper.toEntity(chatMessage, user, chatRoom);
+    ChatRoomJpaEntity chatRoom =
+            chatRoomRepository
+                    .findById(chatMessage.getChatRoomId())
+                    .orElseThrow(ChatRoomNotFoundException::new);
+
+    ChatMessageJpaEntity entity =
+            chatMessageMapper.toEntity(chatMessage, user, chatRoom);
+
     return chatMessageMapper.toDomain(chatMessageRepository.save(entity));
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<ChatRoom> loadById(UUID chatRoomId) {
     return chatRoomRepository.findById(chatRoomId).map(chatRoomMapper::toDomain);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ChatMessage> loadByChatRoomId(UUID chatRoomId, Pageable pageable) {
-    chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
+    chatRoomRepository.findById(chatRoomId)
+            .orElseThrow(ChatRoomNotFoundException::new);
 
     return chatMessageRepository.findByChatRoom_Id(chatRoomId, pageable).stream()
-        .map(chatMessageMapper::toDomain)
-        .toList();
+            .map(chatMessageMapper::toDomain)
+            .toList();
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean isParticipant(UUID chatRoomId, UUID userId) {
     return chatRoomRepository
-        .findById(chatRoomId)
-        .map(
-            room ->
-                userId.equals(room.getTeacher().getId())
-                    || userId.equals(room.getStudent().getId()))
-        .orElse(false);
+            .findById(chatRoomId)
+            .map(room ->
+                    userId.equals(room.getTeacher().getId())
+                            || userId.equals(room.getStudent().getId()))
+            .orElse(false);
   }
 }
