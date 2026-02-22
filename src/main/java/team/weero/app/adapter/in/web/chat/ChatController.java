@@ -7,11 +7,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import team.weero.app.adapter.in.web.chat.dto.response.ChatMessageResponse;
+import team.weero.app.adapter.in.web.chat.dto.response.ChatMessageListResponse;
 import team.weero.app.application.port.in.chat.GetChatMessagesUseCase;
 import team.weero.app.global.security.principal.CustomUserDetails;
 
@@ -32,14 +31,13 @@ public class ChatController {
   @SecurityRequirement(name = "bearer-key")
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/rooms/{chatRoomId}/messages")
-  public Page<ChatMessageResponse> getChatMessages(
+  public ChatMessageListResponse getChatMessages(
       @PathVariable UUID chatRoomId,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-    return getChatMessagesUseCase
-        .execute(userDetails.getUserId(), chatRoomId, page, size)
-        .map(ChatMessageResponse::from);
+    return ChatMessageListResponse.from(
+        getChatMessagesUseCase.execute(userDetails.getUserId(), chatRoomId, page, size));
   }
 }
