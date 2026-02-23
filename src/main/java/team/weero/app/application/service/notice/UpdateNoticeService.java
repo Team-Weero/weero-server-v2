@@ -8,7 +8,7 @@ import team.weero.app.application.port.in.notice.UpdateNoticeUseCase;
 import team.weero.app.application.port.in.notice.dto.request.UpdateNoticeCommand;
 import team.weero.app.application.port.in.notice.dto.response.NoticeInfo;
 import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
-import team.weero.app.application.port.in.user.dto.response.UserInfo;
+import team.weero.app.application.port.in.user.dto.response.CurrentUserInfo;
 import team.weero.app.application.port.out.notice.CheckNoticeOwnerPort;
 import team.weero.app.application.port.out.notice.LoadNoticePort;
 import team.weero.app.application.port.out.notice.SaveNoticePort;
@@ -27,7 +27,7 @@ public class UpdateNoticeService implements UpdateNoticeUseCase {
   @Override
   @Transactional
   public NoticeInfo execute(UpdateNoticeCommand command) {
-    UserInfo currentUser = getCurrentUserUseCase.execute();
+    CurrentUserInfo currentUser = getCurrentUserUseCase.execute();
 
     if (!checkNoticeOwnerPort.isOwner(command.id(), currentUser.id())) {
       throw new ForbiddenException();
