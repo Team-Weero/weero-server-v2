@@ -1,6 +1,8 @@
 package team.weero.app.adapter.in.web.auth;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -69,8 +71,13 @@ public class AuthController {
   @ApiResponses({
     @ApiResponse(
         responseCode = "200",
-        description = "조회 성공 - 학생이면 StudentMeResponse, 선생님이면 TeacherMeResponse"),
-    @ApiResponse(responseCode = "401", description = "인증 실패")
+        description = "조회 성공 (학생: StudentMeResponse, 선생님: TeacherMeResponse)",
+        content = {
+          @Content(
+              mediaType = "application/json",
+              schema = @Schema(oneOf = {StudentMeResponse.class, TeacherMeResponse.class}))
+        }),
+    @ApiResponse(responseCode = "401", description = "인증 실패", content = @Content)
   })
   @SecurityRequirement(name = "bearer-key")
   @GetMapping("/me")
