@@ -17,13 +17,18 @@ import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
 import team.weero.app.application.port.in.auth.dto.request.SignUpCommand;
 import team.weero.app.application.port.in.auth.dto.response.SignInInfo;
 import team.weero.app.application.port.in.auth.dto.response.TokenInfo;
+import team.weero.app.application.port.in.student.dto.response.StudentInfo;
+import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.dto.response.CurrentUserInfo;
 import team.weero.app.application.port.in.user.dto.response.UserInfo;
 import team.weero.app.application.port.out.auth.JwtPort;
 import team.weero.app.application.port.out.auth.LoadRefreshTokenPort;
 import team.weero.app.application.port.out.auth.PasswordEncoderPort;
 import team.weero.app.application.port.out.auth.SaveRefreshTokenPort;
+import team.weero.app.application.port.out.student.LoadStudentPort;
 import team.weero.app.application.port.out.student.SaveStudentPort;
+import team.weero.app.application.port.out.teacher.LoadTeacherPort;
 import team.weero.app.application.port.out.user.LoadUserPort;
 import team.weero.app.application.port.out.user.SaveUserPort;
 import team.weero.app.domain.auth.RefreshToken;
@@ -42,6 +47,8 @@ public class AuthService
   private final LoadUserPort loadUserPort;
   private final SaveUserPort saveUserPort;
   private final SaveStudentPort saveStudentPort;
+  private final LoadStudentPort loadStudentPort;
+  private final LoadTeacherPort loadTeacherPort;
   private final PasswordEncoderPort passwordEncoderPort;
   private final JwtPort jwtPort;
   private final SaveRefreshTokenPort saveRefreshTokenPort;
@@ -116,7 +123,7 @@ public class AuthService
   }
 
   @Override
-  public UserInfo execute() {
+  public CurrentUserInfo execute() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     if (!(principal instanceof CustomUserDetails)) {
@@ -125,9 +132,24 @@ public class AuthService
 
     CustomUserDetails userDetails = (CustomUserDetails) principal;
 
-    return loadUserPort
-        .loadByEmail(userDetails.getEmail())
-        .orElseThrow(() -> UserNotFoundException.INSTANCE);
+    UserInfo user =
+        loadUserPort
+            .loadByEmail(userDetails.getEmail())
+            .orElseThrow(() -> UserNotFoundException.INSTANCE);
+
+    if (user.authority() == Authority.STUDENT) {
+      StudentInfo studentInfo =
+          loadStudentPort
+              .loadByUserId(user.id())
+              .orElseThrow(() -> UserNotFoundException.INSTANCE);
+      return new CurrentUserInfo(user.id(), user.email(), user.authority(), studentInfo, null);
+    } else {
+      TeacherInfo teacherInfo =
+          loadTeacherPort
+              .loadByUserId(user.id())
+              .orElseThrow(() -> UserNotFoundException.INSTANCE);
+      return new CurrentUserInfo(user.id(), user.email(), user.authority(), null, teacherInfo);
+    }
   }
 
   @Override
