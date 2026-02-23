@@ -9,6 +9,8 @@ import team.weero.app.adapter.out.student.entity.StudentJpaEntity;
 import team.weero.app.adapter.out.user.entity.UserJpaEntity;
 import team.weero.app.application.exception.auth.DuplicateEmailException;
 import team.weero.app.application.exception.auth.TeacherSignUpNotAllowedException;
+import team.weero.app.application.exception.student.StudentNotFoundException;
+import team.weero.app.application.exception.teacher.TeacherNotFoundException;
 import team.weero.app.application.exception.user.UserNotFoundException;
 import team.weero.app.application.port.in.auth.ReissueTokenUseCase;
 import team.weero.app.application.port.in.auth.SignInUseCase;
@@ -123,6 +125,7 @@ public class AuthService
   }
 
   @Override
+  @Transactional(readOnly = true)
   public CurrentUserInfo execute() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -141,14 +144,16 @@ public class AuthService
       StudentInfo studentInfo =
           loadStudentPort
               .loadByUserId(user.id())
-              .orElseThrow(() -> UserNotFoundException.INSTANCE);
+              .orElseThrow(() -> StudentNotFoundException.INSTANCE);
       return new CurrentUserInfo(user.id(), user.email(), user.authority(), studentInfo, null);
-    } else {
+    } else if (user.authority() == Authority.TEACHER) {
       TeacherInfo teacherInfo =
           loadTeacherPort
               .loadByUserId(user.id())
-              .orElseThrow(() -> UserNotFoundException.INSTANCE);
+              .orElseThrow(() -> TeacherNotFoundException.INSTANCE);
       return new CurrentUserInfo(user.id(), user.email(), user.authority(), null, teacherInfo);
+    } else {
+      throw new IllegalStateException("Unsupported authority: " + user.authority());
     }
   }
 
