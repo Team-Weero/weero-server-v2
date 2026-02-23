@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record GetAllPostInfo(List<PostInfo> posts) {
+public record PagedPostInfo(
+    List<PostInfo> posts, int page, int size, long totalElements, int totalPages, boolean hasNext) {
 
   public record PostInfo(
       UUID id,

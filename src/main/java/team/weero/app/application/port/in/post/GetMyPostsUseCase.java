@@ -1,8 +1,8 @@
 package team.weero.app.application.port.in.post;
 
 import java.util.UUID;
-import team.weero.app.application.port.in.post.dto.response.GetAllPostInfo;
+import team.weero.app.application.port.in.post.dto.response.PagedPostInfo;
 
 public interface GetMyPostsUseCase {
-  GetAllPostInfo execute(UUID userId);
+  PagedPostInfo execute(UUID userId, int page, int size);
 }

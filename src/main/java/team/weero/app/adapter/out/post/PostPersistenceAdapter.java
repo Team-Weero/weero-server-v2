@@ -1,9 +1,10 @@
 package team.weero.app.adapter.out.post;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import team.weero.app.adapter.out.post.entity.PostJpaEntity;
 import team.weero.app.adapter.out.post.mapper.PostMapper;
@@ -31,19 +32,15 @@ public class PostPersistenceAdapter
   }
 
   @Override
-  public List<Post> getAll() {
-    return postRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc().stream()
-        .map(postMapper::toDomain)
-        .toList();
+  public Page<Post> getAll(Pageable pageable) {
+    return postRepository.findAllByDeletedAtIsNull(pageable).map(postMapper::toDomain);
   }
 
   @Override
-  public List<Post> getAllByStudentId(UUID studentId) {
+  public Page<Post> getAllByStudentId(UUID studentId, Pageable pageable) {
     return postRepository
-        .findAllByStudentIdAndDeletedAtIsNullOrderByCreatedAtDesc(studentId)
-        .stream()
-        .map(postMapper::toDomain)
-        .toList();
+        .findAllByStudentIdAndDeletedAtIsNull(studentId, pageable)
+        .map(postMapper::toDomain);
   }
 
   @Override

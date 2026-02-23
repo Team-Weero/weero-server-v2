@@ -1,14 +1,15 @@
 package team.weero.app.application.port.out.post;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import team.weero.app.domain.post.model.Post;
 
 public interface GetPostPort {
   Optional<Post> getById(UUID postId);
 
-  List<Post> getAll();
+  Page<Post> getAll(Pageable pageable);
 
-  List<Post> getAllByStudentId(UUID studentId);
+  Page<Post> getAllByStudentId(UUID studentId, Pageable pageable);
 }
