@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.weero.app.application.port.in.notice.DeleteNoticeUseCase;
 import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
-import team.weero.app.application.port.in.user.dto.response.UserInfo;
+import team.weero.app.application.port.in.user.dto.response.CurrentUserInfo;
 import team.weero.app.application.port.out.notice.CheckNoticeOwnerPort;
 import team.weero.app.application.port.out.notice.DeleteNoticePort;
 import team.weero.app.global.common.exception.ForbiddenException;
@@ -22,7 +22,7 @@ public class DeleteNoticeService implements DeleteNoticeUseCase {
   @Override
   @Transactional
   public void execute(UUID noticeId) {
-    UserInfo currentUser = getCurrentUserUseCase.execute();
+    CurrentUserInfo currentUser = getCurrentUserUseCase.execute();
 
     if (!checkNoticeOwnerPort.isOwner(noticeId, currentUser.id())) {
       throw new ForbiddenException();

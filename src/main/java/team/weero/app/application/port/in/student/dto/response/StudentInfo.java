@@ -8,6 +8,7 @@ import team.weero.app.domain.student.type.StudentRole;
 public record StudentInfo(
     @Schema(description = "학생 ID", example = "550e8400-e29b-41d4-a716-446655440000") UUID id,
     @Schema(description = "학생 이름", example = "홍길동") String name,
+    @Schema(description = "닉네임", example = "길동이") String nickname,
     @Schema(description = "계정 ID", example = "student123") String accountId,
     @Schema(description = "학년", example = "1") int grade,
     @Schema(description = "반", example = "2") int classRoom,

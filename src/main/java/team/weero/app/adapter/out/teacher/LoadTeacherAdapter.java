@@ -26,6 +26,11 @@ public class LoadTeacherAdapter implements LoadTeacherPort {
   }
 
   private TeacherInfo toTeacherInfo(TeacherJpaEntity entity) {
-    return new TeacherInfo(entity.getId(), entity.getName());
+    return new TeacherInfo(
+        entity.getId(),
+        entity.getName(),
+        entity.getDeviceToken(),
+        entity.getNoNotificationStartTime(),
+        entity.getNoNotificationEndTime());
   }
 }

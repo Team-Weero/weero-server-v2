@@ -8,17 +8,23 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.weero.app.adapter.in.web.auth.dto.request.SignInRequest;
 import team.weero.app.adapter.in.web.auth.dto.request.SignUpRequest;
 import team.weero.app.adapter.in.web.auth.dto.response.SignInResponse;
+import team.weero.app.adapter.in.web.auth.dto.response.StudentMeResponse;
+import team.weero.app.adapter.in.web.auth.dto.response.TeacherMeResponse;
 import team.weero.app.adapter.in.web.auth.dto.response.TokenResponse;
-import team.weero.app.adapter.in.web.user.dto.response.UserResponse;
 import team.weero.app.application.port.in.auth.ReissueTokenUseCase;
 import team.weero.app.application.port.in.auth.SignInUseCase;
 import team.weero.app.application.port.in.auth.SignUpUseCase;
 import team.weero.app.application.port.in.auth.dto.request.SignInCommand;
+import team.weero.app.application.port.in.student.dto.response.StudentInfo;
+import team.weero.app.application.port.in.teacher.dto.response.TeacherInfo;
 import team.weero.app.application.port.in.user.GetCurrentUserUseCase;
+import team.weero.app.application.port.in.user.dto.response.CurrentUserInfo;
+import team.weero.app.domain.auth.type.Authority;
 
 @Tag(name = "Authentication", description = "인증 및 회원 관리 API")
 @RestController
@@ -56,16 +62,46 @@ public class AuthController {
     return TokenResponse.from(reissueTokenUseCase.execute(token));
   }
 
-  @Operation(summary = "현재 로그인한 사용자 정보 조회", description = "JWT 토큰을 통해 현재 로그인한 사용자의 정보를 조회합니다.")
+  @Operation(
+      summary = "현재 로그인한 사용자 정보 조회",
+      description =
+          "JWT 토큰을 통해 현재 로그인한 사용자의 정보를 조회합니다. 학생이면 학생 정보, 선생님이면 선생님 정보를 포함합니다.")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "조회 성공"),
+    @ApiResponse(
+        responseCode = "200",
+        description = "조회 성공 - 학생이면 StudentMeResponse, 선생님이면 TeacherMeResponse"),
     @ApiResponse(responseCode = "401", description = "인증 실패")
   })
   @SecurityRequirement(name = "bearer-key")
-  @ResponseStatus(HttpStatus.OK)
   @GetMapping("/me")
-  public UserResponse getCurrentUser() {
-    return UserResponse.from(getCurrentUserUseCase.execute());
+  public ResponseEntity<?> getCurrentUser() {
+    CurrentUserInfo info = getCurrentUserUseCase.execute();
+    if (info.authority() == Authority.STUDENT) {
+      StudentInfo s = info.student();
+      return ResponseEntity.ok(
+          new StudentMeResponse(
+              info.id(),
+              info.email(),
+              info.authority(),
+              s.name(),
+              s.nickname(),
+              s.accountId(),
+              s.grade(),
+              s.classRoom(),
+              s.number(),
+              s.role()));
+    } else {
+      TeacherInfo t = info.teacher();
+      return ResponseEntity.ok(
+          new TeacherMeResponse(
+              info.id(),
+              info.email(),
+              info.authority(),
+              t.name(),
+              t.deviceToken(),
+              t.noNotificationStartTime(),
+              t.noNotificationEndTime()));
+    }
   }
 
   @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
