@@ -29,6 +29,7 @@ public class LoadStudentAdapter implements LoadStudentPort {
     return new StudentInfo(
         entity.getId(),
         entity.getName(),
+        entity.getNickname(),
         entity.getAccountId(),
         entity.getGrade(),
         entity.getClassRoom(),
